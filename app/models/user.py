@@ -3,6 +3,8 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Float
 
+from sqlalchemy.orm import relationship
+
 from app.core.database import Base
 
 
@@ -39,5 +41,11 @@ class User(Base):
 
     balance = Column(
         Float,
-        default=0
+        default=10000
+    )
+
+
+    transactions = relationship(
+        "Transaction",
+        back_populates="user"
     )

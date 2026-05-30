@@ -16,7 +16,7 @@ from app.rules.fraud_rules import calculate_risk_score
 from app.rules.fraud_rules import get_transaction_status
 from app.rules.velocity_rules import check_transaction_velocity
 from app.ml.predict import predict_fraud
-
+from app.tasks.fraud_tasks import analyze_transaction
 
 router = APIRouter()
 
@@ -137,6 +137,14 @@ def send_transaction(
     db.commit()
 
     db.refresh(new_transaction)
+
+    analyze_transaction.delay(
+
+        new_transaction.id,
+
+        risk_score
+
+    )
 
     return {
 

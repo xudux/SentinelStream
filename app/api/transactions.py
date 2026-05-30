@@ -14,6 +14,9 @@ from app.models.transaction import Transaction
 from app.schemas.transaction_schema import TransactionCreate
 from app.rules.fraud_rules import calculate_risk_score
 from app.rules.fraud_rules import get_transaction_status
+from app.rules.velocity_rules import check_transaction_velocity
+from app.ml.predict import predict_fraud
+
 
 router = APIRouter()
 
@@ -42,9 +45,56 @@ def send_transaction(
 
     )
 
+    velocity_flag = check_transaction_velocity(
+        current_user.id
+    )
+
+    merchant_risk = 1 if transaction.merchant in [
+
+        "CryptoExchange",
+        "DarkWebMarket",
+        "UnknownVendor"
+
+    ] else 0
+
+
+    location_risk = 1 if transaction.location in [
+
+        "Russia",
+        "Nigeria",
+        "North Korea"
+
+    ] else 0
+
+
+    velocity_value = 1 if velocity_flag else 0
+
+    ml_prediction = predict_fraud(
+
+        transaction.amount,
+
+        merchant_risk,
+
+        location_risk,
+
+        velocity_value
+
+    )
+
+    if velocity_flag:
+
+        risk_score += 50
+
+    # Combine Rule Engine + ML
+
+    if ml_prediction == 1:
+
+        risk_score += 30
+
     status = get_transaction_status(
         risk_score
     )
+
 
     # 2. Block if risky
     if status == "blocked":
@@ -97,6 +147,8 @@ def send_transaction(
         "status": status,
 
         "risk_score": risk_score,
+
+        "ml_prediction": ml_prediction,
 
         "remaining_balance": current_user.balance
 

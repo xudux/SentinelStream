@@ -10,6 +10,8 @@ from app.api.transactions import router as transaction_router
 from app.api.auth import router as auth_router
 from app.api.users import router as users_router
 
+from app.api import ml
+
 
 
 Base.metadata.create_all(bind=engine)
@@ -59,4 +61,10 @@ app.include_router(
 
     tags=["Transactions"]
 
+)
+
+app.include_router(
+    ml.router,
+    prefix="/ml",
+    tags=["Machine Learning"]
 )

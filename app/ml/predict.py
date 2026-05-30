@@ -1,4 +1,5 @@
 import joblib
+import pandas as pd
 
 model = joblib.load(
     "app/ml/model.pkl"
@@ -6,27 +7,19 @@ model = joblib.load(
 
 
 def predict_fraud(
-
         amount,
         merchant_risk,
         location_risk,
         velocity_flag
-
 ):
 
-    prediction = model.predict([
+    data = pd.DataFrame([{
+        "amount": amount,
+        "merchant_risk": merchant_risk,
+        "location_risk": location_risk,
+        "velocity_flag": velocity_flag
+    }])
 
-        [
+    prediction = model.predict(data)
 
-            amount,
-            merchant_risk,
-            location_risk,
-            velocity_flag
-
-        ]
-
-    ])
-
-    return int(
-        prediction[0]
-    )
+    return int(prediction[0])

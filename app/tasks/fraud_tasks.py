@@ -23,6 +23,11 @@ def analyze_transaction(
 
     try:
 
+        if risk_score < 50:
+            return {
+                "message": "not a fraud event"
+            }
+
         fraud_event = FraudEvent(
 
             transaction_id=transaction_id,

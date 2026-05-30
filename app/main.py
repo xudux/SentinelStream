@@ -12,6 +12,7 @@ from app.api.auth import router as auth_router
 from app.api.users import router as users_router
 
 from app.api import ml
+from app.api import dashboard
 
 
 
@@ -68,4 +69,14 @@ app.include_router(
     ml.router,
     prefix="/ml",
     tags=["Machine Learning"]
+)
+
+app.include_router(
+
+    dashboard.router,
+
+    prefix="/dashboard",
+
+    tags=["Dashboard"]
+
 )

@@ -99,6 +99,36 @@ def send_transaction(
     # 2. Block if risky
     if status == "blocked":
 
+        blocked_transaction = Transaction(
+
+            user_id=current_user.id,
+
+            amount=transaction.amount,
+
+            merchant=transaction.merchant,
+
+            location=transaction.location,
+
+            status="blocked",
+
+            risk_score=risk_score
+
+        )
+
+        db.add(blocked_transaction)
+
+        db.commit()
+
+        db.refresh(blocked_transaction)
+
+        analyze_transaction.delay(
+
+            blocked_transaction.id,
+
+            risk_score
+
+        )
+
         raise HTTPException(
             status_code=403,
             detail="transaction blocked due to fraud risk"

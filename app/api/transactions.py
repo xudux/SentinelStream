@@ -115,11 +115,25 @@ def send_transaction(
 
         )
 
-        db.add(blocked_transaction)
+        try:
 
-        db.commit()
+            db.add(blocked_transaction)
 
-        db.refresh(blocked_transaction)
+            db.commit()
+
+            db.refresh(blocked_transaction)
+
+        except Exception:
+
+            db.rollback()
+
+            raise HTTPException(
+
+                status_code=500,
+
+                detail="database error"
+
+            )
 
         analyze_transaction.delay(
 
@@ -145,6 +159,8 @@ def send_transaction(
     # 4. Deduct balance
     current_user.balance -= transaction.amount
 
+    db.add(current_user)
+
     # 5. Save transaction
     new_transaction = Transaction(
 
@@ -162,11 +178,25 @@ def send_transaction(
 
     )
 
-    db.add(new_transaction)
+    try:
 
-    db.commit()
+        db.add(new_transaction)
 
-    db.refresh(new_transaction)
+        db.commit()
+
+        db.refresh(new_transaction)
+
+    except Exception:
+
+        db.rollback()
+
+        raise HTTPException(
+
+            status_code=500,
+
+            detail="database error"
+
+        )
 
     analyze_transaction.delay(
 

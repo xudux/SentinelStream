@@ -6,6 +6,7 @@ from app.core.database import SessionLocal
 from app.models.user import User
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
+from app.core.constants import FRAUD_EVENT_THRESHOLD
 
 
 
@@ -23,7 +24,7 @@ def analyze_transaction(
 
     try:
 
-        if risk_score < 50:
+        if risk_score < FRAUD_EVENT_THRESHOLD:
             return {
                 "message": "not a fraud event"
             }

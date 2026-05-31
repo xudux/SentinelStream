@@ -1,12 +1,13 @@
 from celery import Celery
 
+from app.core.config import settings
 
 celery_app = Celery(
 
     "sentinel",
 
-    broker="pyamqp://guest:guest@localhost:5673//",
+    broker=settings.RABBITMQ_URL,
 
-    backend="redis://localhost:6379/0"
+    backend=settings.REDIS_URL
 
 )

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import api from "../api/api"
+import API from "../api/api";
 
 function Login() {
 
@@ -24,9 +24,9 @@ function Login() {
 
         try {
 
-            const response = await api.post(
+            const response = await API.post(
 
-                "http://127.0.0.1:8000/auth/login",
+                "/auth/login",
 
                 formData,
 
@@ -47,7 +47,8 @@ function Login() {
 
             )
 
-            window.location.href = "/"
+            window.location.href =
+                "/dashboard"
 
         }
 

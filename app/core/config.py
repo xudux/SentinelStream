@@ -8,8 +8,8 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
-    RABBITMQ_URL: str = "pyamqp://guest:guest@localhost:5673//"
-    REDIS_URL: str = "redis://localhost:6379/0"
+    RABBITMQ_URL: str = "amqp://guest:guest@rabbitmq:5672//"
+    REDIS_URL: str = "redis://redis:6379/0"
 
 
     class Config:

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import api from "../api/api"
+import API from "../api/api";
 
 import StatsCard from "../components/StatsCard"
 import FraudTable from "../components/FraudTable"
+import Navbar from "../components/Navbar"
 
 function Dashboard() {
 
@@ -38,6 +39,8 @@ function Dashboard() {
     return (
 
         <div className="container">
+
+            <Navbar />
 
             <h1>
                 🛡️ SentinelStream Fraud Monitoring Dashboard

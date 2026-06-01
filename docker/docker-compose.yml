@@ -1,5 +1,50 @@
 services:
 
+  backend:
+
+      build:
+        context: ..
+        dockerfile: docker/Dockerfile
+
+      container_name: sentinel_backend
+
+      restart: always
+
+      ports:
+        - "8000:8000"
+
+      depends_on:
+        - postgres
+        - redis
+        - rabbitmq
+
+      environment:
+        DATABASE_URL: postgresql://postgres:password@postgres:5432/sentineldb
+        REDIS_URL: redis://redis:6379/0
+        RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672//
+        
+  celery:
+
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+
+    container_name: sentinel_celery
+
+    restart: always
+
+    command: celery -A app.tasks.fraud_tasks worker --loglevel=info
+
+    depends_on:
+      - backend
+      - redis
+      - rabbitmq
+
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/sentineldb
+      REDIS_URL: redis://redis:6379/0
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672//
+
   postgres:
 
     image: postgres:16
@@ -44,6 +89,17 @@ services:
       - "5673:5672"
 
       - "15673:15672"
+
+  frontend:
+    build:
+      context: ../frontend
+    container_name: sentinel_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:8000
+    depends_on:
+      - backend
 
 
 volumes:

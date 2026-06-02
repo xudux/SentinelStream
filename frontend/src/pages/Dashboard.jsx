@@ -10,29 +10,30 @@ function Dashboard() {
     const [stats,setStats] = useState({})
     const [recent,setRecent] = useState([])
     const [highRisk,setHighRisk] = useState([])
+    const [error, setError] = useState("")
 
     useEffect(() => {
 
-        api.get(
-            "/dashboard/stats"
-        )
-        .then(
-            res => setStats(res.data)
-        )
+        API.get("/dashboard/stats")
+            .then(res => setStats(res.data))
+            .catch(err => {
+                console.error(err)
+                setError("Dashboard data failed to load")
+            })
 
-        api.get(
-            "/dashboard/recent"
-        )
-        .then(
-            res => setRecent(res.data)
-        )
+            API.get("/dashboard/recent")
+            .then(res => setRecent(res.data))
+            .catch(err => {
+                console.error(err)
+                setError("Dashboard data failed to load")
+            })
 
-        api.get(
-            "/dashboard/high-risk"
-        )
-        .then(
-            res => setHighRisk(res.data)
-        )
+            API.get("/dashboard/high-risk")
+            .then(res => setHighRisk(res.data))
+            .catch(err => {
+                console.error(err)
+                setError("Dashboard data failed to load")
+            })
 
     },[])
 
@@ -46,15 +47,19 @@ function Dashboard() {
                 🛡️ SentinelStream Fraud Monitoring Dashboard
             </h1>
 
+            {error && (
+                <div className="error-box">
+                    {error}
+                </div>
+            )}
+
             <div className="cards">
 
                 <StatsCard
 
                     title="Transactions"
 
-                    value={
-                        stats.total_transactions
-                    }
+                    value={stats.total_transactions || 0}
 
                 />
 
@@ -62,16 +67,14 @@ function Dashboard() {
 
                     title="Fraud Events"
 
-                    value={
-                        stats.fraud_events
-                    }
+                    value={stats.fraud_events || 0}
 
                 />
                 <StatsCard
 
                     title="Fraud Rate"
 
-                    value={`${stats.fraud_rate}%`}
+                    value={`${stats.fraud_rate || 0}%`}
                     
                 />
 

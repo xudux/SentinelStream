@@ -13,11 +13,15 @@ function FraudTable({ title, data }) {
                 </thead>
 
                 <tbody>
-                    {data.map((item) => (
+                    {Array.isArray(data) && data.map((item) => (
                         <tr key={item.id}>
                             <td>{item.transaction_id}</td>
                             <td>{item.risk_score}</td>
-                            <td>{item.created_at}</td>
+                            <td>
+                                {new Date(
+                                    item.created_at
+                                ).toLocaleString()}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

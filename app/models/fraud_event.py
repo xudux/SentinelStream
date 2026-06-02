@@ -3,6 +3,7 @@ from sqlalchemy import Integer
 from sqlalchemy import ForeignKey
 from sqlalchemy import DateTime
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 
@@ -29,4 +30,8 @@ class FraudEvent(Base):
     created_at = Column(
         DateTime(timezone=True),
         server_default=func.now()
+    )
+
+    transaction = relationship(
+        "Transaction"
     )

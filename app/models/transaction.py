@@ -55,7 +55,7 @@ class Transaction(Base):
 
 
     risk_score = Column(
-        Float,
+        Integer,
         default=0
     )
 

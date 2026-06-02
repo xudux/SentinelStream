@@ -7,9 +7,11 @@ from app.core.database import get_db
 
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
+from app.schemas.fraud_event_schema import FraudEventResponse
 from app.core.constants import HIGH_RISK_THRESHOLD
 
 router = APIRouter()
+
 
 @router.get("/stats")
 def dashboard_stats(
@@ -59,26 +61,30 @@ def dashboard_stats(
         "fraud_rate": fraud_rate
     }
 
-@router.get("/high-risk")
+
+@router.get(
+    "/high-risk",
+    response_model=list[FraudEventResponse]
+)
 def high_risk_transactions(
-
         db: Session = Depends(get_db)
-
 ):
 
     events = db.query(
         FraudEvent
     ).filter(
-        FraudEvent.risk_score >= 50
+        FraudEvent.risk_score >= HIGH_RISK_THRESHOLD
     ).all()
 
     return events
 
-@router.get("/recent")
+
+@router.get(
+    "/recent",
+    response_model=list[FraudEventResponse]
+)
 def recent_fraud_events(
-
         db: Session = Depends(get_db)
-
 ):
 
     events = db.query(
@@ -90,7 +96,7 @@ def recent_fraud_events(
     return events
 
 
-@router.get("/high-risk/count")
+@router.get("/high-risk-count")
 def high_risk_count(
         db: Session = Depends(get_db)
 ):
@@ -104,6 +110,7 @@ def high_risk_count(
     return {
         "high_risk_events": count
     }
+
 
 @router.get("/fraud-rate")
 def fraud_rate(
@@ -119,22 +126,22 @@ def fraud_rate(
     ).count()
 
     if total == 0:
-
         return {
             "fraud_rate": 0
         }
 
     return {
-
-        "fraud_rate":
-
-        round(
+        "fraud_rate": round(
             (fraud / total) * 100,
             2
         )
     }
 
-@router.get("/fraud-trend")
+
+@router.get(
+    "/fraud-trend",
+    response_model=list[FraudEventResponse]
+)
 def fraud_trend(
         db: Session = Depends(get_db)
 ):

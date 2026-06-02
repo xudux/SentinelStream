@@ -7,30 +7,24 @@ WINDOW_SECONDS = 30
 
 
 
-def check_transaction_velocity(
+def check_transaction_velocity(user_id):
 
-        user_id
+    try:
 
-):
+        key = f"user:{user_id}:transactions"
 
+        current_count = redis_client.incr(key)
 
-    key = f"user:{user_id}:transactions"
+        if current_count == 1:
+            redis_client.expire(
+                key,
+                WINDOW_SECONDS
+            )
 
+        return current_count > MAX_TRANSACTIONS
 
-    current_count = redis_client.incr(key)
+    except Exception:
 
+        print("Redis unavailable")
 
-    if current_count == 1:
-
-        redis_client.expire(
-            key,
-            WINDOW_SECONDS
-        )
-
-
-    if current_count > MAX_TRANSACTIONS:
-
-        return True
-
-
-    return False
+        return False

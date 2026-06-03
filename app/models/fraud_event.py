@@ -33,5 +33,6 @@ class FraudEvent(Base):
     )
 
     transaction = relationship(
-        "Transaction"
+        "Transaction",
+        back_populates="fraud_events"
     )

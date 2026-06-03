@@ -70,3 +70,8 @@ class Transaction(Base):
         "User",
         back_populates="transactions"
     )
+
+    fraud_events = relationship(
+        "FraudEvent",
+        back_populates="transaction"
+    )

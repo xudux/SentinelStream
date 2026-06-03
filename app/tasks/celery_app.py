@@ -6,3 +6,7 @@ celery_app = Celery(
     broker=settings.RABBITMQ_URL,
     backend=settings.REDIS_URL
 )
+
+celery_app.autodiscover_tasks(
+    ["app.tasks"]
+)

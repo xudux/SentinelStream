@@ -6,6 +6,7 @@ from app.core.database import engine
 from app.models.user import User
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
+from app.models.audit_log import AuditLog
 from app.api.transactions import router as transaction_router
 
 from app.api.auth import router as auth_router

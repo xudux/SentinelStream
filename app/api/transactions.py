@@ -17,6 +17,7 @@ from app.rules.fraud_rules import get_transaction_status
 from app.rules.velocity_rules import check_transaction_velocity
 from app.ml.predict import predict_fraud
 from app.tasks.fraud_tasks import analyze_transaction
+from app.services.audit_service import create_audit_log
 
 router = APIRouter()
 
@@ -143,12 +144,23 @@ def send_transaction(
 
         )
 
+        create_audit_log(
+            db,
+            current_user.id,
+            "TRANSACTION_BLOCKED",
+            f"Transaction {blocked_transaction.id} blocked with risk score {risk_score}"
+        )
+
         raise HTTPException(
             status_code=403,
             detail="transaction blocked due to fraud risk"
         )
 
     # 3. Check balance
+
+    print(
+        f"User balance: {current_user.balance}"
+    )
     if current_user.balance < transaction.amount:
 
         raise HTTPException(
@@ -204,6 +216,13 @@ def send_transaction(
 
         risk_score
 
+    )
+
+    create_audit_log(
+        db,
+        current_user.id,
+        "TRANSACTION_PROCESSED",
+        f"Transaction {new_transaction.id} processed with risk score {risk_score}"
     )
 
     return {

@@ -14,6 +14,7 @@ from app.api.users import router as users_router
 
 from app.api import ml
 from app.api import dashboard
+from app.api.admin import router as admin_router
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -97,4 +98,10 @@ app.include_router(
 
     tags=["Dashboard"]
 
+)
+
+app.include_router(
+    admin_router,
+    prefix="/admin",
+    tags=["Admin"]
 )

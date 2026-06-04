@@ -6,6 +6,7 @@ from app.core.database import SessionLocal
 from app.models.user import User
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
+from app.services.audit_service import create_audit_log
 from app.core.constants import FRAUD_EVENT_THRESHOLD
 
 
@@ -46,6 +47,21 @@ def analyze_transaction(
 
         db.add(fraud_event)
         db.commit()
+
+        transaction = (
+            db.query(Transaction)
+            .filter(Transaction.id == transaction_id)
+            .first()
+        )
+
+        if transaction:
+
+            create_audit_log(
+                db,
+                transaction.user_id,
+                "FRAUD_EVENT_CREATED",
+                f"Fraud event created for transaction {transaction_id}"
+            )
 
         print(
             f"Fraud event stored for transaction {transaction_id}"

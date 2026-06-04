@@ -11,7 +11,7 @@ from app.core.database import get_db
 
 from app.core.security import hash_password
 from fastapi import HTTPException
-
+from app.services.audit_service import create_audit_log
 from app.schemas.user_schema import UserLogin
 from app.core.security import verify_password
 from app.core.security import create_access_token
@@ -90,6 +90,13 @@ def register(
 
     )
 
+    create_audit_log(
+        db,
+        new_user.id,
+        "USER_REGISTERED",
+        f"User {new_user.email} registered"
+    )
+
 
     return {
 
@@ -99,91 +106,6 @@ def register(
 
     }
 
-# @router.post(
-#     "/login"
-# )
-
-# def login(
-
-#         user:
-
-#         UserLogin,
-
-#         db:
-
-#         Session
-
-#         = Depends(
-
-#             get_db
-
-#         )
-
-# ):
-
-
-#     existing_user = db.query(
-
-#         User
-
-#     ).filter(
-
-#         User.email == user.email
-
-#     ).first()
-
-
-#     if not existing_user:
-
-#         raise HTTPException(
-#             status_code=401,
-#             detail="invalid credentials"
-#         )
-
-
-
-
-#     valid = verify_password(
-
-#         user.password,
-
-#         existing_user.password
-
-#     )
-
-
-#     if not valid:
-
-#         raise HTTPException(
-#             status_code=401,
-#             detail="invalid credentials"
-#         )
-
-
-#     token = create_access_token(
-
-#         {
-
-#             "sub":
-
-#             existing_user.email
-
-#         }
-
-#     )
-
-
-#     return {
-
-#         "access_token":
-
-#         token,
-
-#         "token_type":
-
-#         "bearer"
-
-#     }
 
 @router.post("/login")
 
@@ -234,6 +156,13 @@ def login(
             "sub": existing_user.email
         }
 
+    )
+
+    create_audit_log(
+        db,
+        existing_user.id,
+        "USER_LOGIN",
+        f"User {existing_user.email} logged in"
     )
 
 

@@ -7,6 +7,7 @@ from app.models.user import User
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
 from app.services.audit_service import create_audit_log
+from app.services.notification_service import send_fraud_alert
 from app.core.constants import FRAUD_EVENT_THRESHOLD
 
 
@@ -55,6 +56,22 @@ def analyze_transaction(
         )
 
         if transaction:
+
+            user = (
+                db.query(User)
+                .filter(
+                    User.id == transaction.user_id
+                )
+                .first()
+            )
+
+            if user:
+
+                send_fraud_alert(
+                    user.email,
+                    transaction_id,
+                    risk_score
+                )
 
             create_audit_log(
                 db,

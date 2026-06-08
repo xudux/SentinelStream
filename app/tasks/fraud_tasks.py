@@ -1,8 +1,5 @@
 from app.tasks.celery_app import celery_app
-
 from app.core.database import SessionLocal
-
-
 from app.models.user import User
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent

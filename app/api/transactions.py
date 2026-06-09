@@ -3,9 +3,7 @@ from fastapi import Depends
 from fastapi import HTTPException
 
 from sqlalchemy.orm import Session
-
 from app.core.database import get_db
-
 from app.core.auth import get_current_user
 
 from app.models.user import User
@@ -22,7 +20,11 @@ from app.services.audit_service import create_audit_log
 router = APIRouter()
 
 
-@router.post("/send")
+@router.post(
+    "/send",
+    summary="Process a transaction",
+    description="Processes a transaction by performing fraud analysis, balance validation, machine learning prediction, and audit logging."
+)
 def send_transaction(
 
         transaction: TransactionCreate,
@@ -241,7 +243,11 @@ def send_transaction(
 
     }
 
-@router.get("/history")
+@router.get(
+    "/history",
+    summary="Get transaction history",
+    description="Returns all transactions associated with the authenticated user."
+)
 
 def transaction_history(
 

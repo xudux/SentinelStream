@@ -21,9 +21,9 @@ router = APIRouter()
 
 
 @router.post(
-
-    "/register"
-
+    "/register",
+    summary="Register a new user",
+    description="Creates a new user account after validating that the email is not already registered."
 )
 
 def register(
@@ -107,7 +107,11 @@ def register(
     }
 
 
-@router.post("/login")
+@router.post(
+    "/login",
+    summary="Authenticate user",
+    description="Validates user credentials and returns a JWT access token."
+)
 
 def login(
 

@@ -153,3 +153,48 @@ def fraud_trend(
     ).limit(20).all()
 
     return events
+
+
+@router.get("/fraud-events")
+def fraud_events(
+        db: Session = Depends(get_db)
+):
+
+    events = (
+        db.query(FraudEvent)
+        .order_by(
+            FraudEvent.created_at.desc()
+        )
+        .all()
+    )
+
+    return events
+
+@router.get("/status-distribution")
+def status_distribution(
+        db: Session = Depends(get_db)
+):
+
+    approved = db.query(
+        Transaction
+    ).filter(
+        Transaction.status == "approved"
+    ).count()
+
+    flagged = db.query(
+        Transaction
+    ).filter(
+        Transaction.status == "flagged"
+    ).count()
+
+    blocked = db.query(
+        Transaction
+    ).filter(
+        Transaction.status == "blocked"
+    ).count()
+
+    return {
+        "approved": approved,
+        "flagged": flagged,
+        "blocked": blocked
+    }

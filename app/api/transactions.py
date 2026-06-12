@@ -268,3 +268,40 @@ def transaction_history(
 
 
     return transactions
+
+
+@router.get("/all")
+def get_all_transactions(
+    db: Session = Depends(get_db)
+):
+
+    transactions = (
+        db.query(Transaction)
+        .order_by(Transaction.id.desc())
+        .all()
+    )
+
+    return transactions
+
+@router.get("/{transaction_id}")
+def get_transaction_details(
+    transaction_id: int,
+    db: Session = Depends(get_db)
+):
+
+    transaction = (
+        db.query(Transaction)
+        .filter(
+            Transaction.id == transaction_id
+        )
+        .first()
+    )
+
+    if not transaction:
+
+        raise HTTPException(
+            status_code=404,
+            detail="transaction not found"
+        )
+
+    return transaction

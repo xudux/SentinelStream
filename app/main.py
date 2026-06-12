@@ -16,6 +16,7 @@ from app.api import ml
 from app.api import dashboard
 from app.api.admin import router as admin_router
 from fastapi.middleware.cors import CORSMiddleware
+from app.api import users
 
 
 

@@ -14,6 +14,26 @@ function Navbar() {
                 Simulator
             </Link>
 
+            <Link to="/monitor">
+                Monitoring
+            </Link>
+
+            <Link to="/audit-logs">
+                Audit Logs
+            </Link>
+
+            <Link to="/fraud-events">
+                Fraud Events
+            </Link>
+
+            <Link to="/users">
+                Users
+            </Link>
+
+            <Link to="/analytics">
+                Analytics
+            </Link>
+
         </div>
 
     )

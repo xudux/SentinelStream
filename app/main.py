@@ -7,6 +7,7 @@ from app.models.user import User
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
 from app.models.audit_log import AuditLog
+from app.models.fraud_rule import FraudRule
 from app.api.transactions import router as transaction_router
 
 from app.api.auth import router as auth_router
@@ -17,6 +18,7 @@ from app.api import dashboard
 from app.api.admin import router as admin_router
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import users
+from app.api import rules
 
 
 
@@ -105,4 +107,14 @@ app.include_router(
     admin_router,
     prefix="/admin",
     tags=["Admin"]
+)
+
+app.include_router(
+
+    rules.router,
+
+    prefix="/rules",
+
+    tags=["Rules"]
+
 )

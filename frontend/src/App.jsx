@@ -14,6 +14,8 @@ import AuditLogs from "./pages/AuditLogs"
 import FraudEvents from "./pages/FraudEvents"
 import Users from "./pages/Users"
 import Analytics from "./pages/Analytics"
+import Rules from "./pages/Rules"
+import Investigations from "./pages/Investigations"
 
 function App() {
 
@@ -66,6 +68,16 @@ function App() {
                 <Route
                     path="/analytics"
                     element={<Analytics />}
+                />
+
+                <Route
+                    path="/rules"
+                    element={<Rules />}
+                />
+
+                <Route
+                    path="/investigations"
+                    element={<Investigations />}
                 />
 
             </Routes>

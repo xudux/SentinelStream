@@ -34,6 +34,14 @@ function Navbar() {
                 Analytics
             </Link>
 
+            <Link to="/rules">
+                Rules
+            </Link>
+
+            <Link to="/investigations">
+                Investigations
+            </Link>
+
         </div>
 
     )

@@ -12,6 +12,8 @@ from app.schemas.rule_schema import (
     RuleResponse
 )
 
+from app.core.roles import require_admin
+
 
 router = APIRouter()
 
@@ -48,7 +50,8 @@ def create_rule(
 
     rule: RuleCreate,
 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_admin)
 
 ):
 
@@ -77,7 +80,8 @@ def toggle_rule(
 
     rule_id: int,
 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_admin)
 
 ):
 
@@ -123,7 +127,8 @@ def delete_rule(
 
     rule_id: int,
 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_admin)
 
 ):
 

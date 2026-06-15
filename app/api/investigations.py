@@ -14,6 +14,8 @@ from app.schemas.investigation_schema import (
     InvestigationResponse
 )
 
+from app.core.roles import require_analyst
+
 
 router = APIRouter()
 
@@ -27,7 +29,9 @@ def create_investigation(
     investigation: InvestigationCreate,
     
 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
+
 
 ):
 
@@ -57,7 +61,8 @@ def create_investigation(
 )
 def get_all_investigations(
 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_analyst)
 
 ):
 
@@ -85,7 +90,8 @@ def get_investigation(
 
     case_id: int,
 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_analyst)
 
 ):
 
@@ -125,7 +131,9 @@ def update_investigation(
 
     update: InvestigationUpdate,
 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+
+    current_user=Depends(require_analyst)
 
 ):
 

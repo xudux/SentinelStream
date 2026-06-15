@@ -17,7 +17,10 @@ from app.rules.velocity_rules import check_transaction_velocity
 from app.ml.predict import predict_fraud
 from app.tasks.fraud_tasks import analyze_transaction
 from app.services.audit_service import create_audit_log
-
+from app.core.roles import (
+    require_admin,
+    require_analyst
+)
 router = APIRouter()
 
 
@@ -315,7 +318,8 @@ def transaction_history(
 
 @router.get("/all")
 def get_all_transactions(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_analyst)
 ):
 
     transactions = (
@@ -329,7 +333,8 @@ def get_all_transactions(
 @router.get("/{transaction_id}")
 def get_transaction_details(
     transaction_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_analyst)
 ):
 
     transaction = (

@@ -1,8 +1,10 @@
 from fastapi import APIRouter
 from fastapi import Depends
 
+from pika import data
 from sqlalchemy.orm import Session
 
+from app.models import user
 from app.schemas.user_schema import UserRegister
 
 from app.models.user import User
@@ -66,13 +68,10 @@ def register(
 
 
     new_user = User(
-
         name=user.name,
-
         email=user.email,
-
-        password=hashed
-
+        password=hashed,
+        role="USER"
     )
 
 
@@ -155,12 +154,10 @@ def login(
 
 
     token = create_access_token(
-
-        {
-            "sub": existing_user.email
-        }
-
-    )
+    {
+        "sub": existing_user.email,
+        "role": existing_user.role
+    })
 
     create_audit_log(
         db,

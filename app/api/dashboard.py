@@ -9,13 +9,15 @@ from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
 from app.schemas.fraud_event_schema import FraudEventResponse
 from app.core.constants import HIGH_RISK_THRESHOLD
+from app.core.roles import require_analyst
 
 router = APIRouter()
 
 
 @router.get("/stats")
 def dashboard_stats(
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
 ):
 
     total_transactions = db.query(
@@ -67,7 +69,8 @@ def dashboard_stats(
     response_model=list[FraudEventResponse]
 )
 def high_risk_transactions(
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
 ):
 
     events = db.query(
@@ -84,7 +87,8 @@ def high_risk_transactions(
     response_model=list[FraudEventResponse]
 )
 def recent_fraud_events(
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
 ):
 
     events = db.query(
@@ -98,7 +102,8 @@ def recent_fraud_events(
 
 @router.get("/high-risk-count")
 def high_risk_count(
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
 ):
 
     count = db.query(
@@ -114,7 +119,8 @@ def high_risk_count(
 
 @router.get("/fraud-rate")
 def fraud_rate(
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
 ):
 
     total = db.query(
@@ -143,7 +149,8 @@ def fraud_rate(
     response_model=list[FraudEventResponse]
 )
 def fraud_trend(
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
 ):
 
     events = db.query(
@@ -157,7 +164,8 @@ def fraud_trend(
 
 @router.get("/fraud-events")
 def fraud_events(
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
 ):
 
     events = (
@@ -172,7 +180,8 @@ def fraud_events(
 
 @router.get("/status-distribution")
 def status_distribution(
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user=Depends(require_analyst)
 ):
 
     approved = db.query(

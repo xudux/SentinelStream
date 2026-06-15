@@ -49,3 +49,9 @@ class User(Base):
         "Transaction",
         back_populates="user"
     )
+
+    role = Column(
+        String,
+        nullable=False,
+        default="USER"
+    )

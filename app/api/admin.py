@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.user import User
 from app.models.audit_log import AuditLog
+from app.core.roles import require_admin
 
 
 router = APIRouter()
@@ -13,7 +14,8 @@ router = APIRouter()
 
 @router.post("/reset-balances")
 def reset_balances(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_admin)
 ):
 
     users = db.query(User).all()
@@ -31,7 +33,8 @@ def reset_balances(
 
 @router.get("/audit-logs")
 def get_audit_logs(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_admin)
 ):
 
     logs = (

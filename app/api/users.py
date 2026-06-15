@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.core.auth import get_current_user
 from app.core.database import get_db
 from app.models.user import User
-
+from app.core.roles import require_admin
 
 router = APIRouter()
 
@@ -25,7 +25,8 @@ def profile(
 
 @router.get("/all")
 def all_users(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(require_admin)
 ):
     users = (
         db.query(User)

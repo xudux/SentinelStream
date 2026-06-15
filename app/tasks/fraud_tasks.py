@@ -69,6 +69,12 @@ def analyze_transaction(
 
         db.commit()
 
+        print(
+
+            f"Investigation created for Fraud Event {fraud_event.id}"
+
+        )
+
         transaction = (
             db.query(Transaction)
             .filter(Transaction.id == transaction_id)

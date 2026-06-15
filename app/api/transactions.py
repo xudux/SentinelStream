@@ -8,6 +8,7 @@ from app.core.auth import get_current_user
 
 from app.models.user import User
 from app.models.transaction import Transaction
+from app.models.fraud_rule import FraudRule
 
 from app.schemas.transaction_schema import TransactionCreate
 from app.rules.fraud_rules import calculate_risk_score
@@ -40,6 +41,8 @@ def send_transaction(
     # 1. Analyze fraud
     risk_score = calculate_risk_score(
 
+        db,
+
         transaction.amount,
 
         transaction.merchant,
@@ -52,22 +55,62 @@ def send_transaction(
         current_user.id
     )
 
-    merchant_risk = 1 if transaction.merchant in [
+    merchant_risk = 0
 
-        "CryptoExchange",
-        "DarkWebMarket",
-        "UnknownVendor"
-
-    ] else 0
+    location_risk = 0
 
 
-    location_risk = 1 if transaction.location in [
+    rules = (
 
-        "Russia",
-        "Nigeria",
-        "North Korea"
+        db.query(FraudRule)
 
-    ] else 0
+        .filter(
+
+            FraudRule.is_active == True
+
+        )
+
+        .all()
+
+    )
+
+
+    for rule in rules:
+
+
+        if (
+
+            rule.rule_type == "MERCHANT"
+
+            and
+
+            transaction.merchant
+
+            ==
+
+            rule.rule_value
+
+        ):
+
+            merchant_risk = 1
+
+
+
+        if (
+
+            rule.rule_type == "COUNTRY"
+
+            and
+
+            transaction.location
+
+            ==
+
+            rule.rule_value
+
+        ):
+
+            location_risk = 1
 
 
     velocity_value = 1 if velocity_flag else 0

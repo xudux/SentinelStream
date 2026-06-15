@@ -1,76 +1,110 @@
-HIGH_RISK_COUNTRIES = [
-
-    "Nigeria",
-    "Russia",
-    "North Korea"
-
-]
-
-
-HIGH_RISK_MERCHANTS = [
-
-    "CryptoExchange",
-    "DarkWebMarket",
-    "UnknownVendor"
-
-]
-
+from app.models.fraud_rule import FraudRule
 
 
 def calculate_risk_score(
 
-        amount,
-        merchant,
-        location
+    db,
+
+    amount,
+
+    merchant,
+
+    location
 
 ):
-
 
     risk_score = 0
 
 
-    # Large transaction
+    rules = (
 
-    if amount > 5000:
+        db.query(FraudRule)
 
-        risk_score += 40
+        .filter(
+
+            FraudRule.is_active == True
+
+        )
+
+        .all()
+
+    )
 
 
-    # Suspicious country
-
-    if location in HIGH_RISK_COUNTRIES:
-
-        risk_score += 30
+    for rule in rules:
 
 
-    # Suspicious merchant
+        if (
 
-    if merchant in HIGH_RISK_MERCHANTS:
+            rule.rule_type == "COUNTRY"
 
-        risk_score += 30
+            and
+
+            location == rule.rule_value
+
+        ):
+
+            risk_score += rule.risk_score
+
+
+
+        elif (
+
+            rule.rule_type == "MERCHANT"
+
+            and
+
+            merchant == rule.rule_value
+
+        ):
+
+            risk_score += rule.risk_score
+
+
+
+        elif (
+
+            rule.rule_type == "AMOUNT"
+
+        ):
+
+            try:
+
+                threshold = float(
+
+                    rule.rule_value
+
+                )
+
+                if amount > threshold:
+
+                    risk_score += rule.risk_score
+
+            except:
+
+                pass
 
 
     return risk_score
 
 
 
+
 def get_transaction_status(
 
-        risk_score
+    risk_score
 
 ):
-
 
     if risk_score >= 70:
 
         return "blocked"
 
-
     elif risk_score >= 40:
 
         return "flagged"
 
-
     else:
 
         return "approved"
+

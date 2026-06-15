@@ -25,6 +25,7 @@ router = APIRouter()
 def create_investigation(
 
     investigation: InvestigationCreate,
+    
 
     db: Session = Depends(get_db)
 
@@ -183,3 +184,5 @@ def update_investigation(
     db.refresh(case)
 
     return case
+
+

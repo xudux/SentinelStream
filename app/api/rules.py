@@ -71,3 +71,94 @@ def create_rule(
     db.refresh(new_rule)
 
     return new_rule
+
+@router.put("/{rule_id}/toggle")
+def toggle_rule(
+
+    rule_id: int,
+
+    db: Session = Depends(get_db)
+
+):
+
+    rule = (
+
+        db.query(FraudRule)
+
+        .filter(
+
+            FraudRule.id == rule_id
+
+        )
+
+        .first()
+
+    )
+
+    if not rule:
+
+        return {
+
+            "message":
+
+            "rule not found"
+
+        }
+
+
+    rule.is_active = (
+
+        not rule.is_active
+
+    )
+
+    db.commit()
+
+    db.refresh(rule)
+
+    return rule
+
+@router.delete("/{rule_id}")
+def delete_rule(
+
+    rule_id: int,
+
+    db: Session = Depends(get_db)
+
+):
+
+    rule = (
+
+        db.query(FraudRule)
+
+        .filter(
+
+            FraudRule.id == rule_id
+
+        )
+
+        .first()
+
+    )
+
+    if not rule:
+
+        return {
+
+            "message":
+
+            "rule not found"
+
+        }
+
+    db.delete(rule)
+
+    db.commit()
+
+    return {
+
+        "message":
+
+        "rule deleted"
+
+    }

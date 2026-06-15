@@ -3,6 +3,7 @@ from app.core.database import SessionLocal
 from app.models.user import User
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
+from app.models.investigation import Investigation
 from app.services.audit_service import create_audit_log
 from app.services.notification_service import send_fraud_alert
 from app.core.constants import FRAUD_EVENT_THRESHOLD
@@ -44,6 +45,28 @@ def analyze_transaction(
         )
 
         db.add(fraud_event)
+        db.commit()
+
+        db.refresh(fraud_event)
+
+        investigation = Investigation(
+
+            fraud_event_id=fraud_event.id,
+
+            status="OPEN",
+
+            assigned_to="Unassigned",
+
+            priority="HIGH",
+
+            notes="",
+
+            resolution=""
+
+        )
+
+        db.add(investigation)
+
         db.commit()
 
         transaction = (

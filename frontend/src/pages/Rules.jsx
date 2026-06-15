@@ -47,19 +47,92 @@ function Rules() {
 
     }
 
+    const toggleRule = (
 
+        id
 
-    const createRule = () => {
+    ) => {
 
-        API.post(
+        API.put(
 
-            "/rules",
-
-            form
+            `/rules/${id}/toggle`
 
         )
 
         .then(() => {
+
+            fetchRules()
+
+        })
+
+        .catch(
+
+            console.error
+
+        )
+
+    }
+
+    const deleteRule = (
+
+        id
+
+    ) => {
+
+        if (
+
+            !window.confirm(
+
+                "Delete this rule?"
+
+            )
+
+        ) {
+
+            return
+
+        }
+
+        API.delete(
+
+            `/rules/${id}`
+
+        )
+
+        .then(() => {
+
+            fetchRules()
+
+        })
+
+        .catch(
+
+            console.error
+
+        )
+
+    }
+
+    const createRule = () => {
+
+        console.log(form)
+
+        API.post(
+            "/rules/",
+            {
+                name: form.name,
+
+                rule_type: form.rule_type,
+
+                rule_value: form.rule_value,
+
+                risk_score: Number(form.risk_score)
+            }
+        )
+
+        .then((res) => {
+
+            console.log(res.data)
 
             fetchRules()
 
@@ -77,11 +150,13 @@ function Rules() {
 
         })
 
-        .catch(console.error)
+        .catch(err => {
+
+            console.log(err.response)
+
+        })
 
     }
-
-
 
     return (
 
@@ -99,106 +174,125 @@ function Rules() {
 
 
 
-            <div className="form">
-
-
+            <div className="rule-form">
 
                 <input
-
                     placeholder="Rule Name"
-
                     value={form.name}
-
-                    onChange={e=>
-
+                    onChange={e =>
                         setForm({
-
                             ...form,
-
-                            name:e.target.value
-
+                            name: e.target.value
                         })
-
                     }
-
                 />
 
-
-
-                <input
-
-                    placeholder="Rule Type"
-
+                <select
                     value={form.rule_type}
-
-                    onChange={e=>
-
+                    onChange={(e) =>
                         setForm({
-
                             ...form,
-
-                            rule_type:e.target.value
-
+                            rule_type: e.target.value,
                         })
-
                     }
-
-                />
-
-
-
-                <input
-
-                    placeholder="Rule Value"
-
-                    value={form.rule_value}
-
-                    onChange={e=>
-
-                        setForm({
-
-                            ...form,
-
-                            rule_value:e.target.value
-
-                        })
-
-                    }
-
-                />
-
-
-
-                <input
-
-                    placeholder="Risk Score"
-
-                    value={form.risk_score}
-
-                    onChange={e=>
-
-                        setForm({
-
-                            ...form,
-
-                            risk_score:e.target.value
-
-                        })
-
-                    }
-
-                />
-
-
-
-                <button
-
-                    onClick={createRule}
-
                 >
+                    <option value="">
+                        Select Rule Type
+                    </option>
 
+                    <option value="COUNTRY">
+                        COUNTRY
+                    </option>
+
+                    <option value="MERCHANT">
+                        MERCHANT
+                    </option>
+
+                    <option value="AMOUNT">
+                        AMOUNT
+                    </option>
+                </select>
+
+                {
+                    form.rule_type === "COUNTRY" ? (
+                        <select
+                            value={form.rule_value}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    rule_value: e.target.value,
+                                })
+                            }
+                        >
+                            <option value="">
+                                Select Country
+                            </option>
+
+                            <option value="Russia">
+                                Russia
+                            </option>
+
+                            <option value="Nigeria">
+                                Nigeria
+                            </option>
+
+                            <option value="North Korea">
+                                North Korea
+                            </option>
+                        </select>
+                    ) : form.rule_type === "MERCHANT" ? (
+                        <select
+                            value={form.rule_value}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    rule_value: e.target.value,
+                                })
+                            }
+                        >
+                            <option value="">
+                                Select Merchant
+                            </option>
+
+                            <option value="CryptoExchange">
+                                CryptoExchange
+                            </option>
+
+                            <option value="DarkWebMarket">
+                                DarkWebMarket
+                            </option>
+
+                            <option value="UnknownVendor">
+                                UnknownVendor
+                            </option>
+                        </select>
+                    ) : (
+                        <input
+                            placeholder="Amount Threshold"
+                            value={form.rule_value}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    rule_value: e.target.value,
+                                })
+                            }
+                        />
+                    )
+                }
+
+                <input
+                    placeholder="Risk Score"
+                    value={form.risk_score}
+                    onChange={e =>
+                        setForm({
+                            ...form,
+                            risk_score: e.target.value
+                        })
+                    }
+                />
+
+                <button onClick={createRule}>
                     Create Rule
-
                 </button>
 
             </div>
@@ -222,6 +316,8 @@ function Rules() {
                         <th>Risk</th>
 
                         <th>Status</th>
+
+                        <th>Actions</th>
 
                     </tr>
 
@@ -279,20 +375,37 @@ function Rules() {
 
 
                                 <td>
+                                    {rule.is_active ? "Active" : "Disabled"}
+                                </td>
 
-                                    {
+                                <td>
 
-                                        rule.is_active
+                                <button
 
-                                        ?
+                                onClick={() => toggleRule(rule.id)}
 
-                                        "Active"
+                                >
 
-                                        :
+                                {rule.is_active ? "Disable" : "Enable"}
 
-                                        "Disabled"
+                                </button>
 
-                                    }
+
+                                <button
+
+                                style={{
+
+                                marginLeft:"10px"
+
+                                }}
+
+                                onClick={() => deleteRule(rule.id)}
+
+                                >
+
+                                Delete
+
+                                </button>
 
                                 </td>
 

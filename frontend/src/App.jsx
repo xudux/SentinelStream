@@ -16,6 +16,7 @@ import Users from "./pages/Users"
 import Analytics from "./pages/Analytics"
 import Rules from "./pages/Rules"
 import Investigations from "./pages/Investigations"
+import InvestigationDetails from "./pages/InvestigationDetails"
 
 function App() {
 
@@ -78,6 +79,14 @@ function App() {
                 <Route
                     path="/investigations"
                     element={<Investigations />}
+                />
+
+                <Route
+
+                    path="/investigations/:id"
+
+                    element={<InvestigationDetails />}
+
                 />
 
             </Routes>

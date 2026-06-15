@@ -4,7 +4,7 @@ import API from "../api/api"
 
 import Navbar from "../components/Navbar"
 
-
+import { Link } from "react-router-dom"
 
 function Investigations() {
 
@@ -68,7 +68,11 @@ function Investigations() {
 
                                 <td>
 
-                                    {c.id}
+                                    <Link to={`/investigations/${c.id}`}>
+
+                                        {c.id}
+
+                                    </Link>
 
                                 </td>
 

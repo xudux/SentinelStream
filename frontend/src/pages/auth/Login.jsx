@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../api/api";
+import API from "../../api/api";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
@@ -38,14 +38,18 @@ function Login() {
             localStorage.setItem("role", decoded.role);
             localStorage.setItem("email", decoded.sub);
 
-            if (
-                decoded.role === "ADMIN" ||
-                decoded.role === "FRAUD_ANALYST"
-            ) {
-                navigate("/dashboard");
-            }
-            else {
-                navigate("/transactions");
+            if (decoded.role === "ADMIN") {
+
+                navigate("/admin/dashboard");
+
+            } else if (decoded.role === "FRAUD_ANALYST") {
+
+                navigate("/analyst/dashboard");
+
+            } else {
+
+                navigate("/customer/dashboard");
+
             }
 
         } catch (error) {

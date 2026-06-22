@@ -20,7 +20,8 @@ class FraudEvent(Base):
 
     transaction_id = Column(
         Integer,
-        ForeignKey("transactions.id")
+        ForeignKey("transactions.id"),
+        nullable=False
     )
 
     risk_score = Column(
@@ -36,3 +37,10 @@ class FraudEvent(Base):
         "Transaction",
         back_populates="fraud_events"
     )
+
+    investigations = relationship(
+        "Investigation",
+        back_populates="fraud_event",
+        cascade="all, delete-orphan"
+    )
+        

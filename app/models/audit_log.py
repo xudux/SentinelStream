@@ -24,7 +24,8 @@ class AuditLog(Base):
 
     user_id = Column(
         Integer,
-        ForeignKey("users.id")
+        ForeignKey("users.id"),
+        nullable=False
     )
 
     action = Column(
@@ -43,5 +44,6 @@ class AuditLog(Base):
     )
 
     user = relationship(
-        "User"
+        "User",
+        back_populates="audit_logs"
     )

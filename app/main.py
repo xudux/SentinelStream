@@ -24,8 +24,6 @@ from app.api import investigations
 
 
 
-Base.metadata.create_all(bind=engine)
-
 
 app = FastAPI()
 

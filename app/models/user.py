@@ -12,46 +12,47 @@ class User(Base):
 
     __tablename__ = "users"
 
-
     id = Column(
         Integer,
         primary_key=True,
         index=True
     )
 
-
     name = Column(
         String,
         nullable=False
     )
 
-
     email = Column(
         String,
         unique=True,
+        nullable=False,
         index=True
     )
-
 
     password = Column(
         String,
         nullable=False
     )
 
+    role = Column(
+        String,
+        nullable=False,
+        default="USER"
+    )
 
     balance = Column(
         Float,
         default=10000
     )
 
-
     transactions = relationship(
         "Transaction",
-        back_populates="user"
+        back_populates="user",
+        cascade="all, delete-orphan"
     )
 
-    role = Column(
-        String,
-        nullable=False,
-        default="USER"
+    audit_logs = relationship(
+        "AuditLog",
+        back_populates="user"
     )

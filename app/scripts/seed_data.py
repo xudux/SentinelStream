@@ -3,59 +3,121 @@ from app.core.database import SessionLocal
 from app.models.user import User
 from app.models.transaction import Transaction
 from app.models.fraud_event import FraudEvent
-from app.models.fraud_rule import FraudRule
+from app.models.audit_log import AuditLog
 from app.models.investigation import Investigation
+from app.models.fraud_rule import FraudRule
 
 from app.core.security import hash_password
 
 
 db = SessionLocal()
 
-if db.query(User).count() == 0:
 
-    users = [
+users = [
 
-        User(
+    {
 
-            name="huda",
+        "name":"Admin",
 
-            email="huda@test.com",
+        "email":"admin@sentinel.com",
 
-            password=hash_password("123456"),
+        "password":"admin123",
 
-            balance=100000
+        "role":"ADMIN",
 
-        ),
+        "balance":100000
 
-        User(
+    },
 
-            name="audituser",
+    {
 
-            email="audit@test.com",
+        "name":"Fraud Analyst",
 
-            password=hash_password("123456"),
+        "email":"analyst@sentinel.com",
 
-            balance=10000
+        "password":"analyst123",
 
-        ),
+        "role":"FRAUD_ANALYST",
 
-        User(
+        "balance":50000
 
-            name="test",
+    },
 
-            email="test@gmail.com",
+    {
 
-            password=hash_password("123456"),
+        "name":"Customer",
 
-            balance=10000
+        "email":"user@sentinel.com",
+
+        "password":"user123",
+
+        "role":"USER",
+
+        "balance":25000
+
+    }
+
+]
+
+
+for u in users:
+
+    existing = (
+
+        db.query(User)
+
+        .filter(
+
+            User.email == u["email"]
 
         )
 
-    ]
+        .first()
+
+    )
 
 
-    db.add_all(users)
+    if existing:
 
-    db.commit()
+        print(
 
-    print("Users Seeded")
+            f"{u['email']} already exists"
+
+        )
+
+        continue
+
+
+    new_user = User(
+
+        name=u["name"],
+
+        email=u["email"],
+
+        password=hash_password(
+
+            u["password"]
+
+        ),
+
+        role=u["role"],
+
+        balance=u["balance"]
+
+    )
+
+
+    db.add(new_user)
+
+    print(
+
+        f"Created {u['email']}"
+
+    )
+
+
+db.commit()
+
+db.close()
+
+print("Users seeded successfully")

@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 
 import { useParams } from "react-router-dom"
 
-import API from "../api/api"
+import API from "../../api/api"
 
-import Navbar from "../components/Navbar"
+import Navbar from "../../components/common/Navbar"
 
 
 
@@ -21,7 +21,7 @@ function InvestigationDetails() {
 
     useEffect(() => {
 
-        API.get(`/investigations/${id}`)
+        API.get(`/analyst/investigations/${id}`)
 
         .then(res => {
 
@@ -49,7 +49,7 @@ function InvestigationDetails() {
 
         API.put(
 
-            `/investigations/${id}`,
+            `/analyst/investigations/${id}`,
 
             {
 

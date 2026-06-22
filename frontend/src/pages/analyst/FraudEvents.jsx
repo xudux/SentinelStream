@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import API from "../api/api"
-import Navbar from "../components/Navbar"
+import API from "../../api/api"
+import Navbar from "../../components/common/Navbar"
 
 function FraudEvents() {
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import API from "../api/api";
+import API from "../../api/api";
 
-import StatsCard from "../components/StatsCard"
-import FraudTable from "../components/FraudTable"
-import Navbar from "../components/Navbar"
+import StatsCard from "../../components/common/StatsCard"
+import FraudTable from "../../components/common/FraudTable"
+import Navbar from "../../components/common/Navbar"
 
 function Dashboard() {
 
@@ -56,26 +56,33 @@ function Dashboard() {
             <div className="cards">
 
                 <StatsCard
-
                     title="Transactions"
-
                     value={stats.total_transactions || 0}
-
                 />
 
                 <StatsCard
+                    title="Approved"
+                    value={stats.approved || 0}
+                />
 
+                <StatsCard
+                    title="Flagged"
+                    value={stats.flagged || 0}
+                />
+
+                <StatsCard
+                    title="Blocked"
+                    value={stats.blocked || 0}
+                />
+
+                <StatsCard
                     title="Fraud Events"
-
                     value={stats.fraud_events || 0}
-
                 />
+
                 <StatsCard
-
                     title="Fraud Rate"
-
                     value={`${stats.fraud_rate || 0}%`}
-                    
                 />
 
             </div>

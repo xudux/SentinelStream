@@ -1,6 +1,6 @@
 import { useState } from "react"
-import API from "../api/api";
-import Navbar from "../components/Navbar"
+import API from "../../api/api";
+import Navbar from "../../components/common/Navbar"
 
 function Transactions() {
 
@@ -41,7 +41,7 @@ function Transactions() {
 
     return (
 
-        <div className="container">
+        <div className="customer-transactions">
 
             <Navbar/>
 
@@ -50,7 +50,7 @@ function Transactions() {
             </h1>
 
             <form
-                className="transaction-form"
+                className="customer-transaction-form"
                 onSubmit={submitTransaction}
             >
 
@@ -88,19 +88,52 @@ function Transactions() {
             </form>
 
             {result && (
+                <div className="customer-result-box">
+                    <h3>
+                    Result
+                    </h3>
 
-                <div className="result-box">
+                    <p>
+                    <b>Status:</b>
+                    {result.status || result.detail}
+                    </p>
 
-                    <pre>
-                        {JSON.stringify(
-                            result,
-                            null,
-                            2
-                        )}
-                    </pre>
+                    {
+                    result.transaction_id &&
+                    <p>
+                        <b>Transaction ID:</b>
+                        {result.transaction_id}
+                    </p>
+                    }
 
+                    {
+                    result.risk_score !== undefined &&
+                    <p>
+                        <b>Risk Score:</b>
+                        {result.risk_score}
+                    </p>
+                    }
+
+                    {
+                    result.ml_prediction !== undefined &&
+                    <p>
+                        <b>ML Prediction:</b>
+                        {
+                        result.ml_prediction === 1
+                            ? "Fraud"
+                            : "Safe"
+                        }
+                    </p>
+                    }
+
+                    {
+                    result.remaining_balance &&
+                    <p>
+                        <b>Remaining Balance:</b>
+                        ₹ {result.remaining_balance}
+                    </p>
+                    }
                 </div>
-
             )}
 
         </div>

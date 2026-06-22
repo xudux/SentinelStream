@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 
-import API from "../api/api"
+import API from "../../api/api"
 
-import Navbar from "../components/Navbar"
+import Navbar from "../../components/common/Navbar"
 
 import { Link } from "react-router-dom"
 
@@ -68,8 +68,7 @@ function Investigations() {
 
                                 <td>
 
-                                    <Link to={`/investigations/${c.id}`}>
-
+                                    <Link to={`/analyst/investigations/${c.id}`} >
                                         {c.id}
 
                                     </Link>

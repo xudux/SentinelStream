@@ -4,75 +4,102 @@ import {
     Route
 } from "react-router-dom";
 
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Transactions from "./pages/Transactions";
-import TransactionMonitor from "./pages/TransactionMonitor";
-import TransactionDetails from "./pages/TransactionDetails";
-import AuditLogs from "./pages/AuditLogs";
-import FraudEvents from "./pages/FraudEvents";
-import Users from "./pages/Users";
-import Analytics from "./pages/Analytics";
-import Rules from "./pages/Rules";
-import Investigations from "./pages/Investigations";
-import InvestigationDetails from "./pages/InvestigationDetails";
+import Login from "./pages/auth/Login";
 
-import ProtectedRoute from "./components/ProtectedRoute";
+// CUSTOMER
+import CustomerDashboard from "./pages/customer/Dashboard";
+import CustomerTransactions from "./pages/customer/Transactions";
+import CustomerProfile from "./pages/customer/Profile";
+// ANALYST
+import AnalystDashboard from "./pages/analyst/Dashboard";
+import TransactionMonitor from "./pages/analyst/TransactionMonitor";
+import FraudEvents from "./pages/analyst/FraudEvents";
+import Analytics from "./pages/analyst/Analytics";
+import Investigations from "./pages/analyst/Investigations";
+import InvestigationDetails from "./pages/analyst/InvestigationDetails";
+
+// ADMIN
+import AdminDashboard from "./pages/admin/Dashboard";
+import Users from "./pages/admin/Users";
+import Rules from "./pages/admin/Rules";
+import AuditLogs from "./pages/admin/AuditLogs";
+
+import TransactionDetails from "./pages/TransactionDetails";
+
+import ProtectedRoute from "./components/common/ProtectedRoute";
 
 function App() {
-
     return (
         <BrowserRouter>
-
             <Routes>
+
+                {/* PUBLIC */}
 
                 <Route
                     path="/"
                     element={<Login />}
                 />
 
-                {/* USER + ANALYST + ADMIN */}
+                {/* =========================
+                    CUSTOMER ROUTES
+                ========================= */}
 
                 <Route
-                    path="/dashboard"
+                    path="/customer/dashboard"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "USER",
-                                "FRAUD_ANALYST",
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["USER"]}
                         >
-                            <Dashboard />
+                            <CustomerDashboard />
                         </ProtectedRoute>
                     }
                 />
 
                 <Route
-                    path="/transactions"
+                    path="/customer/transactions"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "USER",
-                                "FRAUD_ANALYST",
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["USER"]}
                         >
-                            <Transactions />
+                            <CustomerTransactions />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* ANALYST + ADMIN */}
-
+                {/* Future */}
+                {
                 <Route
-                    path="/monitor"
+                    path="/customer/profile"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "FRAUD_ANALYST",
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["USER"]}
+                        >
+                            <CustomerProfile />
+                        </ProtectedRoute>
+                    }
+                />
+                }
+
+                {/* =========================
+                    ANALYST ROUTES
+                ========================= */}
+
+                <Route
+                    path="/analyst/dashboard"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["FRAUD_ANALYST"]}
+                        >
+                            <AnalystDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/analyst/monitor"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["FRAUD_ANALYST"]}
                         >
                             <TransactionMonitor />
                         </ProtectedRoute>
@@ -80,13 +107,10 @@ function App() {
                 />
 
                 <Route
-                    path="/fraud-events"
+                    path="/analyst/fraud-events"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "FRAUD_ANALYST",
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["FRAUD_ANALYST"]}
                         >
                             <FraudEvents />
                         </ProtectedRoute>
@@ -94,13 +118,10 @@ function App() {
                 />
 
                 <Route
-                    path="/analytics"
+                    path="/analyst/analytics"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "FRAUD_ANALYST",
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["FRAUD_ANALYST"]}
                         >
                             <Analytics />
                         </ProtectedRoute>
@@ -108,13 +129,10 @@ function App() {
                 />
 
                 <Route
-                    path="/investigations"
+                    path="/analyst/investigations"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "FRAUD_ANALYST",
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["FRAUD_ANALYST"]}
                         >
                             <Investigations />
                         </ProtectedRoute>
@@ -122,28 +140,47 @@ function App() {
                 />
 
                 <Route
-                    path="/investigations/:id"
+                    path="/analyst/investigations/:id"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "FRAUD_ANALYST",
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["FRAUD_ANALYST"]}
                         >
                             <InvestigationDetails />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* ADMIN ONLY */}
-
                 <Route
-                    path="/users"
+                    path="/analyst/transactions/:id"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["FRAUD_ANALYST"]}
+                        >
+                            <TransactionDetails />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* =========================
+                    ADMIN ROUTES
+                ========================= */}
+
+                <Route
+                    path="/admin/dashboard"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ADMIN"]}
+                        >
+                            <AdminDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/admin/users"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ADMIN"]}
                         >
                             <Users />
                         </ProtectedRoute>
@@ -151,12 +188,10 @@ function App() {
                 />
 
                 <Route
-                    path="/rules"
+                    path="/admin/rules"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["ADMIN"]}
                         >
                             <Rules />
                         </ProtectedRoute>
@@ -164,34 +199,17 @@ function App() {
                 />
 
                 <Route
-                    path="/audit-logs"
+                    path="/admin/audit-logs"
                     element={
                         <ProtectedRoute
-                            allowedRoles={[
-                                "ADMIN"
-                            ]}
+                            allowedRoles={["ADMIN"]}
                         >
                             <AuditLogs />
                         </ProtectedRoute>
                     }
                 />
 
-                <Route
-                    path="/transactions/:id"
-                    element={
-                        <ProtectedRoute
-                            allowedRoles={[
-                                "FRAUD_ANALYST",
-                                "ADMIN"
-                            ]}
-                        >
-                            <TransactionDetails />
-                        </ProtectedRoute>
-                    }
-                />
-
             </Routes>
-
         </BrowserRouter>
     );
 }

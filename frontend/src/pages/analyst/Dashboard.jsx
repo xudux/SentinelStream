@@ -39,13 +39,28 @@ function Dashboard() {
 
     return (
 
-        <div className="container">
-
+        <div className="analyst-dashboard">
             <Navbar />
 
-            <h1>
-                🛡️ SentinelStream Fraud Monitoring Dashboard
-            </h1>
+            <div className="analyst-header">
+
+                <div>
+
+                    <h1>
+
+                        Fraud Monitoring Center
+
+                    </h1>
+
+                    <p>
+
+                        Real-time fraud detection and investigation system
+
+                    </p>
+
+                </div>
+
+            </div>
 
             {error && (
                 <div className="error-box">
@@ -53,7 +68,7 @@ function Dashboard() {
                 </div>
             )}
 
-            <div className="cards">
+            <div className="analyst-cards-grid">
 
                 <StatsCard
                     title="Transactions"
@@ -81,27 +96,43 @@ function Dashboard() {
                 />
 
                 <StatsCard
+
+                    title="High Risk"
+
+                    value={highRisk.length}
+
+                />
+
+                <StatsCard
                     title="Fraud Rate"
                     value={`${stats.fraud_rate || 0}%`}
                 />
 
             </div>
 
-            <FraudTable
+            <div className="analyst-section">
 
-                title="Recent Events"
+                <FraudTable
 
-                data={recent}
+                    title="Recent Fraud Events"
 
-            />
+                    data={recent}
 
-            <FraudTable
+                />
 
-                title="High Risk Events"
+            </div>
 
-                data={highRisk}
+            <div className="analyst-section">
 
-            />
+                <FraudTable
+
+                    title="High Risk Transactions"
+
+                    data={highRisk}
+
+                />
+
+            </div>
 
         </div>
 

@@ -20,11 +20,18 @@ function FraudEvents() {
 
             <Navbar />
 
-            <h1>
-                Fraud Events Queue
-            </h1>
+            <div className="analyst-header">
+                <div>
+                    <h1>
+                    Fraud Event Queue
+                    </h1>
+                    <p>
+                    High risk transactions awaiting analyst investigation
+                    </p>
+                </div>
+            </div>
 
-            <table>
+            <table className="analyst-table">
 
                 <thead>
 
@@ -49,9 +56,32 @@ function FraudEvents() {
 
                             <td>{event.transaction_id}</td>
 
-                            <td>{event.risk_score}</td>
+                            <td>
+                                {
+                                    event.risk_score >= 100
+                                    ?
+                                        <span className="risk-critical">
+                                        CRITICAL
+                                        </span>
+                                    :
+                                    event.risk_score >= 70
+                                    ?
+                                        <span className="risk-high">
+                                        HIGH
+                                        </span>
+                                    :
+                                        event.risk_score
+                                }
+                            </td>
 
-                            <td>{event.created_at}</td>
+                            <td>
+                            {
+                                new Date(
+                                event.created_at
+                                )
+                                .toLocaleString()
+                            }
+                            </td>
 
                         </tr>
 

@@ -36,7 +36,7 @@ function Investigations() {
             </h1>
 
 
-            <table>
+            <table className="analyst-table">
 
                 <thead>
 
@@ -85,7 +85,15 @@ function Investigations() {
 
                                 <td>
 
-                                    {c.status}
+                                    <span
+
+                                        className={`investigation-status ${c.status}`}
+
+                                    >
+
+                                        {c.status}
+
+                                    </span>
 
                                 </td>
 
@@ -99,10 +107,17 @@ function Investigations() {
 
                                 <td>
 
-                                    {c.priority}
+                                    <span
+
+                                        className={`priority-badge ${c.priority}`}
+
+                                    >
+
+                                        {c.priority}
+
+                                    </span>
 
                                 </td>
-
                             </tr>
 
                         ))

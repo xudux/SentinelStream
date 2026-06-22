@@ -25,39 +25,66 @@ function TransactionMonitor() {
                 Transaction Monitoring Console
             </h1>
 
-            <table>
+            <table className="analyst-table">
 
                 <thead>
 
                     <tr>
+
                         <th>ID</th>
+
+                        <th>User</th>
+
                         <th>Amount</th>
+
+                        <th>Merchant</th>
+
+                        <th>Location</th>
+
                         <th>Status</th>
-                        <th>Risk Score</th>
+
+                        <th>Risk</th>
+
+                        <th>Details</th>
+
                     </tr>
 
                 </thead>
 
                 <tbody>
-
                     {transactions.map(tx => (
-
                         <tr key={tx.id}>
 
-                            <td>
-                                <Link to={`/transactions/${tx.id}`}>
-                                    {tx.id}
-                                </Link>
-                            </td>
+                        <td>{tx.id}</td>
 
-                            <td>{tx.amount}</td>
-                            <td>{tx.status}</td>
-                            <td>{tx.risk_score}</td>
+                        <td>{tx.user_id}</td>
+
+                        <td>
+                            ₹
+                            {
+                                tx.amount.toLocaleString()
+                            }
+                        </td>
+                        <td>{tx.merchant}</td>
+
+                        <td>{tx.location}</td>
+
+                        <td>
+                            <span className={`status-badge ${tx.status}`}>
+                            {tx.status}
+                            </span>
+                        </td>
+
+                        <td>{tx.risk_score}</td>
+
+                        <td>
+                            <Link to={`/analyst/transactions/${tx.id}`}>
+                            View
+                            </Link>
+                        </td>
 
                         </tr>
-
                     ))}
-
                 </tbody>
 
             </table>

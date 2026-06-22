@@ -19,18 +19,22 @@ function InvestigationDetails() {
     const [status, setStatus] = useState("")
     const [notes, setNotes] = useState("")
 
+    const [priority, setPriority] = useState("")
+    const [assignedTo, setAssignedTo] = useState("")
+    const [resolution, setResolution] = useState("")
+
     useEffect(() => {
 
-        API.get(`/analyst/investigations/${id}`)
-
+        API.get(`/investigations/${id}`)
         .then(res => {
-
             setInvestigation(res.data)
 
             setStatus(res.data.status)
-
             setNotes(res.data.notes || "")
 
+            setPriority(res.data.priority)
+            setAssignedTo(res.data.assigned_to || "")
+            setResolution(res.data.resolution || "")
         })
 
         .catch(console.error)
@@ -48,23 +52,14 @@ function InvestigationDetails() {
     const updateCase = () => {
 
         API.put(
-
-            `/analyst/investigations/${id}`,
-
+            `/investigations/${id}`,
             {
-
-            status,
-
-            notes,
-
-            priority,
-
-            resolution,
-
-            assigned_to
-
+                status,
+                notes,
+                priority,
+                resolution,
+                assigned_to: assignedTo
             }
-
         )
 
         .then(res => {
@@ -102,54 +97,45 @@ function InvestigationDetails() {
             </p>
 
             <p>
-
-                <strong>Status:</strong>
-
-                {" "}
-
-                {investigation.status}
-
+                <strong>Status:</strong>{" "}
+                <span className={`investigation-status ${status}`}>
+                    {status}
+                </span>
             </p>
 
             <p>
-
-                <strong>Assigned To:</strong>
-
-                {" "}
-
-                {investigation.assigned_to}
-
+                <strong>Priority:</strong>{" "}
+                <span className={`priority-badge ${priority}`}>
+                    {priority}
+                </span>
             </p>
 
-            <p>
+            <h3>Priority</h3>
 
-                <strong>Priority:</strong>
+            <select
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+            >
+                <option value="LOW">LOW</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="HIGH">HIGH</option>
+            </select>
 
-                {" "}
+            <h3>Assigned Analyst</h3>
 
-                {investigation.priority}
+            <input
+                value={assignedTo}
+                onChange={(e) => setAssignedTo(e.target.value)}
+            />
 
-            </p>
+            <h3>Resolution</h3>
 
-            <p>
-
-                <strong>Notes:</strong>
-
-                {" "}
-
-                {investigation.notes || "-"}
-
-            </p>
-
-            <p>
-
-                <strong>Resolution:</strong>
-
-                {" "}
-
-                {investigation.resolution || "-"}
-
-            </p>
+            <textarea
+                rows="5"
+                cols="50"
+                value={resolution}
+                onChange={(e) => setResolution(e.target.value)}
+            />
 
             <hr />
 
@@ -180,6 +166,12 @@ function InvestigationDetails() {
                 <br />
                 <br />
 
+                <h3>
+
+                Notes
+
+                </h3>
+
                 <textarea
 
                     rows="5"
@@ -188,7 +180,15 @@ function InvestigationDetails() {
 
                     value={notes}
 
-                    onChange={(e) => setNotes(e.target.value)}
+                    onChange={(e)=>
+
+                    setNotes(
+
+                    e.target.value
+
+                    )
+
+                    }
 
                 />
 

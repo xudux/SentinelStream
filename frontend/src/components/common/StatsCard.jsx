@@ -1,23 +1,18 @@
 function StatsCard({
-
-    title,
-
-    value
-
+  title,
+  value
 }) {
+  return (
+    <div className="analyst-stat-card">
+      <p className="analyst-stat-title">
+        {title}
+      </p>
 
-    return (
-
-        <div className="card">
-
-            <h3>{title}</h3>
-
-            <h1>{value}</h1>
-
-        </div>
-
-    )
-
+      <h1 className="analyst-stat-value">
+        {value}
+      </h1>
+    </div>
+  )
 }
 
 export default StatsCard

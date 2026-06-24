@@ -2,6 +2,7 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Float
+from sqlalchemy import Boolean
 
 from sqlalchemy.orm import relationship
 
@@ -44,6 +45,14 @@ class User(Base):
     balance = Column(
         Float,
         default=10000
+    )
+
+    is_active = Column(
+
+        Boolean,
+
+        default=True
+
     )
 
     transactions = relationship(

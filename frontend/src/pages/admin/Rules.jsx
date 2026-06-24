@@ -166,13 +166,17 @@ function Rules() {
 
 
 
-            <h1>
+            <div className="admin-header">
 
-                Fraud Rules
+                <h1>
+                    Fraud Rules Engine
+                </h1>
 
-            </h1>
+                <p>
+                    Configure fraud detection behaviour and risk scoring
+                </p>
 
-
+            </div>
 
             <div className="rule-form">
 
@@ -299,7 +303,7 @@ function Rules() {
 
 
 
-            <table>
+            <table className="admin-table">
 
                 <thead>
 
@@ -367,15 +371,21 @@ function Rules() {
 
 
                                 <td>
-
-                                    {rule.risk_score}
-
+                                    +{rule.risk_score}
                                 </td>
 
 
 
                                 <td>
-                                    {rule.is_active ? "Active" : "Disabled"}
+                                    <span
+                                        className={
+                                            rule.is_active
+                                                ? "rule-active"
+                                                : "rule-disabled"
+                                        }
+                                    >
+                                        {rule.is_active ? "ACTIVE" : "DISABLED"}
+                                    </span>
                                 </td>
 
                                 <td>

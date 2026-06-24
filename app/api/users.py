@@ -6,6 +6,7 @@ from app.core.auth import get_current_user
 from app.core.database import get_db
 from app.models.user import User
 from app.core.roles import require_admin
+from app.schemas.user_schema import RoleUpdate
 
 router = APIRouter()
 
@@ -35,3 +36,91 @@ def all_users(
     )
 
     return users
+
+@router.put("/{user_id}/role")
+def update_role(
+
+    user_id: int,
+
+    update: RoleUpdate,
+
+    db: Session = Depends(get_db),
+
+    current_user=Depends(require_admin)
+
+):
+
+    user = (
+
+        db.query(User)
+
+        .filter(User.id == user_id)
+
+        .first()
+
+    )
+
+    if not user:
+
+        return {
+
+            "detail": "user not found"
+
+        }
+
+    user.role = update.role
+
+    db.commit()
+
+    db.refresh(user)
+
+    return {
+
+        "message": "role updated",
+
+        "role": user.role
+
+    }
+
+@router.put("/{user_id}/toggle-status")
+def toggle_user_status(
+
+    user_id: int,
+
+    db: Session = Depends(get_db),
+
+    current_user=Depends(require_admin)
+
+):
+
+    user = (
+
+        db.query(User)
+
+        .filter(User.id == user_id)
+
+        .first()
+
+    )
+
+    if not user:
+
+        return {
+
+            "detail": "user not found"
+
+        }
+
+    user.is_active = not user.is_active
+
+    db.commit()
+
+    db.refresh(user)
+
+    return {
+
+        "message": "status updated",
+
+        "is_active": user.is_active
+
+    }

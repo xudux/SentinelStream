@@ -23,6 +23,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import Users from "./pages/admin/Users";
 import Rules from "./pages/admin/Rules";
 import AuditLogs from "./pages/admin/AuditLogs";
+import SystemHealth from "./pages/admin/SystemHealth"
 
 import TransactionDetails from "./pages/TransactionDetails";
 
@@ -205,6 +206,17 @@ function App() {
                             allowedRoles={["ADMIN"]}
                         >
                             <AuditLogs />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/admin/system-health"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ADMIN"]}
+                        >
+                            <SystemHealth />
                         </ProtectedRoute>
                     }
                 />

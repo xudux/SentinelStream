@@ -81,6 +81,10 @@ function Navbar() {
           <Link to="/admin/audit-logs">
             Audit Logs
           </Link>
+
+          <Link to="/admin/system-health">
+            System Health
+          </Link>
         </>
       }
 

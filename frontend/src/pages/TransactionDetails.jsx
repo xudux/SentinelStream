@@ -32,7 +32,7 @@ function TransactionDetails() {
                 Transaction Investigation
             </h1>
 
-            <div className="card">
+            <div className="analyst-transaction-card">
 
                 <p>
                     <strong>ID:</strong> {transaction.id}
@@ -51,11 +51,31 @@ function TransactionDetails() {
                 </p>
 
                 <p>
-                    <strong>Status:</strong> {transaction.status}
+                    <strong>Status:</strong>{" "}
+                    <span
+                        className={`status-badge ${transaction.status}`}
+                    >
+                        {transaction.status}
+                    </span>
                 </p>
 
                 <p>
-                    <strong>Risk Score:</strong> {transaction.risk_score}
+                    <strong>Risk Score:</strong>{" "}
+                    {
+                        transaction.risk_score >= 100
+                        ?
+                            <span className="risk-critical">
+                            CRITICAL
+                            </span>
+                        :
+                        transaction.risk_score >= 70
+                        ?
+                            <span className="risk-high">
+                            HIGH
+                            </span>
+                        :
+                            transaction.risk_score
+                    }
                 </p>
 
                 <p>

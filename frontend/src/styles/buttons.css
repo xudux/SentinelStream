@@ -1,0 +1,62 @@
+/* ==========================================
+   BASE BUTTON
+========================================== */
+
+.ui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 18px;
+
+    border: none;
+    border-radius: var(--radius-md);
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background var(--transition-fast),
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.ui-btn:hover {
+    transform: translateY(-2px);
+}
+
+.ui-btn:active {
+    transform: scale(.98);
+}
+
+/* Primary */
+
+.ui-btn-primary {
+    background: var(--accent);
+    color: white;
+}
+
+/* Secondary */
+
+.ui-btn-secondary {
+    background: var(--bg-muted);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+/* Danger */
+
+.ui-btn-danger {
+    background: var(--color-danger);
+    color: white;
+}
+
+/* Disabled */
+
+.ui-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}

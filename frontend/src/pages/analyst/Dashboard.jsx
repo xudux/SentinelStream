@@ -4,6 +4,7 @@ import API from "../../api/api";
 import StatsCard from "../../components/common/StatsCard"
 import FraudTable from "../../components/common/FraudTable"
 import Navbar from "../../components/common/Navbar"
+import PageHeader from "../../components/ui/PageHeader/PageHeader";
 
 function Dashboard() {
 
@@ -39,28 +40,13 @@ function Dashboard() {
 
     return (
 
-        <div className="analyst-dashboard">
+        <div className="analyst-dashboard theme-analyst">
             <Navbar />
 
-            <div className="analyst-header">
-
-                <div>
-
-                    <h1>
-
-                        Fraud Monitoring Center
-
-                    </h1>
-
-                    <p>
-
-                        Real-time fraud detection and investigation system
-
-                    </p>
-
-                </div>
-
-            </div>
+            <PageHeader
+                title="Fraud Monitoring Center"
+                subtitle="Real-time fraud detection and investigation system"
+            />
 
             {error && (
                 <div className="error-box">

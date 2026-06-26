@@ -1,6 +1,20 @@
-import { useEffect, useState } from "react"
-import API from "../../api/api"
-import Navbar from "../../components/common/Navbar"
+import { useEffect, useState } from "react";
+import API from "../../api/api";
+
+import Navbar from "../../components/common/Navbar";
+import StatsCard from "../../components/common/StatsCard";
+
+import {
+    PageHeader,
+    Badge
+} from "../../components/ui";
+
+import {
+    Database,
+    ShieldCheck,
+    Activity,
+    KeyRound
+} from "lucide-react";
 
 function SystemHealth() {
 
@@ -16,9 +30,50 @@ function SystemHealth() {
 
     if (!health) {
 
-        return <div>Loading...</div>
+        return (
+
+            <div className="container">
+
+                <Navbar />
+
+                <PageHeader
+                    title="System Health"
+                    subtitle="Loading infrastructure status..."
+                />
+
+            </div>
+
+        );
 
     }
+
+    const services = [
+
+        {
+            name: "API Gateway",
+            status: health.api_status,
+            icon: Activity
+        },
+
+        {
+            name: "Database",
+            status: health.database_status,
+            icon: Database
+        },
+
+        {
+            name: "Fraud Engine",
+            status: health.fraud_engine,
+            icon: ShieldCheck
+        },
+
+        {
+            name: "Authentication",
+            status: health.auth_service,
+            icon: KeyRound
+        }
+
+    ];
 
     return (
 
@@ -26,65 +81,95 @@ function SystemHealth() {
 
             <Navbar />
 
-            <div className="admin-header">
+            <PageHeader
+                title="System Health"
+                subtitle="Monitor infrastructure"
+            />
 
-                <h1>
-                    System Health Monitor
-                </h1>
 
-                <p>
-                    Real-time platform monitoring and service status
-                </p>
+            <div className="analyst-cards-grid">
+
+                <StatsCard
+                    title="Users"
+                    value={health.total_users}
+                />
+
+                <StatsCard
+                    title="Transactions"
+                    value={health.total_transactions}
+                />
+
+                <StatsCard
+                    title="Fraud Events"
+                    value={health.fraud_events}
+                />
+
+                <StatsCard
+                    title="Active Rules"
+                    value={health.active_rules}
+                />
 
             </div>
 
-            <div className="admin-cards-grid">
+            <div className="admin-section">
 
-                <div className="admin-stat-card">
+                <PageHeader
+                    title="Service Status"
+                    subtitle="Current backend infrastructure"
+                />
 
-                    <div className="admin-stat-title">
-                        Users
-                    </div>
+                <div className="health-grid">
 
-                    <div className="admin-stat-value">
-                        {health.total_users}
-                    </div>
+                    {services.map((service) => {
 
-                </div>
+                        const Icon = service.icon;
 
-                <div className="admin-stat-card">
+                        return (
 
-                    <div className="admin-stat-title">
-                        Transactions
-                    </div>
+                            <div
+                                key={service.name}
+                                className="health-card"
+                            >
 
-                    <div className="admin-stat-value">
-                        {health.total_transactions}
-                    </div>
+                                <div className="health-card-top">
 
-                </div>
+                                    <span className="health-icon">
 
-                <div className="admin-stat-card">
+                                        <Icon size={22} />
 
-                    <div className="admin-stat-title">
-                        Fraud Events
-                    </div>
+                                    </span>
 
-                    <div className="admin-stat-value">
-                        {health.fraud_events}
-                    </div>
+                                    <Badge
+                                        variant={
+                                            service.status === "ONLINE"
+                                                ? "success"
+                                                : "danger"
+                                        }
+                                    >
+                                        {service.status}
+                                    </Badge>
 
-                </div>
+                                </div>
 
-                <div className="admin-stat-card">
+                                <h3>
+                                    {service.name}
+                                </h3>
 
-                    <div className="admin-stat-title">
-                        Active Rules
-                    </div>
+                                <p>
 
-                    <div className="admin-stat-value">
-                        {health.active_rules}
-                    </div>
+                                    {service.status === "ONLINE"
+
+                                        ? "Service operating normally."
+
+                                        : "Service requires attention."}
+
+                                </p>
+
+                            </div>
+
+                        );
+
+                    })}
 
                 </div>
 
@@ -92,82 +177,10 @@ function SystemHealth() {
 
             <div className="admin-section">
 
-                <h2>
-                    Service Status
-                </h2>
-
-                <table className="admin-table">
-
-                    <thead>
-
-                        <tr>
-                            <th>Service</th>
-                            <th>Status</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-
-                            <td>API Gateway</td>
-
-                            <td>
-                                <span className="health-online">
-                                    {health.api_status}
-                                </span>
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>Database</td>
-
-                            <td>
-                                <span className="health-online">
-                                    {health.database_status}
-                                </span>
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>Fraud Engine</td>
-
-                            <td>
-                                <span className="health-online">
-                                    {health.fraud_engine}
-                                </span>
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>Authentication</td>
-
-                            <td>
-                                <span className="health-online">
-                                    {health.auth_service}
-                                </span>
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <div className="admin-section">
-
-                <h2>
-                    Latest Activity
-                </h2>
+                <PageHeader
+                    title="Latest Activity"
+                    subtitle="Most recent system event"
+                />
 
                 <div className="admin-control-card">
 

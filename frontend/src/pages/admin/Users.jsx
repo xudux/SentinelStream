@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react"
 import API from "../../api/api"
 import Navbar from "../../components/common/Navbar"
+import { PageHeader } from "../../components/ui";
+import StatsCard from "../../components/common/StatsCard";
+import { Button } from "../../components/ui";
+import { Badge } from "../../components/ui";
 
 function Users() {
 
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useState([]);
+
+    const [search, setSearch] = useState("");
+
+    const [roleFilter, setRoleFilter] = useState("ALL");
+
+    const [statusFilter, setStatusFilter] = useState("ALL");
 
     const fetchUsers = () => {
 
@@ -46,120 +56,267 @@ function Users() {
 
     }
 
+    const filteredUsers = users.filter((user) => {
+
+        const query = search.toLowerCase();
+
+        const matchesSearch =
+
+            user.name.toLowerCase().includes(query)
+
+            ||
+
+            user.email.toLowerCase().includes(query)
+
+            ||
+
+            user.role.toLowerCase().includes(query);
+
+        const matchesRole =
+
+            roleFilter === "ALL"
+
+            ||
+
+            user.role === roleFilter;
+
+        const matchesStatus =
+
+            statusFilter === "ALL"
+
+            ||
+
+            (statusFilter === "ACTIVE" && user.is_active)
+
+            ||
+
+            (statusFilter === "DISABLED" && !user.is_active);
+
+        return (
+
+            matchesSearch
+
+            &&
+
+            matchesRole
+
+            &&
+
+            matchesStatus
+
+        );
+
+    });
+
     return (
 
         <div className="container">
 
             <Navbar />
 
-            <h1>
-                User Management
-            </h1>
+            <PageHeader
+                title="User Management"
+                subtitle="Manage platform users, roles and account status"
+            />
 
-            <table>
+            <div className="table-toolbar">
 
-                <thead>
+                <input
 
-                    <tr>
+                    className="ui-input"
 
-                        <th>ID</th>
+                    type="text"
 
-                        <th>Name</th>
+                    placeholder="Search users..."
 
-                        <th>Email</th>
+                    value={search}
 
-                        <th>Role</th>
+                    onChange={(e)=>setSearch(e.target.value)}
 
-                        <th>Status</th>
+                />
 
-                        <th>Balance</th>
+                <select
 
-                        <th>Actions</th>
+                    className="ui-select"
 
-                    </tr>
+                    value={roleFilter}
 
-                </thead>
+                    onChange={(e)=>setRoleFilter(e.target.value)}
 
-                <tbody>
+                >
 
-                    {users.map(user => (
+                    <option value="ALL">All Roles</option>
 
-                        <tr key={user.id}>
+                    <option value="USER">User</option>
 
-                            <td>{user.id}</td>
+                    <option value="FRAUD_ANALYST">Fraud Analyst</option>
 
-                            <td>{user.name}</td>
+                    <option value="ADMIN">Admin</option>
 
-                            <td>{user.email}</td>
+                </select>
 
-                            <td>
+                <select
 
-                                <select
-                                    value={user.role}
-                                    onChange={(e) =>
-                                        updateRole(
-                                            user.id,
-                                            e.target.value
-                                        )
-                                    }
-                                >
-                                    <option value="USER">
-                                        USER
-                                    </option>
+                    className="ui-select"
 
-                                    <option value="FRAUD_ANALYST">
-                                        FRAUD_ANALYST
-                                    </option>
+                    value={statusFilter}
 
-                                    <option value="ADMIN">
-                                        ADMIN
-                                    </option>
+                    onChange={(e)=>setStatusFilter(e.target.value)}
 
-                                </select>
+                >
 
-                            </td>
+                    <option value="ALL">All Status</option>
 
-                            <td>
+                    <option value="ACTIVE">Active</option>
 
-                                <span
-                                    className={
-                                        user.is_active
-                                            ? "user-active"
-                                            : "user-disabled"
-                                    }
-                                >
-                                    {user.is_active
-                                        ? "ACTIVE"
-                                        : "DISABLED"}
-                                </span>
+                    <option value="DISABLED">Disabled</option>
 
-                            </td>
+                </select>
 
-                            <td>
-                                ₹ {user.balance}
-                            </td>
+            </div>
 
-                            <td>
+            <div className="analyst-cards-grid">
 
-                                <button
-                                    onClick={() =>
-                                        toggleStatus(user.id)
-                                    }
-                                >
-                                    {user.is_active
-                                        ? "Disable"
-                                        : "Enable"}
-                                </button>
+                <StatsCard
+                    title="Total Users"
+                    value={users.length}
+                />
 
-                            </td>
+                <StatsCard
+                    title="Active"
+                    value={
+                        users.filter(
+                            u => u.is_active
+                        ).length
+                    }
+                />
+
+                <StatsCard
+                    title="Disabled"
+                    value={
+                        users.filter(
+                            u => !u.is_active
+                        ).length
+                    }
+                />
+
+            </div>
+
+            <div className="table-container">
+
+                <table className="ui-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Role</th>
+
+                            <th>Status</th>
+
+                            <th>Balance</th>
+
+                            <th>Actions</th>
 
                         </tr>
 
-                    ))}
+                    </thead>
 
-                </tbody>
+                    <tbody>
 
-            </table>
+                        {filteredUsers.map(user => (
+
+                            <tr key={user.id}>
+
+                                <td>{user.id}</td>
+
+                                <td>{user.name}</td>
+
+                                <td>{user.email}</td>
+
+                                <td>
+
+                                    <select
+                                        className="ui-select"
+                                        value={user.role}
+                                        onChange={(e) =>
+                                            updateRole(
+                                                user.id,
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        <option value="USER">
+                                            USER
+                                        </option>
+
+                                        <option value="FRAUD_ANALYST">
+                                            FRAUD_ANALYST
+                                        </option>
+
+                                        <option value="ADMIN">
+                                            ADMIN
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                                <td>
+
+                                    <Badge
+                                        variant={
+                                            user.is_active
+                                                ? "success"
+                                                : "danger"
+                                        }
+                                    >
+                                        {user.is_active
+                                            ? "ACTIVE"
+                                            : "DISABLED"}
+                                    </Badge>
+
+                                </td>
+
+                                <td>
+                                    ₹ {Number(user.balance).toLocaleString("en-IN")}
+                                </td>
+
+                                <td>
+
+                                    <Button
+                                        variant={
+                                            user.is_active
+                                                ? "danger"
+                                                : "primary"
+                                        }
+                                        size="sm"
+                                        onClick={() =>
+                                            toggleStatus(user.id)
+                                        }
+                                    >
+                                        {user.is_active
+                                            ? "Disable"
+                                            : "Enable"}
+                                    </Button>
+
+                                </td>
+
+                            </tr>
+
+                        ))}
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
 

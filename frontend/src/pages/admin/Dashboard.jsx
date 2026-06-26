@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import API from "../../api/api"
 
 import Navbar from "../../components/common/Navbar"
+import { PageHeader } from "../../components/ui";
 
 
 
@@ -88,26 +89,18 @@ function Dashboard() {
 
     return (
 
-        <div className="container admin-dashboard">
+        <div className="admin-dashboard theme-admin">
 
             <Navbar />
 
 
-            <div className="admin-header">
+            <PageHeader
 
-                <h1>
+                title="SentinelStream Admin Console"
 
-                ⚙️ SentinelStream Admin Console
+                subtitle="Platform administration and system overview"
 
-                </h1>
-
-                <p>
-
-                Platform administration and system overview
-
-                </p>
-
-            </div>
+            />
 
 
 

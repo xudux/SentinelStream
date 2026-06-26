@@ -10,6 +10,9 @@ function AuditLogs() {
 
     const [searchTerm, setSearchTerm] = useState("")
 
+    const [roleFilter, setRoleFilter] = useState("ALL");
+    const [statusFilter, setStatusFilter] = useState("ALL");
+
     useEffect(() => {
 
         API.get("/admin/audit-logs")

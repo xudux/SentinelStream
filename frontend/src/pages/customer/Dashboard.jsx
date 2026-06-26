@@ -4,6 +4,9 @@ import API from "../../api/api";
 
 import Navbar from "../../components/common/Navbar";
 
+import { PageHeader } from "../../components/ui";
+
+
 function Dashboard() {
 
     const [profile, setProfile] = useState(null);
@@ -54,7 +57,7 @@ function Dashboard() {
 
     return (
 
-        <div className="customer-dashboard">
+        <div className="customer-dashboard theme-customer">
 
             <Navbar />
 

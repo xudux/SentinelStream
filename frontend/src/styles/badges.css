@@ -1,0 +1,70 @@
+/* ==========================================
+   BASE BADGE
+========================================== */
+
+.ui-badge {
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:.8rem;
+
+    font-weight:600;
+
+    white-space:nowrap;
+}
+
+/* SUCCESS */
+
+.ui-badge-success{
+
+    background:rgba(22,163,74,.12);
+
+    color:var(--color-success);
+
+}
+
+/* WARNING */
+
+.ui-badge-warning{
+
+    background:rgba(245,158,11,.12);
+
+    color:var(--color-warning);
+
+}
+
+/* DANGER */
+
+.ui-badge-danger{
+
+    background:rgba(220,38,38,.12);
+
+    color:var(--color-danger);
+
+}
+
+/* INFO */
+
+.ui-badge-info{
+
+    background:rgba(2,132,199,.12);
+
+    color:var(--color-info);
+
+}
+
+/* DEFAULT */
+
+.ui-badge-default{
+
+    background:var(--bg-muted);
+
+    color:var(--text-secondary);
+
+}

@@ -1,7 +1,24 @@
 import {
-  Link,
+  NavLink,
   useNavigate
 } from "react-router-dom";
+
+import {
+  LayoutDashboard,
+  Activity,
+  ShieldAlert,
+  Search,
+  BarChart3,
+  Users,
+  Settings2,
+  ClipboardList,
+  HeartPulse,
+  User,
+  CreditCard,
+  LogOut
+} from "lucide-react";
+
+import { Button } from "../ui";
 
 function Navbar() {
   const role =
@@ -17,83 +34,102 @@ function Navbar() {
   };
 
   return (
-    <div className="navbar">
-      {
-        role === "USER"
-        &&
-        <>
-          <Link to="/customer/dashboard">
-            Dashboard
-          </Link>
+    <nav className="navbar">
 
-          <Link to="/customer/transactions">
-            Transactions
-          </Link>
+      <div className="navbar-brand">
+        🛡 <span>SentinelStream</span>
+      </div>
 
-          <Link to="/customer/profile">
-            Profile
-          </Link>
-        </>
-      }
+      <div className="navbar-links">
 
-      {
-        role === "FRAUD_ANALYST"
-        &&
-        <>
-          <Link to="/analyst/dashboard">
-            Dashboard
-          </Link>
+        {role === "USER" && (
+          <>
+            <NavLink to="/customer/dashboard">
+              <LayoutDashboard size={18} />
+              Dashboard
+            </NavLink>
 
-          <Link to="/analyst/monitor">
-            Monitor
-          </Link>
+            <NavLink to="/customer/transactions">
+              <CreditCard size={18} />
+              Transactions
+            </NavLink>
 
-          <Link to="/analyst/fraud-events">
-            Fraud Events
-          </Link>
+            <NavLink to="/customer/profile">
+              <User size={18} />
+              Profile
+            </NavLink>
+          </>
+        )}
 
-          <Link to="/analyst/investigations">
-            Investigations
-          </Link>
+        {role === "FRAUD_ANALYST" && (
+          <>
+            <NavLink to="/analyst/dashboard">
+              <LayoutDashboard size={18} />
+              Dashboard
+            </NavLink>
 
-          <Link to="/analyst/analytics">
-            Analytics
-          </Link>
-        </>
-      }
+            <NavLink to="/analyst/monitor">
+              <Activity size={18} />
+              Monitor
+            </NavLink>
 
-      {
-        role === "ADMIN"
-        &&
-        <>
-          <Link to="/admin/dashboard">
-            Dashboard
-          </Link>
+            <NavLink to="/analyst/fraud-events">
+              <ShieldAlert size={18} />
+              Fraud Events
+            </NavLink>
 
-          <Link to="/admin/users">
-            Users
-          </Link>
+            <NavLink to="/analyst/investigations">
+              <Search size={18} />
+              Investigations
+            </NavLink>
 
-          <Link to="/admin/rules">
-            Rules
-          </Link>
+            <NavLink to="/analyst/analytics">
+              <BarChart3 size={18} />
+              Analytics
+            </NavLink>
+          </>
+        )}
 
-          <Link to="/admin/audit-logs">
-            Audit Logs
-          </Link>
+        {role === "ADMIN" && (
+          <>
+            <NavLink to="/admin/dashboard">
+              <LayoutDashboard size={18} />
+              Dashboard
+            </NavLink>
 
-          <Link to="/admin/system-health">
-            System Health
-          </Link>
-        </>
-      }
+            <NavLink to="/admin/users">
+              <Users size={18} />
+              Users
+            </NavLink>
 
-      <button
+            <NavLink to="/admin/rules">
+              <Settings2 size={18} />
+              Rules
+            </NavLink>
+
+            <NavLink to="/admin/audit-logs">
+              <ClipboardList size={18} />
+              Audit Logs
+            </NavLink>
+
+            <NavLink to="/admin/system-health">
+              <HeartPulse size={18} />
+              System Health
+            </NavLink>
+          </>
+        )}
+
+      </div>
+
+      <Button
+        variant="danger"
         onClick={logout}
       >
+        <LogOut size={18} />
         Logout
-      </button>
-    </div>
+      </Button>
+
+    </nav>
   );
 }
 

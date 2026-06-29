@@ -4,55 +4,116 @@ import API from "../../api/api";
 import StatsCard from "../../components/common/StatsCard"
 import FraudTable from "../../components/common/FraudTable"
 import Navbar from "../../components/common/Navbar"
-import PageHeader from "../../components/ui/PageHeader/PageHeader";
+import {
+    PageHeader,
+    Card,
+    ErrorState,
+    CardSkeleton
+} from "../../components/ui";
 
 function Dashboard() {
 
-    const [stats,setStats] = useState({})
-    const [recent,setRecent] = useState([])
-    const [highRisk,setHighRisk] = useState([])
+    const [stats, setStats] = useState({})
+    const [recent, setRecent] = useState([])
+    const [highRisk, setHighRisk] = useState([])
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(true)
+
+    const fetchDashboard = () => {
+
+        setLoading(true);
+        setError("");
+
+        Promise.all([
+            API.get("/dashboard/stats"),
+            API.get("/dashboard/recent"),
+            API.get("/dashboard/high-risk")
+        ])
+            .then(([statsRes, recentRes, highRiskRes]) => {
+
+                setStats(statsRes.data);
+
+                setRecent(recentRes.data);
+
+                setHighRisk(highRiskRes.data);
+
+            })
+            .catch(() => {
+
+                setError("Unable to load dashboard.");
+
+            })
+            .finally(() => {
+
+                setLoading(false);
+
+            });
+
+    };
 
     useEffect(() => {
 
-        API.get("/dashboard/stats")
-            .then(res => setStats(res.data))
-            .catch(err => {
-                console.error(err)
-                setError("Dashboard data failed to load")
-            })
+        fetchDashboard();
 
-            API.get("/dashboard/recent")
-            .then(res => setRecent(res.data))
-            .catch(err => {
-                console.error(err)
-                setError("Dashboard data failed to load")
-            })
+    }, [])
 
-            API.get("/dashboard/high-risk")
-            .then(res => setHighRisk(res.data))
-            .catch(err => {
-                console.error(err)
-                setError("Dashboard data failed to load")
-            })
+    if (loading) {
 
-    },[])
+        return (
+
+            <div className="container">
+
+                <Navbar />
+
+                <PageHeader
+                    title="Fraud Monitoring Center"
+                    subtitle="Real-time fraud detection and investigation system"
+                />
+
+                <div className="analyst-cards-grid">
+
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+    if (error) {
+
+        return (
+
+            <div className="container">
+
+                <Navbar />
+
+                <ErrorState
+                    title="Dashboard unavailable"
+                    description={error}
+                    onRetry={fetchDashboard}
+                />
+
+            </div>
+
+        );
+
+    }
 
     return (
 
-        <div className="analyst-dashboard theme-analyst">
+        <div className="container">
             <Navbar />
 
             <PageHeader
                 title="Fraud Monitoring Center"
                 subtitle="Real-time fraud detection and investigation system"
             />
-
-            {error && (
-                <div className="error-box">
-                    {error}
-                </div>
-            )}
 
             <div className="analyst-cards-grid">
 
@@ -82,11 +143,8 @@ function Dashboard() {
                 />
 
                 <StatsCard
-
                     title="High Risk"
-
                     value={highRisk.length}
-
                 />
 
                 <StatsCard
@@ -96,29 +154,21 @@ function Dashboard() {
 
             </div>
 
-            <div className="analyst-section">
+            <Card title="Recent Fraud Events">
 
                 <FraudTable
-
-                    title="Recent Fraud Events"
-
                     data={recent}
-
                 />
 
-            </div>
+            </Card>
 
-            <div className="analyst-section">
+            <Card title="High Risk Transactions">
 
                 <FraudTable
-
-                    title="High Risk Transactions"
-
                     data={highRisk}
-
                 />
 
-            </div>
+            </Card>
 
         </div>
 

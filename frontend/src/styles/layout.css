@@ -156,3 +156,91 @@
     margin-bottom:24px;
 
 }
+
+/* FIRST BREAKPOINT */
+
+@media (max-width: 1024px){
+
+    .page-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .navbar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+}
+
+/* Second breakpoint */
+
+@media (max-width:768px){
+
+    .container{
+
+        padding:20px;
+
+    }
+
+    .analyst-cards-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .admin-cards-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .table-toolbar{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .table-toolbar input,
+
+    .table-toolbar select{
+
+        width:100%;
+
+    }
+
+}
+
+/* Third breakpoint */
+
+@media (max-width:600px){
+
+    .navbar-links{
+
+        width:100%;
+
+        flex-direction:column;
+
+    }
+
+    .page-header-content h1{
+
+        font-size:1.6rem;
+
+    }
+
+    .ui-stat-value{
+
+        font-size:2rem;
+
+    }
+
+}

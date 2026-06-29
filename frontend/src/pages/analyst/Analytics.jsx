@@ -1,33 +1,119 @@
-import { useEffect, useState } from "react"
-import API from "../../api/api"
-import Navbar from "../../components/common/Navbar"
+import { useEffect, useState } from "react";
+import API from "../../api/api";
+
+import Navbar from "../../components/common/Navbar";
+import StatsCard from "../../components/common/StatsCard";
 
 import {
+    PageHeader,
+    Card,
+    ErrorState,
+    CardSkeleton,
+    Skeleton
+} from "../../components/ui";
+
+import {
+    ResponsiveContainer,
     BarChart,
-    Bar,
+    CartesianGrid,
     XAxis,
     YAxis,
-    CartesianGrid,
     Tooltip,
-    ResponsiveContainer
-} from "recharts"
+    Bar
+} from "recharts";
 
 function Analytics() {
 
-    const [stats, setStats] = useState({})
-    const [distribution, setDistribution] = useState({})
+    const [stats, setStats] = useState({});
+    const [distribution, setDistribution] = useState({});
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    const fetchAnalytics = () => {
+
+        setLoading(true);
+        setError("");
+
+        Promise.all([
+            API.get("/dashboard/stats"),
+            API.get("/dashboard/status-distribution")
+        ])
+            .then(([statsRes, distributionRes]) => {
+
+                setStats(statsRes.data);
+                setDistribution(distributionRes.data);
+
+            })
+            .catch(() => {
+
+                setError("Unable to load analytics.");
+
+            })
+            .finally(() => {
+
+                setLoading(false);
+
+            });
+
+    };
 
     useEffect(() => {
 
-        API.get("/dashboard/stats")
-            .then(res => setStats(res.data))
-            .catch(console.error)
+        fetchAnalytics();
 
-        API.get("/dashboard/status-distribution")
-            .then(res => setDistribution(res.data))
-            .catch(console.error)
+    }, []);
 
-    }, [])
+    if (loading) {
+
+        return (
+
+            <div className="container">
+
+                <Navbar />
+
+                <PageHeader
+                    title="ML Analytics Dashboard"
+                    subtitle="Loading fraud analytics..."
+                />
+
+                <div className="analyst-cards-grid">
+
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+
+                </div>
+
+                <br />
+
+                <Skeleton height="400px" />
+
+            </div>
+
+        );
+
+    }
+
+    if (error) {
+
+        return (
+
+            <div className="container">
+
+                <Navbar />
+
+                <ErrorState
+                    title="Analytics unavailable"
+                    description={error}
+                    onRetry={fetchAnalytics}
+                />
+
+            </div>
+
+        );
+
+    }
 
     const chartData = [
         {
@@ -42,7 +128,7 @@ function Analytics() {
             name: "Blocked",
             count: distribution.blocked || 0
         }
-    ]
+    ];
 
     return (
 
@@ -50,58 +136,62 @@ function Analytics() {
 
             <Navbar />
 
-            <h1>
-                ML Analytics Dashboard
-            </h1>
+            <PageHeader
+                title="ML Analytics Dashboard"
+                subtitle="Overview of fraud detection metrics"
+            />
 
-            <div className="cards">
+            <div className="analyst-cards-grid">
 
-                <div className="card">
-                    <h3>Total Transactions</h3>
-                    <p>{stats.total_transactions || 0}</p>
-                </div>
+                <StatsCard
+                    title="Transactions"
+                    value={stats.total_transactions || 0}
+                />
 
-                <div className="card">
-                    <h3>Fraud Events</h3>
-                    <p>{stats.fraud_events || 0}</p>
-                </div>
+                <StatsCard
+                    title="Fraud Events"
+                    value={stats.fraud_events || 0}
+                />
 
-                <div className="card">
-                    <h3>Fraud Rate</h3>
-                    <p>{stats.fraud_rate || 0}%</p>
-                </div>
+                <StatsCard
+                    title="Fraud Rate"
+                    value={`${stats.fraud_rate || 0}%`}
+                />
 
             </div>
 
-            <h2>
-                Transaction Status Distribution
-            </h2>
+            <Card title="Transaction Status Distribution">
 
-            <ResponsiveContainer
-                width="100%"
-                height={400}
-            >
+                <ResponsiveContainer
+                    width="100%"
+                    height={400}
+                >
 
-                <BarChart data={chartData}>
+                    <BarChart data={chartData}>
 
-                    <CartesianGrid />
+                        <CartesianGrid strokeDasharray="3 3" />
 
-                    <XAxis dataKey="name" />
+                        <XAxis dataKey="name" />
 
-                    <YAxis />
+                        <YAxis />
 
-                    <Tooltip />
+                        <Tooltip />
 
-                    <Bar dataKey="count" />
+                        <Bar
+                            dataKey="count"
+                            radius={[6, 6, 0, 0]}
+                        />
 
-                </BarChart>
+                    </BarChart>
 
-            </ResponsiveContainer>
+                </ResponsiveContainer>
+
+            </Card>
 
         </div>
 
-    )
+    );
 
 }
 
-export default Analytics
+export default Analytics;

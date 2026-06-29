@@ -1,50 +1,105 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import API from "../../api/api"
+import API from "../../api/api";
+import Navbar from "../../components/common/Navbar";
 
-import Navbar from "../../components/common/Navbar"
+import {
+    PageHeader,
+    Card,
+    ErrorState,
+    EmptyState,
+    CardSkeleton
+} from "../../components/ui";
 
 function Profile() {
 
-    const [user,setUser] = useState(null)
+    const [user, setUser] = useState(null);
 
-    useEffect(() => {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    const fetchProfile = () => {
+
+        setLoading(true);
+        setError("");
 
         API.get("/users/profile")
+            .then(res => {
+                setUser(res.data);
+            })
+            .catch(() => {
+                setError("Unable to load profile.");
+            })
+            .finally(() => {
+                setLoading(false);
+            });
 
-        .then(res => setUser(res.data))
+    };
 
-        .catch(console.error)
+    useEffect(() => {
+        fetchProfile();
+    }, []);
 
-    },[])
+    if (loading) {
+        return (
+            <div className="container">
 
+                <Navbar />
 
-    if(!user){
+                <PageHeader
+                    title="Customer Profile"
+                    subtitle="Loading profile..."
+                />
 
-        return <h2>Loading...</h2>
+                <CardSkeleton />
 
+            </div>
+        );
     }
 
+    if (error) {
+        return (
+            <div className="container">
+
+                <Navbar />
+
+                <ErrorState
+                    title="Profile unavailable"
+                    description={error}
+                    onRetry={fetchProfile}
+                />
+
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="container">
+
+                <Navbar />
+
+                <EmptyState
+                    title="Profile unavailable"
+                    description="No profile information could be found."
+                />
+
+            </div>
+        );
+    }
 
     return (
 
         <div className="container">
 
-            <Navbar/>
+            <Navbar />
 
-            <h1>
+            <PageHeader
+                title="Customer Profile"
+                subtitle="View your account information"
+            />
 
-                Customer Profile
-
-            </h1>
-
-            <div className="card">
-
-                <h3>
-
-                    Name
-
-                </h3>
+            <Card title="Name">
 
                 <p>
 
@@ -52,16 +107,9 @@ function Profile() {
 
                 </p>
 
-            </div>
+            </Card>
 
-
-            <div className="card">
-
-                <h3>
-
-                    Email
-
-                </h3>
+            <Card title="Email">
 
                 <p>
 
@@ -69,29 +117,22 @@ function Profile() {
 
                 </p>
 
-            </div>
+            </Card>
 
-
-            <div className="card">
-
-                <h3>
-
-                    Balance
-
-                </h3>
+            <Card title="Balance">
 
                 <p>
 
-                    ₹ {user.balance}
+                    ₹ {Number(user.balance).toLocaleString()}
 
                 </p>
 
-            </div>
+            </Card>
 
         </div>
 
-    )
+    );
 
 }
 
-export default Profile
+export default Profile;

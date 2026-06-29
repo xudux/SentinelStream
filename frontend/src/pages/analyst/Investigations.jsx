@@ -1,27 +1,99 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import API from "../../api/api"
+import API from "../../api/api";
 
-import Navbar from "../../components/common/Navbar"
+import Navbar from "../../components/common/Navbar";
+import { Link } from "react-router-dom";
 
-import { Link } from "react-router-dom"
+import {
+    PageHeader,
+    Card,
+    Badge,
+    EmptyState,
+    ErrorState,
+    CardSkeleton
+} from "../../components/ui";
 
 function Investigations() {
 
-    const [cases,setCases] = useState([])
+    const [cases, setCases] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
+    const fetchCases = () => {
+
+        setLoading(true);
+        setError("");
+
+        API.get("/investigations/")
+            .then(res => {
+
+                setCases(
+                    [...res.data].sort(
+                        (a, b) => b.id - a.id
+                    )
+                );
+
+            })
+            .catch(() => {
+
+                setError("Unable to load investigations.");
+
+            })
+            .finally(() => {
+
+                setLoading(false);
+
+            });
+
+    };
 
     useEffect(() => {
 
-        API.get("/investigations/")
+        fetchCases();
 
-        .then(res => setCases(res.data))
+    }, []);
 
-        .catch(console.error)
+    if (loading) {
 
-    },[])
+        return (
 
+            <div className="container">
 
+                <Navbar />
+
+                <PageHeader
+                    title="Fraud Investigation Cases"
+                    subtitle="Review and manage fraud investigations"
+                />
+
+                <CardSkeleton />
+
+            </div>
+
+        );
+
+    }
+
+    if (error) {
+
+        return (
+
+            <div className="container">
+
+                <Navbar />
+
+                <ErrorState
+                    title="Investigations unavailable"
+                    description={error}
+                    onRetry={fetchCases}
+                />
+
+            </div>
+
+        );
+
+    }
 
     return (
 
@@ -29,110 +101,132 @@ function Investigations() {
 
             <Navbar />
 
-            <h1>
+            <PageHeader
+                title="Fraud Investigation Cases"
+                subtitle="Review and manage fraud investigations"
+            />
 
-                Fraud Investigation Cases
+            <Card title="Investigations">
 
-            </h1>
+                <table className="ui-table">
 
+                    <thead>
 
-            <table className="analyst-table">
+                        <tr>
 
-                <thead>
+                            <th>ID</th>
 
-                    <tr>
+                            <th>Fraud Event</th>
 
-                        <th>ID</th>
+                            <th>Status</th>
 
-                        <th>Fraud Event</th>
+                            <th>Assigned To</th>
 
-                        <th>Status</th>
+                            <th>Priority</th>
 
-                        <th>Assigned To</th>
+                        </tr>
 
-                        <th>Priority</th>
+                    </thead>
 
-                    </tr>
+                    <tbody>
 
-                </thead>
+                        {
+                            cases.length === 0 ? (
 
+                                <tr>
 
+                                    <td colSpan="5">
 
-                <tbody>
+                                        <EmptyState
+                                            title="No investigations"
+                                            description="No fraud investigations are currently available."
+                                        />
 
-                    {
+                                    </td>
 
-                        cases.map(c => (
+                                </tr>
 
-                            <tr key={c.id}>
+                            ) : (
 
-                                <td>
+                                cases.map(c => (
 
-                                    <Link to={`/analyst/investigations/${c.id}`} >
-                                        {c.id}
+                                    <tr key={c.id}>
 
-                                    </Link>
+                                        <td>
 
-                                </td>
+                                            <Link to={`/analyst/investigations/${c.id}`}>
 
+                                                <Badge variant="primary">
 
-                                <td>
+                                                    View #{c.id}
 
-                                    {c.fraud_event_id}
+                                                </Badge>
 
-                                </td>
+                                            </Link>
 
+                                        </td>
 
-                                <td>
+                                        <td>
 
-                                    <span
+                                            {c.fraud_event_id}
 
-                                        className={`investigation-status ${c.status}`}
+                                        </td>
 
-                                    >
+                                        <td>
 
-                                        {c.status}
+                                            <Badge
+                                                variant={
+                                                    c.status === "OPEN"
+                                                        ? "warning"
+                                                        : c.status === "CLOSED"
+                                                        ? "success"
+                                                        : "primary"
+                                                }
+                                            >
+                                                {c.status}
+                                            </Badge>
 
-                                    </span>
+                                        </td>
 
-                                </td>
+                                        <td>
 
+                                            {c.assigned_to}
 
-                                <td>
+                                        </td>
 
-                                    {c.assigned_to}
+                                        <td>
 
-                                </td>
+                                            <Badge
+                                                variant={
+                                                    c.priority === "HIGH"
+                                                        ? "danger"
+                                                        : c.priority === "MEDIUM"
+                                                        ? "warning"
+                                                        : "success"
+                                                }
+                                            >
+                                                {c.priority}
+                                            </Badge>
 
+                                        </td>
 
-                                <td>
+                                    </tr>
 
-                                    <span
+                                ))
 
-                                        className={`priority-badge ${c.priority}`}
+                            )
+                        }
 
-                                    >
+                    </tbody>
 
-                                        {c.priority}
+                </table>
 
-                                    </span>
-
-                                </td>
-                            </tr>
-
-                        ))
-
-                    }
-
-                </tbody>
-
-            </table>
+            </Card>
 
         </div>
 
-    )
+    );
 
 }
 
-
-export default Investigations
+export default Investigations;

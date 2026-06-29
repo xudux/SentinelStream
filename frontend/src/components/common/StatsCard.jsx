@@ -31,8 +31,8 @@ function StatsCard({ title, value }) {
     const Icon = icons[title] || CreditCard;
 
     return (
-        <div className="ui-card ui-stat-card">
-
+        <div className="ui-card ui-stat-card card-pop hover-lift">
+          
             <div className="ui-stat-top">
 
                 <span className="ui-stat-icon">

@@ -10,7 +10,7 @@ function PageHeader({
 
     return(
 
-        <div className="page-header">
+        <div className="page-header fade-in">
 
             <div className="page-header-content">
 

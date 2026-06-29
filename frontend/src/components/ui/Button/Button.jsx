@@ -1,18 +1,41 @@
+import { Spinner } from "..";
+
 function Button({
+
     children,
-    variant = "primary",
-    type = "button",
+
+    loading = false,
+
+    disabled,
+
     ...props
+
 }) {
+
     return (
+
         <button
-            type={type}
-            className={`ui-btn ui-btn-${variant}`}
+
+            disabled={loading || disabled}
+
             {...props}
+
         >
-            {children}
+
+            {
+
+                loading
+
+                    ? <Spinner />
+
+                    : children
+
+            }
+
         </button>
+
     );
+
 }
 
 export default Button;

@@ -15,7 +15,7 @@ import "./styles/tables.css";
 import "./styles/badges.css";
 
 import "./index.css";
-import "./App.css";
+import "./styles/pages.css";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

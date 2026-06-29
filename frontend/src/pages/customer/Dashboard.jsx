@@ -1,210 +1,227 @@
 import { useEffect, useState } from "react";
+import { useCallback } from "react";
 
 import API from "../../api/api";
-
 import Navbar from "../../components/common/Navbar";
 
-import { PageHeader } from "../../components/ui";
+import {
+    PageHeader,
+    Card,
+    Badge,
+    EmptyState,
+    ErrorState,
+    CardSkeleton
+} from "../../components/ui";
 
+import StatsCard from "../../components/common/StatsCard";
 
 function Dashboard() {
 
     const [profile, setProfile] = useState(null);
-
     const [transactions, setTransactions] = useState([]);
 
-    useEffect(() => {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-        API.get("/users/profile")
+    const fetchDashboard = useCallback(() => {
 
-        .then(res => {
+        setLoading(true);
+        setError("");
 
-            setProfile(res.data);
+        Promise.all([
+            API.get("/users/profile"),
+            API.get("/transactions/history")
+        ])
+        .then(([profileRes, transactionsRes]) => {
+
+            setProfile(profileRes.data);
+
+            setTransactions(
+                [...transactionsRes.data].sort((a, b) => b.id - a.id)
+            );
 
         })
-
-        .catch(console.error);
-
-
-        API.get("/transactions/history")
-
-        .then(res => {
-
-            setTransactions(res.data);
-
+        .catch(() => {
+            setError("Unable to load dashboard.");
         })
-
-        .catch(console.error);
+        .finally(() => {
+            setLoading(false);
+        });
 
     }, []);
 
+    useEffect(() => {
+        fetchDashboard();
+    }, [fetchDashboard]);
 
-
-    if (!profile) {
-
+    /* ✅ IMPROVED LOADING STATE */
+    if (loading) {
         return (
+            <div className="container">
 
-            <div>
+                <Navbar />
 
-                Loading...
+                <PageHeader
+                    title="Customer Dashboard"
+                    subtitle="Loading your account..."
+                />
+
+                <div className="analyst-cards-grid">
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                </div>
+
+                <br />
+
+                <CardSkeleton />
 
             </div>
-
-        )
-
+        );
     }
 
+    /* ✅ IMPROVED ERROR STATE */
+    if (error) {
+        return (
+            <div className="container">
+
+                <Navbar />
+
+                <ErrorState
+                    title="Dashboard unavailable"
+                    description={error}
+                    onRetry={fetchDashboard}
+                />
+
+            </div>
+        );
+    }
+
+    /* ✅ IMPROVED EMPTY PROFILE */
+    if (!profile) {
+        return (
+            <div className="container">
+
+                <Navbar />
+
+                <EmptyState
+                    title="Profile unavailable"
+                    description="Unable to load your account information."
+                />
+
+            </div>
+        );
+    }
 
     return (
-
         <div className="customer-dashboard theme-customer">
 
             <Navbar />
 
-            <h1>
+            <PageHeader
+                title="Customer Dashboard"
+                subtitle="Overview of your account activity"
+            />
 
-                Customer Dashboard
+            {/* ✅ UNIFIED GRID */}
+            <div className="analyst-cards-grid">
 
-            </h1>
+                <StatsCard
+                    title="Balance"
+                    value={`₹ ${Number(profile.balance).toLocaleString()}`}
+                />
 
-            <div className="customer-stats">
+                <StatsCard
+                    title="Email"
+                    value={profile.email}
+                />
 
-                <div className="customer-card">
-
-                    <h3>
-
-                        Balance
-
-                    </h3>
-
-                    <p>
-
-                        ₹ {profile.balance}
-
-                    </p>
-
-                </div>
-
-                <div className="customer-card">
-
-                    <h3>
-
-                        Email
-
-                    </h3>
-
-                    <p>
-
-                        {profile.email}
-
-                    </p>
-
-                </div>
-
-                <div className="customer-card">
-
-                    <h3>
-
-                        Transactions
-
-                    </h3>
-
-                    <p>
-
-                        {transactions.length}
-
-                    </p>
-
-                </div>
+                <StatsCard
+                    title="Transactions"
+                    value={transactions.length}
+                />
 
             </div>
 
-            <h2>
+            {/* ✅ WRAPPED TABLE IN CARD */}
+            <Card title="Recent Transactions">
 
-                Recent Transactions
+                <table className="ui-table">
 
-            </h2>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Amount</th>
+                            <th>Merchant</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Risk</th>
+                        </tr>
+                    </thead>
 
-            <table className="customer-table">
+                    <tbody>
 
-                <thead>
-
-                    <tr>
-
-                        <th>ID</th>
-
-                        <th>Amount</th>
-
-                        <th>Merchant</th>
-
-                        <th>Location</th>
-
-                        <th>Status</th>
-
-                        <th>Risk</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {
-
-                        transactions.map(tx => (
-
-                            <tr key={tx.id}>
-
-                                <td>
-
-                                    {tx.id}
-
+                        {transactions.length === 0 ? (
+                            <tr>
+                                <td colSpan="6">
+                                    <EmptyState
+                                        title="No Transactions"
+                                        description="Your recent transactions will appear here."
+                                    />
                                 </td>
-
-                                <td>
-
-                                    ₹ {tx.amount}
-
-                                </td>
-
-                                <td>
-
-                                    {tx.merchant}
-
-                                </td>
-
-                                <td>
-
-                                    {tx.location}
-
-                                </td>
-
-                                <td>
-
-                                    {tx.status}
-
-                                </td>
-
-                                <td>
-
-                                    {tx.risk_score}
-
-                                </td>
-
                             </tr>
+                        ) : (
+                            transactions.map(tx => (
+                                <tr key={tx.id}>
+                                    <td>{tx.id}</td>
 
-                        ))
+                                    <td>
+                                        ₹ {Number(tx.amount).toLocaleString()}
+                                    </td>
 
-                    }
+                                    <td>{tx.merchant}</td>
 
-                </tbody>
+                                    <td>{tx.location}</td>
 
-            </table>
+                                    <td>
+                                        <Badge
+                                            variant={
+                                                tx.status === "BLOCKED"
+                                                    ? "danger"
+                                                    : tx.status === "FLAGGED"
+                                                    ? "warning"
+                                                    : "success"
+                                            }
+                                        >
+                                            {tx.status}
+                                        </Badge>
+                                    </td>
+
+                                    <td>
+                                        <Badge
+                                            variant={
+                                                tx.risk_score >= 80
+                                                    ? "danger"
+                                                    : tx.risk_score >= 50
+                                                    ? "warning"
+                                                    : "success"
+                                            }
+                                        >
+                                            {Number(tx.risk_score).toFixed(0)}
+                                        </Badge>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+
+                    </tbody>
+
+                </table>
+
+            </Card>
 
         </div>
-
-    )
-
+    );
 }
 
 export default Dashboard;

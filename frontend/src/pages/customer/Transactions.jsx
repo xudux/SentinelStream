@@ -1,18 +1,35 @@
-import { useState } from "react"
+import { useState } from "react";
+
 import API from "../../api/api";
-import Navbar from "../../components/common/Navbar"
+import Navbar from "../../components/common/Navbar";
+
+import {
+    PageHeader,
+    Card,
+    Button,
+    Badge,
+    ErrorState
+} from "../../components/ui";
 
 function Transactions() {
 
-    const [amount, setAmount] = useState("")
-    const [merchant, setMerchant] = useState("")
-    const [location, setLocation] = useState("")
+    const [amount, setAmount] = useState("");
+    const [merchant, setMerchant] = useState("");
+    const [location, setLocation] = useState("");
 
-    const [result, setResult] = useState(null)
+    const [result, setResult] = useState(null);
+
+    const [loading, setLoading] = useState(false);
+
+    const [error, setError] = useState("");
 
     const submitTransaction = async (e) => {
 
-        e.preventDefault()
+        e.preventDefault();
+
+        setLoading(true);
+        setError("");
+        setResult(null);
 
         try {
 
@@ -23,123 +40,203 @@ function Transactions() {
                     merchant,
                     location
                 }
-            )
+            );
 
-            setResult(response.data)
+            setResult(response.data);
 
         } catch (error) {
 
-            setResult(
-                error.response?.data || {
-                    detail: "Server Error"
-                }
-            )
+            setError(
+                error.response?.data?.detail ||
+                "Unable to process transaction."
+            );
+
+        } finally {
+
+            setLoading(false);
 
         }
 
-    }
+    };
 
     return (
 
         <div className="customer-transactions">
 
-            <Navbar/>
+            <Navbar />
 
-            <h1>
-                Transaction Simulator
-            </h1>
+            <PageHeader
+                title="Transaction Simulator"
+                subtitle="Test transactions through the fraud detection engine"
+            />
 
-            <form
-                className="customer-transaction-form"
-                onSubmit={submitTransaction}
-            >
+            <Card title="Create Transaction">
 
-                <input
-                    type="number"
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) =>
-                        setAmount(e.target.value)
-                    }
+                <form
+                    className="customer-transaction-form"
+                    onSubmit={submitTransaction}
+                >
+
+                    <div className="form-group">
+
+                        <label>Amount</label>
+
+                        <input
+                            className="ui-input"
+                            type="number"
+                            placeholder="Enter amount"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                        />
+
+                    </div>
+
+                    <div className="form-group">
+
+                        <label>Merchant</label>
+
+                        <input
+                            className="ui-input"
+                            placeholder="Merchant name"
+                            value={merchant}
+                            onChange={(e) => setMerchant(e.target.value)}
+                        />
+
+                    </div>
+
+                    <div className="form-group">
+
+                        <label>Location</label>
+
+                        <input
+                            className="ui-input"
+                            placeholder="Transaction location"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                        />
+
+                    </div>
+
+                    <Button
+                        type="submit"
+                        disabled={loading}
+                    >
+
+                        {loading
+                            ? "Processing..."
+                            : "Send Transaction"}
+
+                    </Button>
+
+                </form>
+
+            </Card>
+
+            {error && (
+
+                <ErrorState
+                    title="Transaction Failed"
+                    description={error}
                 />
 
-                <input
-                    type="text"
-                    placeholder="Merchant"
-                    value={merchant}
-                    onChange={(e) =>
-                        setMerchant(e.target.value)
-                    }
-                />
-
-                <input
-                    type="text"
-                    placeholder="Location"
-                    value={location}
-                    onChange={(e) =>
-                        setLocation(e.target.value)
-                    }
-                />
-
-                <button type="submit">
-                    Send Transaction
-                </button>
-
-            </form>
+            )}
 
             {result && (
-                <div className="customer-result-box">
+
+                <Card title="Transaction Result">
+
                     <h3>
-                    Result
+                        Result
                     </h3>
 
                     <p>
-                    <b>Status:</b>
-                    {result.status || result.detail}
+
+                        <strong>Status:</strong>{" "}
+
+                        <Badge
+                            variant={
+                                result.status === "BLOCKED"
+                                    ? "danger"
+                                    : result.status === "FLAGGED"
+                                    ? "warning"
+                                    : "success"
+                            }
+                        >
+
+                            {result.status}
+
+                        </Badge>
+
                     </p>
 
                     {
-                    result.transaction_id &&
-                    <p>
-                        <b>Transaction ID:</b>
-                        {result.transaction_id}
-                    </p>
+                        result.transaction_id &&
+                        <p>
+
+                            <b>Transaction ID:</b>
+
+                            {result.transaction_id}
+
+                        </p>
                     }
 
                     {
-                    result.risk_score !== undefined &&
-                    <p>
-                        <b>Risk Score:</b>
-                        {result.risk_score}
-                    </p>
+                        result.risk_score !== undefined &&
+                        <p>
+
+                            <strong>Risk Score:</strong>{" "}
+
+                            <Badge
+                                variant={
+                                    result.risk_score >= 80
+                                        ? "danger"
+                                        : result.risk_score >= 50
+                                            ? "warning"
+                                            : "success"
+                                }
+                            >
+
+                                {result.risk_score}
+
+                            </Badge>
+
+                        </p>
                     }
 
                     {
-                    result.ml_prediction !== undefined &&
-                    <p>
-                        <b>ML Prediction:</b>
-                        {
-                        result.ml_prediction === 1
-                            ? "Fraud"
-                            : "Safe"
-                        }
-                    </p>
+                        result.ml_prediction !== undefined &&
+                        <p>
+
+                            <b>ML Prediction:</b>
+
+                            {
+                                result.ml_prediction === 1
+                                    ? "Fraud"
+                                    : "Safe"
+                            }
+
+                        </p>
                     }
 
                     {
-                    result.remaining_balance &&
-                    <p>
-                        <b>Remaining Balance:</b>
-                        ₹ {result.remaining_balance}
-                    </p>
+                        result.remaining_balance !== undefined &&
+                        <p>
+
+                            <b>Remaining Balance:</b>
+
+                            ₹ {Number(result.remaining_balance).toLocaleString()}
+
+                        </p>
                     }
-                </div>
+
+                </Card>
+
             )}
 
         </div>
 
-    )
+    );
 
 }
 
-export default Transactions
+export default Transactions;

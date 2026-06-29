@@ -1,0 +1,271 @@
+/* Login Page */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--background);
+    padding: 32px;
+}
+
+/* wrapper */
+.login-wrapper {
+    width: 100%;
+    max-width: 460px;
+}
+
+/* card sizing */
+.login-card {
+    width: 100%;
+    max-width: 430px;
+    margin: auto;
+    padding: 40px;
+}
+
+/* logo */
+.login-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: var(--primary);
+}
+
+/* header */
+.login-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.login-header h1 {
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: var(--text-secondary);
+}
+
+/* spacing */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+
+
+/* button */
+.login-btn {
+    width: 100%;
+    margin-top: 16px;
+}
+
+/* footer */
+.login-footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+
+.risk-high{
+
+background:#4b3414;
+
+color:#f59e0b;
+
+padding:8px 14px;
+
+border-radius:999px;
+
+font-weight:700;
+
+}
+
+.risk-critical{
+
+background:#4b1212;
+
+color:#ff7070;
+
+padding:8px 14px;
+
+border-radius:999px;
+
+font-weight:700;
+
+}
+
+.investigation-status.OPEN{
+
+color:#fbbf24;
+
+}
+
+.investigation-status.UNDER_REVIEW{
+
+color:#60a5fa;
+
+}
+
+.investigation-status.CLOSED{
+
+color:#34d399;
+
+}
+
+.priority-badge{
+
+font-weight:700;
+
+}
+
+.priority-badge.HIGH{
+
+color:#ff7070;
+
+}
+
+.priority-badge.MEDIUM{
+
+color:#fbbf24;
+
+}
+
+.priority-badge.LOW{
+
+color:#34d399;
+
+}
+
+.analyst-table a{
+
+color:#00d4ff;
+
+text-decoration:none;
+
+font-weight:600;
+
+}
+
+.analyst-table a:hover{
+
+text-decoration:underline;
+
+}
+
+
+.analyst-transaction-card{
+
+background:#081425;
+
+border:1px solid #24324b;
+
+border-radius:20px;
+
+padding:35px;
+
+max-width:700px;
+
+margin-top:30px;
+
+}
+
+.analyst-transaction-card p{
+
+font-size:18px;
+
+margin-bottom:18px;
+
+color:#d6e2f0;
+
+}
+
+.analyst-transaction-card strong{
+
+color:#00d4ff;
+
+margin-right:8px;
+
+}
+
+
+
+
+.admin-section{
+
+margin-top:50px;
+
+}
+
+
+
+/* =======================
+ADMIN AUDIT LOGS
+======================= */
+
+.audit-badge{
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+}
+
+.audit-badge.USER_LOGIN{
+  background:#102f4f;
+  color:#60a5fa;
+}
+
+.audit-badge.TRANSACTION_PROCESSED{
+  background:#113322;
+  color:#34d399;
+}
+
+.audit-badge.TRANSACTION_BLOCKED{
+  background:#441818;
+  color:#ff7070;
+}
+
+.audit-badge.FRAUD_EVENT_CREATED{
+  background:#4b3414;
+  color:#f59e0b;
+}
+
+
+
+
+
+.admin-control-card {
+
+  background: #111827;
+
+  border: 1px solid #312e81;
+
+  border-radius: 16px;
+
+  padding: 25px;
+
+  max-width: 500px;
+
+}
+
+.admin-control-card h3 {
+
+  color: #a78bfa;
+
+  margin-bottom: 10px;
+
+}
+
+.admin-control-card p {
+
+  color: #9ca3af;
+
+  margin-bottom: 20px;
+
+}
+

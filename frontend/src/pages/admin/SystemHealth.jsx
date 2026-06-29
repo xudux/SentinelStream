@@ -6,7 +6,11 @@ import StatsCard from "../../components/common/StatsCard";
 
 import {
     PageHeader,
-    Badge
+    Badge,
+    CardSkeleton,
+    ErrorState,
+    Skeleton,
+    Card
 } from "../../components/ui";
 
 import {
@@ -18,22 +22,60 @@ import {
 
 function SystemHealth() {
 
-    const [health, setHealth] = useState(null)
+    const [health, setHealth] =useState(null);
+    const [loading, setLoading] =useState(true);
+    const [error,setError]=useState("");
+
+    const fetchHealth = () => {
+
+        setLoading(true);
+        setError("");
+
+        API.get("/admin/system-health")
+
+            .then(res => {
+
+                setHealth(res.data);
+
+            })
+
+            .catch(() => {
+
+                setError("Unable to load system health.");
+
+            })
+
+            .finally(() => {
+
+                setLoading(false);
+
+            });
+
+    };
 
     useEffect(() => {
 
-        API.get("/admin/system-health")
-            .then(res => setHealth(res.data))
-            .catch(console.error)
+        fetchHealth();
 
-    }, [])
+    }, []);
 
-    if (!health) {
-
+    if (error) {
         return (
-
             <div className="container">
+                <Navbar />
 
+                <ErrorState
+                    title="System Health Unavailable"
+                    description={error}
+                    onRetry={fetchHealth}
+                />
+            </div>
+        );
+    }
+
+    if (loading) {
+        return (
+            <div className="container">
                 <Navbar />
 
                 <PageHeader
@@ -41,10 +83,18 @@ function SystemHealth() {
                     subtitle="Loading infrastructure status..."
                 />
 
+                <div className="analyst-cards-grid">
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                </div>
+
+                <br />
+
+                <Skeleton height="250px" />
             </div>
-
         );
-
     }
 
     const services = [
@@ -111,12 +161,7 @@ function SystemHealth() {
 
             </div>
 
-            <div className="admin-section">
-
-                <PageHeader
-                    title="Service Status"
-                    subtitle="Current backend infrastructure"
-                />
+            <Card title="Service Status">
 
                 <div className="health-grid">
 
@@ -173,16 +218,11 @@ function SystemHealth() {
 
                 </div>
 
-            </div>
+            </Card>
 
-            <div className="admin-section">
+            <Card title="Latest Activity">
 
-                <PageHeader
-                    title="Latest Activity"
-                    subtitle="Most recent system event"
-                />
-
-                <div className="admin-control-card">
+                <div className="card-content">
 
                     <h3>
                         Most Recent Audit Event
@@ -194,7 +234,7 @@ function SystemHealth() {
 
                 </div>
 
-            </div>
+            </Card>
 
         </div>
 

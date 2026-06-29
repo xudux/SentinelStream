@@ -1,115 +1,75 @@
-function FraudTable({
+import { EmptyState } from "../ui";
 
-    title,
-
-    data
-
-}) {
+function FraudTable({ title, data }) {
 
     return (
 
-        <div className="analyst-table-wrapper">
+        <div className="analyst-table-wrapper fade-in">
 
             <h2 className="analyst-table-title">
-
                 {title}
-
             </h2>
 
-            <table className="analyst-table">
+            <div className="table-container">
 
-                <thead>
+                {Array.isArray(data) && data.length === 0 ? (
 
-                    <tr>
+                    <EmptyState
+                        title="No fraud data found"
+                        description="Risk analysis results will appear here."
+                    />
 
-                        <th>
+                ) : (
 
-                            Transaction
+                    <table className="analyst-table table-fade">
 
-                        </th>
+                        <thead>
 
-                        <th>
+                            <tr>
 
-                            Risk Score
-
-                        </th>
-
-                        <th>
-
-                            Created
-
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {
-
-                        Array.isArray(data)
-
-                        &&
-
-                        data.map(item => (
-
-                            <tr
-
-                                key={item.id}
-
-                            >
-
-                                <td>
-
-                                    {
-
-                                        item.transaction_id
-
-                                    }
-
-                                </td>
-
-                                <td>
-
-                                    {
-
-                                        item.risk_score
-
-                                    }
-
-                                </td>
-
-                                <td>
-
-                                    {
-
-                                        new Date(
-
-                                            item.created_at
-
-                                        )
-
-                                        .toLocaleString()
-
-                                    }
-
-                                </td>
+                                <th>Transaction</th>
+                                <th>Risk Score</th>
+                                <th>Created</th>
 
                             </tr>
 
-                        ))
+                        </thead>
 
-                    }
+                        <tbody>
 
-                </tbody>
+                            {Array.isArray(data) &&
+                                data.map(item => (
 
-            </table>
+                                    <tr key={item.id}>
+
+                                        <td>{item.transaction_id}</td>
+
+                                        <td>{item.risk_score}</td>
+
+                                        <td>
+
+                                            {new Date(
+                                                item.created_at
+                                            ).toLocaleString()}
+
+                                        </td>
+
+                                    </tr>
+
+                                ))}
+
+                        </tbody>
+
+                    </table>
+
+                )}
+
+            </div>
 
         </div>
 
-    )
+    );
 
 }
 
-export default FraudTable
+export default FraudTable;

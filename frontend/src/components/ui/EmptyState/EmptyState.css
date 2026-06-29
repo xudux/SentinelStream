@@ -1,0 +1,41 @@
+.ui-empty-state{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding:64px 24px;
+
+    color:var(--text-secondary);
+
+}
+
+.ui-empty-state svg{
+
+    opacity:.6;
+
+    margin-bottom:18px;
+
+}
+
+.ui-empty-state h3{
+
+    margin-bottom:10px;
+
+    font-size:1.25rem;
+
+}
+
+.ui-empty-state p{
+
+    max-width:420px;
+
+    line-height:1.6;
+
+}

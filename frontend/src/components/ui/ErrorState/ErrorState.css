@@ -1,0 +1,39 @@
+.ui-error-state{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding:64px 24px;
+
+}
+
+.ui-error-state svg{
+
+    color:#ef4444;
+
+    margin-bottom:18px;
+
+}
+
+.ui-error-state h3{
+
+    margin-bottom:10px;
+
+}
+
+.ui-error-state p{
+
+    color:var(--text-secondary);
+
+    max-width:420px;
+
+    margin-bottom:24px;
+
+}

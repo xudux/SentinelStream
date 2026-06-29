@@ -1,21 +1,108 @@
-.fade-in {
-  animation: fadeIn .25s ease;
-}
+/* ==========================================
+   FADE IN
+========================================== */
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
 
-  to {
-    opacity: 1;
-  }
+    from{
+
+        opacity:0;
+
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
 }
 
-.hover-lift {
-  transition: transform var(--transition-fast);
+.fade-in{
+
+    animation:fadeIn .35s ease;
+
 }
 
-.hover-lift:hover {
-  transform: translateY(-2px);
+
+/* ==========================================
+   CARD POP
+========================================== */
+
+@keyframes cardPop{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.97);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+.card-pop{
+
+    animation:cardPop .25s ease;
+
+}
+
+
+/* ==========================================
+   TABLE FADE
+========================================== */
+
+@keyframes tableFade{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+.table-fade{
+
+    animation:tableFade .4s ease;
+
+}
+
+
+/* ==========================================
+   HOVER LIFT
+========================================== */
+
+.hover-lift{
+
+    transition:
+
+        transform .2s,
+
+        box-shadow .2s;
+
+}
+
+.hover-lift:hover{
+
+    transform:translateY(-4px);
+
 }

@@ -9,11 +9,39 @@
     padding: var(--space-lg);
 
     box-shadow: var(--shadow-sm);
+    overflow:hidden;
+
+    position:relative;
 
     transition:
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast),
-        border-color var(--transition-fast);
+        transform .2s,
+        border-color .2s,
+        box-shadow .2s;
+}
+
+.ui-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:4px;
+
+    height:100%;
+
+    background:var(--accent);
+
+    opacity:.4;
+
+}
+
+.ui-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
 }
 
 .ui-card:hover {

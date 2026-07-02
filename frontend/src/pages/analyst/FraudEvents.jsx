@@ -108,7 +108,10 @@ function FraudEvents() {
                 subtitle="High risk transactions awaiting analyst investigation"
             />
 
-            <Card title="Fraud Events">
+            <Card
+                title="Fraud Events"
+                subtitle="Detected fraud events awaiting investigation"
+            >
 
                 <table className="ui-table">
 

@@ -1,0 +1,445 @@
+/* ==========================================
+   HERO
+========================================== */
+
+.landing-hero{
+
+    display:grid;
+
+    grid-template-columns:1.2fr .8fr;
+
+    align-items:center;
+
+    gap:60px;
+
+    min-height:90vh;
+
+    padding:80px 0;
+
+}
+
+.landing-title{
+
+    margin:24px 0;
+
+    font-size:4rem;
+
+    line-height:1.1;
+
+    font-weight:800;
+
+}
+
+.landing-title span{
+
+    color:var(--accent);
+
+}
+
+.landing-description{
+
+    max-width:650px;
+
+    color:var(--text-secondary);
+
+    font-size:1.15rem;
+
+    line-height:1.8;
+
+}
+
+.landing-actions{
+
+    display:flex;
+
+    gap:18px;
+
+    margin-top:40px;
+
+}
+
+.landing-hero-visual{
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.hero-stat{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:18px 0;
+
+    border-bottom:1px solid var(--border-color);
+
+}
+
+.hero-stat:last-child{
+
+    border-bottom:none;
+
+}
+
+.hero-stat strong{
+
+    color:var(--accent);
+
+    font-size:1.2rem;
+
+}
+
+/* ==========================================
+   LIVE METRICS
+========================================== */
+
+.landing-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:24px;
+
+    margin:80px 0;
+
+}
+
+/* ==========================
+   FEATURES
+========================== */
+
+.landing-features{
+
+    padding:80px 0;
+
+}
+
+.landing-section-header{
+
+    text-align:center;
+
+    max-width:720px;
+
+    margin:0 auto 60px;
+
+}
+
+.landing-section-header h2{
+
+    margin:18px 0;
+
+    font-size:2.4rem;
+
+}
+
+.landing-section-header p{
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+
+}
+
+.landing-feature-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:24px;
+
+}
+
+/* ==========================
+   ARCHITECTURE
+========================== */
+
+.landing-architecture{
+
+    padding:90px 0;
+
+}
+
+.architecture-flow{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:18px;
+
+}
+
+.architecture-flow .ui-card{
+
+    width:180px;
+
+    text-align:center;
+
+}
+
+.architecture-arrow{
+
+    font-size:2rem;
+
+    color:var(--accent);
+
+    font-weight:700;
+
+}
+
+/* ==========================
+   DASHBOARD PREVIEW
+========================== */
+
+.landing-preview{
+
+    padding:90px 0;
+
+}
+
+.landing-dashboard-preview{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:32px;
+
+}
+
+.landing-dashboard-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+}
+
+.landing-dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:24px;
+
+}
+
+.preview-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:14px 0;
+
+    border-bottom:1px solid var(--border-color);
+
+}
+
+.preview-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.preview-metric{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 0;
+
+    border-bottom:1px solid var(--border-color);
+
+}
+
+.preview-metric:last-child{
+
+    border-bottom:none;
+
+}
+
+/* ==========================
+   TECHNOLOGY
+========================== */
+
+.landing-tech{
+
+    padding:90px 0;
+
+}
+
+.landing-tech-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:24px;
+
+}
+
+.tech-badges{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:16px;
+
+}
+
+/* ==========================
+   CTA
+========================== */
+
+.landing-cta{
+
+    padding:100px 0;
+
+}
+
+.landing-cta-card{
+
+    max-width:900px;
+
+    margin:0 auto;
+
+    text-align:center;
+
+    padding:64px;
+
+}
+
+.landing-cta-card h2{
+
+    margin:22px 0;
+
+    font-size:2.7rem;
+
+}
+
+.landing-cta-card p{
+
+    max-width:650px;
+
+    margin:0 auto 34px;
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.landing-footer{
+
+    margin-top:120px;
+
+    border-top:1px solid var(--border-color);
+
+    padding:70px 0 30px;
+
+    background:var(--bg-surface);
+
+}
+
+.landing-footer-container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:48px;
+
+}
+
+.landing-footer-brand h3{
+
+    font-size:1.6rem;
+
+    margin-bottom:12px;
+
+}
+
+.landing-footer-brand p{
+
+    max-width:500px;
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+
+}
+
+.landing-footer-links{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+    gap:32px;
+
+}
+
+.landing-footer-links h4{
+
+    margin-bottom:16px;
+
+    font-size:1rem;
+
+}
+
+.landing-footer-links a{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    color:var(--text-secondary);
+
+    text-decoration:none;
+
+    transition:.2s;
+
+}
+
+.landing-footer-links a:hover{
+
+    color:var(--accent);
+
+}
+
+.landing-footer-bottom{
+
+    padding-top:30px;
+
+    border-top:1px solid var(--border-color);
+
+    color:var(--text-secondary);
+
+    font-size:.9rem;
+
+}

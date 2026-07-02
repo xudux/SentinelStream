@@ -92,7 +92,7 @@ function Login() {
                     <form onSubmit={handleLogin}>
 
                         <div className="form-group">
-                            <label>Email</label>
+                            <label className="label-text">Email</label>
                             <input
                                 className="ui-input"
                                 type="email"
@@ -104,7 +104,7 @@ function Login() {
                         </div>
 
                         <div className="form-group">
-                            <label>Password</label>
+                            <label className="label-text">Password</label>
                             <input
                                 className="ui-input"
                                 type="password"

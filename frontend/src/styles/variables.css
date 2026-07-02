@@ -1,10 +1,64 @@
 :root {
   /* =========================
-     COLORS
+     RADIUS
+  ========================= */
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* =========================
+     SHADOWS
+  ========================= */
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .05);
+
+  --shadow-md:
+    0 4px 6px rgba(0, 0, 0, .06),
+    0 2px 4px rgba(0, 0, 0, .04);
+
+  --shadow-lg:
+    0 12px 24px rgba(15, 23, 42, .08);
+
+  /* =========================
+     TRANSITIONS
+  ========================= */
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* =========================
+     SPACING
+  ========================= */
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* =========================
+     MAX WIDTH
+  ========================= */
+
+  --container-width: 1400px;
+}
+
+[data-theme="light"] {
+
+  /* =========================
+     PRIMARY
   ========================= */
 
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
+
+  /* =========================
+     STATUS
+  ========================= */
 
   --color-success: #16a34a;
   --color-warning: #f59e0b;
@@ -32,51 +86,45 @@
   ========================= */
 
   --border-color: #e2e8f0;
+}
+
+[data-theme="dark"] {
 
   /* =========================
-     RADIUS
+     PRIMARY
   ========================= */
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
 
   /* =========================
-     SHADOWS
+     STATUS
   ========================= */
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
-
-  --shadow-md:
-      0 4px 6px rgba(0,0,0,.06),
-      0 2px 4px rgba(0,0,0,.04);
-
-  --shadow-lg:
-      0 12px 24px rgba(15,23,42,.08);
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #38bdf8;
 
   /* =========================
-     TRANSITIONS
+     SURFACE
   ========================= */
 
-  --transition-fast: 150ms ease;
-  --transition-normal: 250ms ease;
-  --transition-slow: 350ms ease;
+  --bg-page: #0f172a;
+  --bg-card: #1e293b;
+  --bg-muted: #334155;
 
   /* =========================
-     SPACING
+     TEXT
   ========================= */
 
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
 
   /* =========================
-     MAX WIDTH
+     BORDER
   ========================= */
 
-  --container-width: 1400px;
+  --border-color: #334155;
 }

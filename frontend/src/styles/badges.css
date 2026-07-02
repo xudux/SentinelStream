@@ -1,70 +1,93 @@
 /* ==========================================
-   BASE BADGE
+   BADGES
 ========================================== */
 
-.ui-badge {
+.ui-badge{
 
     display:inline-flex;
     align-items:center;
     justify-content:center;
-
-    padding:6px 12px;
+    gap:6px;
 
     border-radius:999px;
-
-    font-size:.8rem;
 
     font-weight:600;
 
     white-space:nowrap;
+
+    transition:.2s ease;
 }
 
-/* SUCCESS */
+/* ---------- Sizes ---------- */
 
-.ui-badge-success{
+.ui-badge-sm{
 
-    background:rgba(22,163,74,.12);
-
-    color:var(--color-success);
-
-}
-
-/* WARNING */
-
-.ui-badge-warning{
-
-    background:rgba(245,158,11,.12);
-
-    color:var(--color-warning);
+    padding:3px 8px;
+    font-size:.75rem;
 
 }
 
-/* DANGER */
+.ui-badge-md{
 
-.ui-badge-danger{
-
-    background:rgba(220,38,38,.12);
-
-    color:var(--color-danger);
+    padding:5px 10px;
+    font-size:.82rem;
 
 }
 
-/* INFO */
+.ui-badge-lg{
 
-.ui-badge-info{
-
-    background:rgba(2,132,199,.12);
-
-    color:var(--color-info);
+    padding:7px 14px;
+    font-size:.9rem;
 
 }
 
-/* DEFAULT */
+/* ---------- Variants ---------- */
 
 .ui-badge-default{
 
     background:var(--bg-muted);
+    color:var(--text-secondary);
 
+}
+
+.ui-badge-primary{
+
+    background:rgba(37,99,235,.12);
+    color:var(--color-primary);
+
+}
+
+.ui-badge-success{
+
+    background:rgba(22,163,74,.12);
+    color:var(--color-success);
+
+}
+
+.ui-badge-warning{
+
+    background:rgba(245,158,11,.12);
+    color:var(--color-warning);
+
+}
+
+.ui-badge-danger{
+
+    background:rgba(220,38,38,.12);
+    color:var(--color-danger);
+
+}
+
+.ui-badge-info{
+
+    background:rgba(2,132,199,.12);
+    color:var(--color-info);
+
+}
+
+.ui-badge-secondary{
+
+    background:var(--bg-muted);
     color:var(--text-secondary);
 
 }

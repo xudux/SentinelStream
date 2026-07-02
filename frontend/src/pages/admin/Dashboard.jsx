@@ -193,7 +193,10 @@ function Dashboard() {
 
             </div>
 
-            <Card title="Recent Audit Logs">
+            <Card
+                title="Recent Audit Logs"
+                subtitle="Latest administrative and system activity"
+            >
 
                 <table className="ui-table">
 
@@ -291,7 +294,10 @@ function Dashboard() {
 
             </Card>
 
-            <Card title="System Controls">
+            <Card
+                title="System Controls"
+                subtitle="Administrative tools for system maintenance"
+            >
 
                 <div>
 

@@ -1,39 +1,29 @@
 function PageHeader({
-
     title,
-
     subtitle,
-
     children
-
-}){
-
-    return(
-
+}) {
+    return (
         <div className="page-header fade-in">
-
             <div className="page-header-content">
+                <h1 className="page-title">
+                    {title}
+                </h1>
 
-                <h1>{title}</h1>
-
-                {subtitle && <p>{subtitle}</p>}
-
+                {subtitle && (
+                    <p className="page-subtitle">
+                        {subtitle}
+                    </p>
+                )}
             </div>
 
             {children && (
-
                 <div className="page-header-actions">
-
                     {children}
-
                 </div>
-
             )}
-
         </div>
-
-    )
-
+    );
 }
 
-export default PageHeader
+export default PageHeader;

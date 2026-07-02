@@ -70,8 +70,10 @@ function Transactions() {
                 subtitle="Test transactions through the fraud detection engine"
             />
 
-            <Card title="Create Transaction">
-
+            <Card
+                title="Create Transaction"
+                subtitle="Initiate a new transaction for processing"
+            >
                 <form
                     className="customer-transaction-form"
                     onSubmit={submitTransaction}
@@ -79,7 +81,7 @@ function Transactions() {
 
                     <div className="form-group">
 
-                        <label>Amount</label>
+                        <label className="label-text">Amount</label>
 
                         <input
                             className="ui-input"
@@ -93,7 +95,7 @@ function Transactions() {
 
                     <div className="form-group">
 
-                        <label>Merchant</label>
+                        <label className="label-text">Merchant</label>
 
                         <input
                             className="ui-input"
@@ -106,7 +108,7 @@ function Transactions() {
 
                     <div className="form-group">
 
-                        <label>Location</label>
+                        <label className="label-text">Location</label>
 
                         <input
                             className="ui-input"
@@ -143,7 +145,10 @@ function Transactions() {
 
             {result && (
 
-                <Card title="Transaction Result">
+                <Card
+                    title="Transaction Result"
+                    subtitle="Outcome of fraud analysis and processing"
+                >
 
                     <h3>
                         Result

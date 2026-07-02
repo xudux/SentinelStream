@@ -154,7 +154,10 @@ function Dashboard() {
 
             </div>
 
-            <Card title="Recent Fraud Events">
+            <Card
+                title="Recent Fraud Events"
+                subtitle="Latest detected fraud events requiring review"
+            >
 
                 <FraudTable
                     data={recent}
@@ -162,8 +165,10 @@ function Dashboard() {
 
             </Card>
 
-            <Card title="High Risk Transactions">
-
+            <Card
+                title="High Risk Transactions"
+                subtitle="Transactions with elevated fraud risk scores"
+            >
                 <FraudTable
                     data={highRisk}
                 />

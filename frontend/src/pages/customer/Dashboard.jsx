@@ -144,8 +144,10 @@ function Dashboard() {
             </div>
 
             {/* ✅ WRAPPED TABLE IN CARD */}
-            <Card title="Recent Transactions">
-
+            <Card
+                title="Recent Transactions"
+                subtitle="Latest account activity"
+            >
                 <table className="ui-table">
 
                     <thead>

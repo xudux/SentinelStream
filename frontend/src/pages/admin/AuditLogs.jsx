@@ -159,7 +159,10 @@ function AuditLogs() {
 
             </div>
 
-            <Card title="Filters">
+            <Card
+                title="Filters"
+                subtitle="Refine the displayed audit logs"
+            >
 
                 <div className="table-toolbar">
 
@@ -207,7 +210,10 @@ function AuditLogs() {
 
             </Card>
 
-            <Card title="Audit Logs">
+            <Card
+                title="Audit Logs"
+                subtitle="Recent audit events and system activity"
+            >
 
                 <table className="ui-table">
 

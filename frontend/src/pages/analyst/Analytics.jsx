@@ -160,8 +160,10 @@ function Analytics() {
 
             </div>
 
-            <Card title="Transaction Status Distribution">
-
+            <Card
+                title="Transaction Status Distribution"
+                subtitle="Current distribution of processed transactions"
+            >
                 <ResponsiveContainer
                     width="100%"
                     height={400}

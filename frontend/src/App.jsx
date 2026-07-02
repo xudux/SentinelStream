@@ -4,6 +4,7 @@ import {
     Route
 } from "react-router-dom";
 
+import Landing from "./pages/Landing";
 import Login from "./pages/auth/Login";
 
 // CUSTOMER
@@ -38,6 +39,11 @@ function App() {
 
                 <Route
                     path="/"
+                    element={<Landing />}
+                />
+
+                <Route
+                    path="/login"
                     element={<Login />}
                 />
 

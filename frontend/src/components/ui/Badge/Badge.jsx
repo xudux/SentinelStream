@@ -2,20 +2,31 @@ function Badge({
 
     children,
 
-    variant="default"
+    variant = "default",
 
-}){
+    size = "md",
 
-    return(
+    className = ""
 
-        <span className={`ui-badge ui-badge-${variant}`}>
+}) {
+
+    return (
+
+        <span
+            className={`
+                ui-badge
+                ui-badge-${variant}
+                ui-badge-${size}
+                ${className}
+            `}
+        >
 
             {children}
 
         </span>
 
-    )
+    );
 
 }
 
-export default Badge
+export default Badge;

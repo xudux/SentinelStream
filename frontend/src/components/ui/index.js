@@ -9,3 +9,4 @@ export { default as PageSkeleton } from "./Skeleton/PageSkeleton";
 export { default as Spinner } from "./Spinner/Spinner";
 export { default as EmptyState } from "./EmptyState/EmptyState";
 export { default as ErrorState } from "./ErrorState/ErrorState";
+export { default as ThemeToggle } from "./ThemeToggle/ThemeToggle";

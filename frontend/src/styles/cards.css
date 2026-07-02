@@ -224,3 +224,60 @@
     line-height:1.5;
 
 }
+
+/* ==========================================
+   CARD SECTIONS
+========================================== */
+
+.ui-card-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+
+    margin-bottom:20px;
+
+}
+
+.ui-card-title{
+
+    margin:0;
+
+    font-size:1.1rem;
+
+    font-weight:600;
+
+    color:var(--text-primary);
+
+}
+
+.ui-card-subtitle{
+
+    margin-top:4px;
+
+    font-size:.9rem;
+
+    color:var(--text-secondary);
+
+}
+
+.ui-card-body{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.ui-card-actions{
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+
+}

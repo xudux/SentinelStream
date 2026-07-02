@@ -99,7 +99,10 @@ function Profile() {
                 subtitle="View your account information"
             />
 
-            <Card title="Name">
+            <Card
+                title="Name"
+                subtitle="Your full name"
+            >
 
                 <p>
 
@@ -109,7 +112,10 @@ function Profile() {
 
             </Card>
 
-            <Card title="Email">
+            <Card
+                title="Email"
+                subtitle="Registered email address"
+            >
 
                 <p>
 
@@ -119,7 +125,10 @@ function Profile() {
 
             </Card>
 
-            <Card title="Balance">
+            <Card
+                title="Balance"
+                subtitle="Your current account balance"
+            >
 
                 <p>
 

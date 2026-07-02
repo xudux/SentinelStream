@@ -117,7 +117,10 @@ function TransactionDetails() {
                 subtitle="Detailed transaction information"
             />
 
-            <Card title="Transaction Details">
+            <Card
+                title="Transaction Details"
+                subtitle="Detailed information about this transaction"
+            >
 
                 <p>
                     <strong>ID:</strong> {transaction.id}

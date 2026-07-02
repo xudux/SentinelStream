@@ -132,7 +132,10 @@ function InvestigationDetails() {
             />
 
             {/* Investigation Info */}
-            <Card title="Investigation Information">
+            <Card
+                title="Investigation Information"
+                subtitle="Details about the fraud investigation"
+            >
                 <div className="card-content space-y-3">
                     <p>
                         <strong>Fraud Event:</strong>{" "}
@@ -156,9 +159,12 @@ function InvestigationDetails() {
             </Card>
 
             {/* Assignment */}
-            <Card title="Assignment">
+            <Card
+                title="Assignment"
+                subtitle="Assign investigation ownership"
+            >
                 <div className="form-group">
-                    <label>Priority</label>
+                    <label className="label-text">Priority</label>
                     <select
                         className="ui-select"
                         value={priority}
@@ -171,7 +177,7 @@ function InvestigationDetails() {
                 </div>
 
                 <div className="form-group">
-                    <label>Assigned Analyst</label>
+                    <label className="label-text">Assigned Analyst</label>
                     <input
                         className="ui-input"
                         value={assignedTo}
@@ -181,7 +187,10 @@ function InvestigationDetails() {
             </Card>
 
             {/* Resolution */}
-            <Card title="Resolution">
+            <Card
+                title="Resolution"
+                subtitle="Document the outcome of the investigation"
+            >
                 <textarea
                     className="ui-textarea"
                     rows="5"
@@ -191,9 +200,12 @@ function InvestigationDetails() {
             </Card>
 
             {/* Update Investigation */}
-            <Card title="Update Investigation">
+            <Card
+                title="Update Investigation"
+                subtitle="Modify investigation details"
+            >
                 <div className="form-group">
-                    <label>Status</label>
+                    <label className="label-text">Status</label>
                     <select
                         className="ui-select"
                         value={status}
@@ -206,7 +218,7 @@ function InvestigationDetails() {
                 </div>
 
                 <div className="form-group">
-                    <label>Notes</label>
+                    <label className="label-text">Notes</label>
                     <textarea
                         className="ui-textarea"
                         rows="5"

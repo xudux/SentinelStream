@@ -161,7 +161,10 @@ function SystemHealth() {
 
             </div>
 
-            <Card title="Service Status">
+            <Card
+                title="Service Status"
+                subtitle="Current health and availability of system services"
+            >
 
                 <div className="health-grid">
 
@@ -220,7 +223,10 @@ function SystemHealth() {
 
             </Card>
 
-            <Card title="Latest Activity">
+            <Card
+                title="Latest Activity"
+                subtitle="Most recent system audit event"
+            >
 
                 <div className="card-content">
 

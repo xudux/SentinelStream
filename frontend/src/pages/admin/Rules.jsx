@@ -154,7 +154,10 @@ function Rules() {
                 )
             }
 
-            <Card title="Create Fraud Rule">
+            <Card
+                title="Create Fraud Rule"
+                subtitle="Configure a new rule to detect suspicious transactions"
+            >
                 <div className="rule-form">
 
                     <input
@@ -285,7 +288,10 @@ function Rules() {
 
 
 
-            <Card title="Fraud Rules">
+            <Card
+                title="Fraud Rules"
+                subtitle="Manage fraud detection rules and their status"
+            >
 
                 <table className="ui-table">
 

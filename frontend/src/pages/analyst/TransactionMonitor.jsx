@@ -106,7 +106,10 @@ function TransactionMonitor() {
                 subtitle="Monitor all platform transactions"
             />
 
-            <Card title="Transactions">
+            <Card
+                title="Transactions"
+                subtitle="Monitor processed transactions and risk status"
+            >
 
                 <table className="ui-table">
 

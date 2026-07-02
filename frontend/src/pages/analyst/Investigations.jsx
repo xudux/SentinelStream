@@ -106,7 +106,10 @@ function Investigations() {
                 subtitle="Review and manage fraud investigations"
             />
 
-            <Card title="Investigations">
+            <Card
+                title="Investigations"
+                subtitle="Cases assigned for fraud analysis and resolution"
+            >
 
                 <table className="ui-table">
 

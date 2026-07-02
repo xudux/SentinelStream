@@ -175,7 +175,10 @@ function Users() {
                 subtitle="Manage platform users, roles and account status"
             />
 
-            <Card title="Filters">
+            <Card
+                title="Filters"
+                subtitle="Search and filter platform users"
+            >
                 <div className="table-toolbar">
 
 
@@ -260,7 +263,10 @@ function Users() {
 
             </div>
 
-            <Card title="Platform Users">
+            <Card
+                title="Platform Users"
+                subtitle="Manage user accounts, roles, and account status"
+            >
 
                 {filteredUsers.length === 0 ? (
                     <EmptyState

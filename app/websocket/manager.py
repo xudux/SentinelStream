@@ -2,6 +2,8 @@ from collections import defaultdict
 from fastapi import WebSocket
 from typing import Dict, Set
 
+from app import websocket
+
 
 class ConnectionManager:
     """
@@ -35,6 +37,8 @@ class ConnectionManager:
 
         await websocket.accept()
 
+        print("✅ WebSocket Connected")
+
         self.active_connections.add(websocket)
 
         if role:
@@ -52,6 +56,8 @@ class ConnectionManager:
         """
         Remove a websocket connection.
         """
+
+        print("❌ WebSocket Disconnected")
 
         self.active_connections.discard(websocket)
 
@@ -88,6 +94,8 @@ class ConnectionManager:
         """
 
         disconnected = []
+
+        print(f"📡 Broadcasting to {len(self.active_connections)} clients")
 
         for connection in self.active_connections:
             try:

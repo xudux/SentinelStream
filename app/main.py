@@ -13,6 +13,7 @@ from app.api.transactions import router as transaction_router
 
 from app.api.auth import router as auth_router
 from app.api.users import router as users_router
+from app.api.websocket import router as websocket_router
 
 from app.api import ml
 from app.api import dashboard
@@ -56,6 +57,9 @@ app.include_router(
     prefix="/users",
     tags=["Users"]
 )
+
+print(websocket_router.routes)
+app.include_router(websocket_router)
 
 
 @app.get("/")

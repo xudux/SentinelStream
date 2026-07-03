@@ -9,7 +9,8 @@ import {
     Card,
     Badge,
     ErrorState,
-    PageSkeleton
+    PageSkeleton,
+    Button
 } from "../components/ui";
 
 function TransactionDetails() {
@@ -115,6 +116,14 @@ function TransactionDetails() {
             <PageHeader
                 title={`Transaction #${transaction.id}`}
                 subtitle="Detailed transaction information"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchTransaction}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <Card
@@ -176,7 +185,7 @@ function TransactionDetails() {
 
                 <p>
                     <strong>User ID:</strong>{" "}
-                    {transaction.user_id}
+                    {transaction.user_id || "-"}
                 </p>
 
                 <p>

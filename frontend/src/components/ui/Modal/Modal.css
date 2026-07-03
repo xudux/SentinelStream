@@ -1,0 +1,203 @@
+/* ==========================================
+   MODAL
+========================================== */
+
+.ui-modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:24px;
+
+    background:rgba(15,23,42,.55);
+
+    backdrop-filter:blur(6px);
+
+    z-index:9999;
+
+    animation:modalFade .2s ease;
+
+}
+
+.ui-modal{
+
+    width:100%;
+
+    background:var(--bg-card);
+
+    border:1px solid var(--border-color);
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-lg);
+
+    overflow:hidden;
+
+    max-height:90vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    animation:modalPop .25s ease;
+
+}
+
+.ui-modal-sm{
+
+    max-width:420px;
+
+}
+
+.ui-modal-md{
+
+    max-width:640px;
+
+}
+
+.ui-modal-lg{
+
+    max-width:900px;
+
+}
+
+.ui-modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 24px;
+
+    border-bottom:1px solid var(--border-color);
+
+}
+
+.ui-modal-header h2{
+
+    margin:0;
+
+    font-size:1.15rem;
+
+    color:var(--text-primary);
+
+}
+
+.ui-modal-close{
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    color:var(--text-secondary);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:color .2s ease;
+
+}
+
+.ui-modal-close:hover{
+
+    color:var(--color-danger);
+
+}
+
+.ui-modal-body{
+
+    padding:24px;
+
+    overflow-y:auto;
+
+    flex:1;
+
+}
+
+.ui-modal-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    padding:20px 24px;
+
+    border-top:1px solid var(--border-color);
+
+}
+
+@keyframes modalFade{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes modalPop{
+
+    from{
+
+        transform:translateY(20px) scale(.97);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:translateY(0) scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .ui-modal-overlay{
+
+        padding:16px;
+
+    }
+
+    .ui-modal-body{
+
+        padding:20px;
+
+    }
+
+    .ui-modal-header,
+
+    .ui-modal-footer{
+
+        padding:16px 20px;
+
+    }
+
+}

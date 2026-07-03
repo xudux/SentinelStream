@@ -10,7 +10,10 @@ import {
     Button,
     Badge,
     ErrorState,
-    PageSkeleton
+    PageSkeleton,
+    Input,
+    Select,
+    Textarea
 } from "../../components/ui";
 
 function InvestigationDetails() {
@@ -63,7 +66,7 @@ function InvestigationDetails() {
             resolution,
             assigned_to: assignedTo
         })
-            .then(()=> {
+            .then(() => {
                 fetchInvestigation();
             })
             .catch(() => {
@@ -94,9 +97,7 @@ function InvestigationDetails() {
     }
 
     const getBadgeVariant = (value) => {
-
         switch (value) {
-
             case "HIGH":
                 return "danger";
 
@@ -117,9 +118,7 @@ function InvestigationDetails() {
 
             default:
                 return "primary";
-
         }
-
     };
 
     return (
@@ -129,6 +128,14 @@ function InvestigationDetails() {
             <PageHeader
                 title={`Investigation #${investigation.id}`}
                 subtitle="Review, assign and update fraud investigation details"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchInvestigation}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             {/* Investigation Info */}
@@ -163,27 +170,21 @@ function InvestigationDetails() {
                 title="Assignment"
                 subtitle="Assign investigation ownership"
             >
-                <div className="form-group">
-                    <label className="label-text">Priority</label>
-                    <select
-                        className="ui-select"
-                        value={priority}
-                        onChange={(e) => setPriority(e.target.value)}
-                    >
-                        <option value="LOW">LOW</option>
-                        <option value="MEDIUM">MEDIUM</option>
-                        <option value="HIGH">HIGH</option>
-                    </select>
-                </div>
+                <Select
+                    label="Priority"
+                    value={priority}
+                    onChange={(e) => setPriority(e.target.value)}
+                >
+                    <option value="LOW">LOW</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="HIGH">HIGH</option>
+                </Select>
 
-                <div className="form-group">
-                    <label className="label-text">Assigned Analyst</label>
-                    <input
-                        className="ui-input"
-                        value={assignedTo}
-                        onChange={(e) => setAssignedTo(e.target.value)}
-                    />
-                </div>
+                <Input
+                    label="Assigned Analyst"
+                    value={assignedTo}
+                    onChange={(e) => setAssignedTo(e.target.value)}
+                />
             </Card>
 
             {/* Resolution */}
@@ -191,9 +192,9 @@ function InvestigationDetails() {
                 title="Resolution"
                 subtitle="Document the outcome of the investigation"
             >
-                <textarea
-                    className="ui-textarea"
-                    rows="5"
+                <Textarea
+                    label="Resolution"
+                    rows={5}
                     value={resolution}
                     onChange={(e) => setResolution(e.target.value)}
                 />
@@ -204,28 +205,22 @@ function InvestigationDetails() {
                 title="Update Investigation"
                 subtitle="Modify investigation details"
             >
-                <div className="form-group">
-                    <label className="label-text">Status</label>
-                    <select
-                        className="ui-select"
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                    >
-                        <option value="OPEN">OPEN</option>
-                        <option value="UNDER_REVIEW">UNDER REVIEW</option>
-                        <option value="CLOSED">CLOSED</option>
-                    </select>
-                </div>
+                <Select
+                    label="Status"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                >
+                    <option value="OPEN">OPEN</option>
+                    <option value="UNDER_REVIEW">UNDER REVIEW</option>
+                    <option value="CLOSED">CLOSED</option>
+                </Select>
 
-                <div className="form-group">
-                    <label className="label-text">Notes</label>
-                    <textarea
-                        className="ui-textarea"
-                        rows="5"
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                    />
-                </div>
+                <Textarea
+                    label="Notes"
+                    rows={5}
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                />
 
                 <div className="table-actions">
                     <Button variant="primary" onClick={updateCase}>

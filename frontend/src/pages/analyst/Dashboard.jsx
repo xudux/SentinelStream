@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react"
+
 import API from "../../api/api";
 
 import StatsCard from "../../components/common/StatsCard"
 import FraudTable from "../../components/common/FraudTable"
 import Navbar from "../../components/common/Navbar"
+
 import {
     PageHeader,
     Card,
+    Button,
     ErrorState,
     CardSkeleton
 } from "../../components/ui";
@@ -68,6 +71,14 @@ function Dashboard() {
                 <PageHeader
                     title="Fraud Monitoring Center"
                     subtitle="Real-time fraud detection and investigation system"
+                    actions={
+                        <Button
+                            variant="secondary"
+                            onClick={fetchDashboard}
+                        >
+                            Refresh
+                        </Button>
+                    }
                 />
 
                 <div className="analyst-cards-grid">
@@ -78,6 +89,14 @@ function Dashboard() {
                     <CardSkeleton />
 
                 </div>
+
+                <br />
+
+                <CardSkeleton />
+
+                <br />
+
+                <CardSkeleton />
 
             </div>
 
@@ -108,11 +127,20 @@ function Dashboard() {
     return (
 
         <div className="container">
+
             <Navbar />
 
             <PageHeader
                 title="Fraud Monitoring Center"
                 subtitle="Real-time fraud detection and investigation system"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchDashboard}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <div className="analyst-cards-grid">
@@ -120,11 +148,6 @@ function Dashboard() {
                 <StatsCard
                     title="Transactions"
                     value={stats.total_transactions || 0}
-                />
-
-                <StatsCard
-                    title="Approved"
-                    value={stats.approved || 0}
                 />
 
                 <StatsCard
@@ -169,6 +192,7 @@ function Dashboard() {
                 title="High Risk Transactions"
                 subtitle="Transactions with elevated fraud risk scores"
             >
+
                 <FraudTable
                     data={highRisk}
                 />

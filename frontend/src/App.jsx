@@ -6,6 +6,8 @@ import {
 
 import Landing from "./pages/Landing";
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+
 
 // CUSTOMER
 import CustomerDashboard from "./pages/customer/Dashboard";
@@ -47,6 +49,11 @@ function App() {
                     element={<Login />}
                 />
 
+                <Route
+                    path="/register" 
+                    element={<Register />} 
+                />
+
                 {/* =========================
                     CUSTOMER ROUTES
                 ========================= */}
@@ -55,7 +62,7 @@ function App() {
                     path="/customer/dashboard"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["USER"]}
+                            allowedRoles={["USER", "CUSTOMER"]}
                         >
                             <CustomerDashboard />
                         </ProtectedRoute>
@@ -66,7 +73,7 @@ function App() {
                     path="/customer/transactions"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["USER"]}
+                            allowedRoles={["USER", "CUSTOMER"]}
                         >
                             <CustomerTransactions />
                         </ProtectedRoute>
@@ -79,7 +86,7 @@ function App() {
                     path="/customer/profile"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["USER"]}
+                            allowedRoles={["USER", "CUSTOMER"]}
                         >
                             <CustomerProfile />
                         </ProtectedRoute>

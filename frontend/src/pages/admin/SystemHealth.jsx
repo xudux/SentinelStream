@@ -9,8 +9,8 @@ import {
     Badge,
     CardSkeleton,
     ErrorState,
-    Skeleton,
-    Card
+    Card,
+    Button
 } from "../../components/ui";
 
 import {
@@ -22,9 +22,9 @@ import {
 
 function SystemHealth() {
 
-    const [health, setHealth] =useState(null);
-    const [loading, setLoading] =useState(true);
-    const [error,setError]=useState("");
+    const [health, setHealth] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     const fetchHealth = () => {
 
@@ -34,29 +34,21 @@ function SystemHealth() {
         API.get("/admin/system-health")
 
             .then(res => {
-
                 setHealth(res.data);
-
             })
 
             .catch(() => {
-
                 setError("Unable to load system health.");
-
             })
 
             .finally(() => {
-
                 setLoading(false);
-
             });
 
     };
 
     useEffect(() => {
-
         fetchHealth();
-
     }, []);
 
     if (error) {
@@ -92,41 +84,35 @@ function SystemHealth() {
 
                 <br />
 
-                <Skeleton height="250px" />
+                <CardSkeleton />
             </div>
         );
     }
 
     const services = [
-
         {
             name: "API Gateway",
             status: health.api_status,
             icon: Activity
         },
-
         {
             name: "Database",
             status: health.database_status,
             icon: Database
         },
-
         {
             name: "Fraud Engine",
             status: health.fraud_engine,
             icon: ShieldCheck
         },
-
         {
             name: "Authentication",
             status: health.auth_service,
             icon: KeyRound
         }
-
     ];
 
     return (
-
         <div className="container">
 
             <Navbar />
@@ -134,8 +120,15 @@ function SystemHealth() {
             <PageHeader
                 title="System Health"
                 subtitle="Monitor infrastructure"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchHealth}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
-
 
             <div className="analyst-cards-grid">
 
@@ -173,18 +166,14 @@ function SystemHealth() {
                         const Icon = service.icon;
 
                         return (
-
                             <div
                                 key={service.name}
                                 className="health-card"
                             >
-
                                 <div className="health-card-top">
 
                                     <span className="health-icon">
-
                                         <Icon size={22} />
-
                                     </span>
 
                                     <Badge
@@ -199,22 +188,15 @@ function SystemHealth() {
 
                                 </div>
 
-                                <h3>
-                                    {service.name}
-                                </h3>
+                                <h3>{service.name}</h3>
 
                                 <p>
-
                                     {service.status === "ONLINE"
-
                                         ? "Service operating normally."
-
                                         : "Service requires attention."}
-
                                 </p>
 
                             </div>
-
                         );
 
                     })}
@@ -227,25 +209,14 @@ function SystemHealth() {
                 title="Latest Activity"
                 subtitle="Most recent system audit event"
             >
-
                 <div className="card-content">
-
-                    <h3>
-                        Most Recent Audit Event
-                    </h3>
-
-                    <p>
-                        {health.latest_activity}
-                    </p>
-
+                    <h3>Most Recent Audit Event</h3>
+                    <p>{health.latest_activity}</p>
                 </div>
-
             </Card>
 
         </div>
-
-    )
-
+    );
 }
 
-export default SystemHealth
+export default SystemHealth;

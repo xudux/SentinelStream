@@ -23,6 +23,7 @@ import { Button } from "../ui";
 function Navbar() {
   const role =
     localStorage.getItem("role");
+    console.log("Navbar role:", role);
 
   const navigate =
     useNavigate();

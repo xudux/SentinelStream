@@ -122,8 +122,17 @@ function Dashboard() {
                     <CardSkeleton />
                     <CardSkeleton />
                     <CardSkeleton />
+                    <CardSkeleton />
 
                 </div>
+
+                <br />
+
+                <CardSkeleton />
+
+                <br />
+
+                <CardSkeleton />
 
             </div>
 
@@ -158,11 +167,16 @@ function Dashboard() {
             <Navbar />
 
             <PageHeader
-
                 title="SentinelStream Admin Console"
-
                 subtitle="Platform administration and system overview"
-
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchDashboard}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <div className="analyst-cards-grid">
@@ -182,7 +196,7 @@ function Dashboard() {
                 />
 
                 <StatsCard
-                    title="Investigations"
+                    title="Blocked Transactions"
                     value={stats.blocked || 0}
                 />
 
@@ -242,7 +256,7 @@ function Dashboard() {
 
                                 <td>
 
-                                    {log.user_id}
+                                    {log.user_id || "-"}
 
                                 </td>
 
@@ -264,7 +278,12 @@ function Dashboard() {
 
                                 </td>
 
-                                <td>
+                                <td
+                                    style={{
+                                        maxWidth: 320,
+                                        wordBreak: "break-word"
+                                    }}
+                                >
 
                                     {log.details}
 

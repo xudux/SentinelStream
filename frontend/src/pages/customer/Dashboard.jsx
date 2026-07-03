@@ -10,8 +10,11 @@ import {
     Badge,
     EmptyState,
     ErrorState,
-    CardSkeleton
+    CardSkeleton,
+    Button,
+    Progress
 } from "../../components/ui";
+
 
 import StatsCard from "../../components/common/StatsCard";
 
@@ -121,6 +124,14 @@ function Dashboard() {
             <PageHeader
                 title="Customer Dashboard"
                 subtitle="Overview of your account activity"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchDashboard}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             {/* ✅ UNIFIED GRID */}
@@ -200,17 +211,20 @@ function Dashboard() {
                                     </td>
 
                                     <td>
-                                        <Badge
-                                            variant={
-                                                tx.risk_score >= 80
-                                                    ? "danger"
-                                                    : tx.risk_score >= 50
-                                                    ? "warning"
-                                                    : "success"
-                                            }
-                                        >
-                                            {Number(tx.risk_score).toFixed(0)}
-                                        </Badge>
+                                        <div style={{ width: 120 }}>
+
+                                            <Progress
+                                                value={tx.risk_score}
+                                                color={
+                                                    tx.risk_score >= 80
+                                                        ? "danger"
+                                                        : tx.risk_score >= 50
+                                                        ? "warning"
+                                                        : "success"
+                                                }
+                                            />
+
+                                        </div>
                                     </td>
                                 </tr>
                             ))

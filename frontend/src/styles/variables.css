@@ -45,6 +45,41 @@
   ========================= */
 
   --container-width: 1400px;
+
+  /* =========================
+     Z-INDEX
+  ========================= */
+
+  --z-background: 0;
+  --z-content: 10;
+  --z-navbar: 1000;
+  --z-modal: 2000;
+  --z-toast: 3000;
+
+  /* =========================
+     SIDEBAR
+  ========================= */
+
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 80px;
+
+  /* =========================
+     HEADER
+  ========================= */
+
+  --navbar-height: 72px;
+
+  /* =========================
+     INPUTS
+  ========================= */
+
+  --input-height: 44px;
+
+  /* =========================
+     TABLES
+  ========================= */
+
+  --table-row-height: 56px;
 }
 
 [data-theme="light"] {
@@ -86,6 +121,52 @@
   ========================= */
 
   --border-color: #e2e8f0;
+
+  /* =========================
+     EXTRA SURFACES
+  ========================= */
+
+  --bg-sidebar: #ffffff;
+  --bg-navbar: rgba(255,255,255,.82);
+  --bg-hover: #f1f5f9;
+  --bg-active: #dbeafe;
+
+  /* =========================
+     INPUTS
+  ========================= */
+
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --input-focus: #2563eb;
+
+  /* =========================
+     TABLES
+  ========================= */
+
+  --table-header: #f8fafc;
+  --table-hover: #f8fafc;
+
+  /* =========================
+     STATUS BACKGROUNDS
+  ========================= */
+
+  --success-bg: rgba(22,163,74,.10);
+  --warning-bg: rgba(245,158,11,.10);
+  --danger-bg: rgba(220,38,38,.10);
+  --info-bg: rgba(2,132,199,.10);
+
+  /* =========================
+     OVERLAY
+  ========================= */
+
+  --overlay: rgba(15,23,42,.45);
+
+  /* =========================
+     SCROLLBAR
+  ========================= */
+
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-track: transparent;
 }
 
 [data-theme="dark"] {
@@ -127,4 +208,50 @@
   ========================= */
 
   --border-color: #334155;
+
+  /* =========================
+     EXTRA SURFACES
+  ========================= */
+
+  --bg-sidebar: #172033;
+  --bg-navbar: rgba(15,23,42,.82);
+  --bg-hover: #243248;
+  --bg-active: rgba(59,130,246,.20);
+
+  /* =========================
+     INPUTS
+  ========================= */
+
+  --input-bg: #172033;
+  --input-border: #334155;
+  --input-focus: #3b82f6;
+
+  /* =========================
+     TABLES
+  ========================= */
+
+  --table-header: #172033;
+  --table-hover: #223047;
+
+  /* =========================
+     STATUS BACKGROUNDS
+  ========================= */
+
+  --success-bg: rgba(34,197,94,.12);
+  --warning-bg: rgba(245,158,11,.12);
+  --danger-bg: rgba(239,68,68,.12);
+  --info-bg: rgba(56,189,248,.12);
+
+  /* =========================
+     OVERLAY
+  ========================= */
+
+  --overlay: rgba(0,0,0,.60);
+
+  /* =========================
+     SCROLLBAR
+  ========================= */
+
+  --scrollbar-thumb: #475569;
+  --scrollbar-track: transparent;
 }

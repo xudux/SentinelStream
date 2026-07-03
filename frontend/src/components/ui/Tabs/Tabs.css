@@ -1,0 +1,55 @@
+/* ==========================================
+   TABS
+========================================== */
+
+.ui-tabs{
+
+    display:flex;
+
+    gap:8px;
+
+    padding:6px;
+
+    background:var(--bg-muted);
+
+    border-radius:var(--radius-lg);
+
+    width:fit-content;
+
+}
+
+.ui-tab{
+
+    border:none;
+
+    background:transparent;
+
+    color:var(--text-secondary);
+
+    padding:10px 18px;
+
+    border-radius:var(--radius-md);
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:all var(--transition-fast);
+
+}
+
+.ui-tab:hover{
+
+    color:var(--text-primary);
+
+}
+
+.ui-tab-active{
+
+    background:var(--bg-card);
+
+    color:var(--color-primary);
+
+    box-shadow:var(--shadow-sm);
+
+}

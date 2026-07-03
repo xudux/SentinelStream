@@ -6,18 +6,18 @@ import { Link } from "react-router-dom";
 import {
     PageHeader,
     Card,
+    Button,
     Badge,
     EmptyState,
     ErrorState,
-    CardSkeleton
+    CardSkeleton,
+    Progress
 } from "../../components/ui";
 
 function TransactionMonitor() {
 
     const [transactions, setTransactions] = useState([]);
-
     const [loading, setLoading] = useState(true);
-
     const [error, setError] = useState("");
 
     const fetchTransactions = () => {
@@ -65,7 +65,23 @@ function TransactionMonitor() {
                 <PageHeader
                     title="Transaction Monitoring Console"
                     subtitle="Monitor all platform transactions"
+                    actions={
+                        <Button
+                            variant="secondary"
+                            onClick={fetchTransactions}
+                        >
+                            Refresh
+                        </Button>
+                    }
                 />
+
+                <div className="analyst-cards-grid">
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                </div>
+
+                <br />
 
                 <CardSkeleton />
 
@@ -104,11 +120,19 @@ function TransactionMonitor() {
             <PageHeader
                 title="Transaction Monitoring Console"
                 subtitle="Monitor all platform transactions"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchTransactions}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <Card
                 title="Transactions"
-                subtitle="Monitor processed transactions and risk status"
+                subtitle="Review processed transactions, fraud risk scores and processing outcomes"
             >
 
                 <table className="ui-table">
@@ -163,13 +187,10 @@ function TransactionMonitor() {
 
                                         <td>{tx.id}</td>
 
-                                        <td>{tx.user_id}</td>
+                                        <td>{tx.user_id || "-"}</td>
 
                                         <td>
-                                            ₹
-                                            {
-                                                tx.amount.toLocaleString()
-                                            }
+                                            ₹{Number(tx.amount).toLocaleString()}
                                         </td>
 
                                         <td>{tx.merchant}</td>
@@ -194,19 +215,20 @@ function TransactionMonitor() {
 
                                         <td>
 
-                                            <Badge
-                                                variant={
-                                                    tx.risk_score >= 80
-                                                        ? "danger"
-                                                        : tx.risk_score >= 50
-                                                        ? "warning"
-                                                        : "success"
-                                                }
-                                            >
+                                            <div style={{ width: 120 }}>
+                                                <Progress
+                                                    value={tx.risk_score}
+                                                    color={
+                                                        tx.risk_score >= 80
+                                                            ? "danger"
+                                                            : tx.risk_score >= 50
+                                                            ? "warning"
+                                                            : "success"
+                                                    }
+                                                />
 
-                                                {tx.risk_score}
-
-                                            </Badge>
+                                                <small>{tx.risk_score}%</small>
+                                            </div>
 
                                         </td>
 
@@ -214,7 +236,7 @@ function TransactionMonitor() {
 
                                             <Link to={`/analyst/transactions/${tx.id}`}>
 
-                                                <Badge variant="primary">
+                                                <Badge variant="info">
 
                                                     View
 

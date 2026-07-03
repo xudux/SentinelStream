@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
+
 import API from "../../api/api";
+
 import Navbar from "../../components/common/Navbar";
+
 import {
     PageHeader,
     Badge,
+    Button,
+    Card,
     EmptyState,
     ErrorState,
-    Card
+    CardSkeleton,
+    Input,
+    Select
 } from "../../components/ui";
+
 import StatsCard from "../../components/common/StatsCard";
 
 function AuditLogs() {
@@ -61,8 +69,8 @@ function AuditLogs() {
                 : log.action === actionFilter;
 
         const searchMatch =
-            log.details
-                ?.toLowerCase()
+            (log.details || "")
+                .toLowerCase()
                 .includes(searchTerm.toLowerCase());
 
         return actionMatch && searchMatch;
@@ -94,9 +102,32 @@ function AuditLogs() {
                 <PageHeader
                     title="Audit Log Center"
                     subtitle="Administrative activity monitoring"
+                    actions={
+                        <Button
+                            variant="secondary"
+                            onClick={fetchLogs}
+                        >
+                            Refresh
+                        </Button>
+                    }
                 />
 
-                <div>Loading audit logs...</div>
+                <div className="analyst-cards-grid">
+
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+
+                </div>
+
+                <br />
+
+                <CardSkeleton />
+
+                <br />
+
+                <CardSkeleton />
 
             </div>
 
@@ -133,6 +164,14 @@ function AuditLogs() {
             <PageHeader
                 title="Audit Log Center"
                 subtitle="Administrative activity monitoring"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchLogs}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <div className="analyst-cards-grid">
@@ -166,8 +205,8 @@ function AuditLogs() {
 
                 <div className="table-toolbar">
 
-                    <select
-                        className="ui-select"
+                    <Select
+                        label="Action"
                         value={actionFilter}
                         onChange={(e) =>
                             setActionFilter(e.target.value)
@@ -194,11 +233,10 @@ function AuditLogs() {
                             FRAUD_EVENT_CREATED
                         </option>
 
-                    </select>
+                    </Select>
 
-                    <input
-                        className="ui-input"
-                        type="text"
+                    <Input
+                        label="Search"
                         placeholder="Search details..."
                         value={searchTerm}
                         onChange={(e) =>
@@ -257,7 +295,7 @@ function AuditLogs() {
 
                                         <td>{log.id}</td>
 
-                                        <td>{log.user_id}</td>
+                                        <td>{log.user_id || "-"}</td>
 
                                         <td>
 
@@ -275,7 +313,14 @@ function AuditLogs() {
 
                                         </td>
 
-                                        <td>{log.details}</td>
+                                        <td
+                                            style={{
+                                                maxWidth: 320,
+                                                wordBreak: "break-word"
+                                            }}
+                                        >
+                                            {log.details}
+                                        </td>
 
                                         <td>
                                             {new Date(

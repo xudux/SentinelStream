@@ -1,13 +1,14 @@
 import { useState } from "react";
 import API from "../../api/api";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
 
 import {
     Card,
     Button,
-    ErrorState
+    ErrorState,
+    Input
 } from "../../components/ui";
 
 function Login() {
@@ -18,6 +19,7 @@ function Login() {
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -71,6 +73,16 @@ function Login() {
 
             <div className="login-wrapper">
 
+                {location.state?.registered && (
+                    <Alert
+                        variant="success"
+                        icon={<ShieldCheck size={20} />}
+                        title="Account created successfully"
+                    >
+                        You can now login using your email and password.
+                    </Alert>
+                )}
+
                 {error && (
                     <ErrorState
                         title="Login Failed"
@@ -91,37 +103,45 @@ function Login() {
 
                     <form onSubmit={handleLogin}>
 
-                        <div className="form-group">
-                            <label className="label-text">Email</label>
-                            <input
-                                className="ui-input"
-                                type="email"
-                                placeholder="Enter email"
-                                autoComplete="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
+                        <Input
+                            label="Email"
+                            type="email"
+                            placeholder="Enter email"
+                            autoComplete="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
 
-                        <div className="form-group">
-                            <label className="label-text">Password</label>
-                            <input
-                                className="ui-input"
-                                type="password"
-                                placeholder="Enter password"
-                                autoComplete="current-password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
+                        <Input
+                            label="Password"
+                            type="password"
+                            placeholder="Enter password"
+                            autoComplete="current-password"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
 
                         <Button
                             type="submit"
-                            disabled={loading}
+                            loading={loading}
                             className="login-btn"
                         >
-                            {loading ? "Logging in..." : "Login"}
+                            Login
                         </Button>
+
+                        <div className="login-register-link">
+                            <span>New to SentinelStream?</span>
+
+                            <button
+                                type="button"
+                                className="register-link-btn"
+                                onClick={() => navigate("/register")}
+                            >
+                                Create an account
+                            </button>
+                        </div>
 
                     </form>
 

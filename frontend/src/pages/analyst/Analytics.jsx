@@ -7,6 +7,7 @@ import StatsCard from "../../components/common/StatsCard";
 import {
     PageHeader,
     Card,
+    Button,
     ErrorState,
     CardSkeleton,
     Skeleton
@@ -82,6 +83,7 @@ function Analytics() {
                     <CardSkeleton />
                     <CardSkeleton />
                     <CardSkeleton />
+                    <CardSkeleton />
 
                 </div>
 
@@ -139,6 +141,14 @@ function Analytics() {
             <PageHeader
                 title="ML Analytics Dashboard"
                 subtitle="Overview of fraud detection metrics"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchAnalytics}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <div className="analyst-cards-grid">
@@ -158,15 +168,29 @@ function Analytics() {
                     value={`${stats.fraud_rate || 0}%`}
                 />
 
+                <StatsCard
+                    title="Approved"
+                    value={distribution.approved || 0}
+                />
+
             </div>
 
             <Card
                 title="Transaction Status Distribution"
-                subtitle="Current distribution of processed transactions"
+                subtitle="Approved, flagged and blocked transactions processed by the fraud engine"
             >
+
+                <div className="preview-item">
+                    <span>Total Processed</span>
+
+                    <strong>
+                        {stats.total_transactions || 0}
+                    </strong>
+                </div>
+
                 <ResponsiveContainer
                     width="100%"
-                    height={400}
+                    height={360}
                 >
 
                     <BarChart data={chartData}>

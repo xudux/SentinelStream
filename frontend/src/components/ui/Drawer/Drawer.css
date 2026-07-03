@@ -1,0 +1,107 @@
+/* ==========================================
+   DRAWER
+========================================== */
+
+.ui-drawer-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(15,23,42,.45);
+
+    backdrop-filter:blur(4px);
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    z-index:5000;
+
+}
+
+.ui-drawer{
+
+    height:100%;
+
+    background:var(--bg-card);
+
+    border-left:1px solid var(--border-color);
+
+    box-shadow:var(--shadow-lg);
+
+    display:flex;
+
+    flex-direction:column;
+
+    animation:drawerSlide .25s ease;
+
+}
+
+.ui-drawer-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 24px;
+
+    border-bottom:1px solid var(--border-color);
+
+}
+
+.ui-drawer-header h2{
+
+    margin:0;
+
+    font-size:1.2rem;
+
+    color:var(--text-primary);
+
+}
+
+.ui-drawer-close{
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    color:var(--text-secondary);
+
+}
+
+.ui-drawer-close:hover{
+
+    color:var(--color-danger);
+
+}
+
+.ui-drawer-body{
+
+    flex:1;
+
+    overflow:auto;
+
+    padding:24px;
+
+}
+
+@keyframes drawerSlide{
+
+    from{
+
+        transform:translateX(100%);
+
+    }
+
+    to{
+
+        transform:translateX(0);
+
+    }
+
+}

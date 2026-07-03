@@ -82,6 +82,6 @@ a {
 
 ::-webkit-scrollbar-thumb:hover{
 
-    background:var(--accent);
+    background:var(--color-primary)
 
 }

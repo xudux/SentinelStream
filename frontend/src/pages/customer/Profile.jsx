@@ -8,7 +8,8 @@ import {
     Card,
     ErrorState,
     EmptyState,
-    CardSkeleton
+    CardSkeleton,
+    Button
 } from "../../components/ui";
 
 function Profile() {
@@ -97,44 +98,37 @@ function Profile() {
             <PageHeader
                 title="Customer Profile"
                 subtitle="View your account information"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchProfile}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <Card
-                title="Name"
-                subtitle="Your full name"
+                title="Account Information"
+                subtitle="Your registered profile details"
             >
 
-                <p>
+                <div className="preview-item">
+                    <span>Name</span>
+                    <strong>{user.name}</strong>
+                </div>
 
-                    {user.name}
+                <div className="preview-item">
+                    <span>Email</span>
+                    <strong>{user.email}</strong>
+                </div>
 
-                </p>
-
-            </Card>
-
-            <Card
-                title="Email"
-                subtitle="Registered email address"
-            >
-
-                <p>
-
-                    {user.email}
-
-                </p>
-
-            </Card>
-
-            <Card
-                title="Balance"
-                subtitle="Your current account balance"
-            >
-
-                <p>
-
-                    ₹ {Number(user.balance).toLocaleString()}
-
-                </p>
+                <div className="preview-item">
+                    <span>Current Balance</span>
+                    <strong>
+                        ₹ {Number(user.balance).toLocaleString()}
+                    </strong>
+                </div>
 
             </Card>
 

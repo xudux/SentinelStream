@@ -16,6 +16,7 @@ import './styles/tables.css';
 import './styles/badges.css';
 import './styles/typography.css';
 import './styles/landing.css';
+import "./styles/landing-navbar.css";
 import './index.css';
 import './styles/pages.css';
 

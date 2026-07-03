@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
 
-from pika import data
 from sqlalchemy.orm import Session
 
 from app.models import user
@@ -54,11 +53,10 @@ def register(
 
     if existing_user:
 
-        return {
-            "message":
-            "email already registered"
-        }
-
+        raise HTTPException(
+            status_code=400,
+            detail="Email already registered."
+        )
 
     hashed = hash_password(
 

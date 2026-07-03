@@ -7,10 +7,11 @@ import Navbar from "../../components/common/Navbar";
 import {
     PageHeader,
     Card,
-    Badge,
+    Button,
     EmptyState,
     ErrorState,
-    CardSkeleton
+    CardSkeleton,
+    Progress
 } from "../../components/ui";
 
 function FraudEvents() {
@@ -67,6 +68,14 @@ function FraudEvents() {
                 <PageHeader
                     title="Fraud Event Queue"
                     subtitle="High risk transactions awaiting analyst investigation"
+                    actions={
+                        <Button
+                            variant="secondary"
+                            onClick={fetchEvents}
+                        >
+                            Refresh
+                        </Button>
+                    }
                 />
 
                 <CardSkeleton />
@@ -106,11 +115,19 @@ function FraudEvents() {
             <PageHeader
                 title="Fraud Event Queue"
                 subtitle="High risk transactions awaiting analyst investigation"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchEvents}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <Card
                 title="Fraud Events"
-                subtitle="Detected fraud events awaiting investigation"
+                subtitle="Transactions automatically escalated by the fraud detection engine"
             >
 
                 <table className="ui-table">
@@ -159,25 +176,26 @@ function FraudEvents() {
 
                                         <td>
 
-                                            <Badge
-                                                variant={
-                                                    event.risk_score >= 100
-                                                        ? "danger"
-                                                        : event.risk_score >= 70
-                                                        ? "warning"
-                                                        : "success"
-                                                }
-                                            >
+                                            <div style={{ width: 140 }}>
 
-                                                {
-                                                    event.risk_score >= 100
-                                                        ? "CRITICAL"
-                                                        : event.risk_score >= 70
-                                                        ? "HIGH"
-                                                        : event.risk_score
-                                                }
+                                                <Progress
+                                                    value={Math.min(event.risk_score, 100)}
+                                                    color={
+                                                        event.risk_score >= 100
+                                                            ? "danger"
+                                                            : event.risk_score >= 70
+                                                            ? "warning"
+                                                            : "success"
+                                                    }
+                                                />
 
-                                            </Badge>
+                                                <small>
+                                                    {event.risk_score >= 100
+                                                        ? "Critical"
+                                                        : `${event.risk_score}%`}
+                                                </small>
+
+                                            </div>
 
                                         </td>
 

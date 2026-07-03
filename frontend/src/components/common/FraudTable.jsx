@@ -6,9 +6,13 @@ function FraudTable({ title, data }) {
 
         <div className="analyst-table-wrapper fade-in">
 
-            <h2 className="analyst-table-title">
-                {title}
-            </h2>
+            {
+                title && (
+                    <h2 className="analyst-table-title">
+                        {title}
+                    </h2>
+                )
+            }
 
             <div className="table-container">
 

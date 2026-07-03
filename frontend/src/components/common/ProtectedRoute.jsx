@@ -23,7 +23,7 @@ function ProtectedRoute({
       return <Navigate to="/analyst/dashboard" />;
     }
 
-    if (role === "USER") {
+    if (role === "USER" || role === "CUSTOMER") {
       return <Navigate to="/customer/dashboard" />;
     }
 

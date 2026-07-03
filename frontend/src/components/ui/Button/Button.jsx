@@ -4,17 +4,49 @@ function Button({
 
     children,
 
+    variant = "primary",
+
+    size = "md",
+
     loading = false,
 
-    disabled,
+    disabled = false,
+
+    fullWidth = false,
+
+    icon,
+
+    className = "",
 
     ...props
 
 }) {
 
+    const classes = [
+
+        "ui-button",
+
+        `ui-button-${variant}`,
+
+        `ui-button-${size}`,
+
+        fullWidth && "ui-button-full",
+
+        loading && "ui-button-loading",
+
+        className
+
+    ]
+
+        .filter(Boolean)
+
+        .join(" ");
+
     return (
 
         <button
+
+            className={classes}
 
             disabled={loading || disabled}
 
@@ -28,7 +60,16 @@ function Button({
 
                     ? <Spinner />
 
-                    : children
+                    : (
+
+                        <>
+
+                            {icon}
+
+                            {children}
+                        </>
+
+                    )
 
             }
 

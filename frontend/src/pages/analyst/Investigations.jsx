@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import {
     PageHeader,
     Card,
+    Button,
     Badge,
     EmptyState,
     ErrorState,
@@ -65,7 +66,23 @@ function Investigations() {
                 <PageHeader
                     title="Fraud Investigation Cases"
                     subtitle="Review and manage fraud investigations"
+                    actions={
+                        <Button
+                            variant="secondary"
+                            onClick={fetchCases}
+                        >
+                            Refresh
+                        </Button>
+                    }
                 />
+
+                <div className="analyst-cards-grid">
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                </div>
+
+                <br />
 
                 <CardSkeleton />
 
@@ -104,11 +121,19 @@ function Investigations() {
             <PageHeader
                 title="Fraud Investigation Cases"
                 subtitle="Review and manage fraud investigations"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={fetchCases}
+                    >
+                        Refresh
+                    </Button>
+                }
             />
 
             <Card
                 title="Investigations"
-                subtitle="Cases assigned for fraud analysis and resolution"
+                subtitle="Track investigation status, priority and analyst assignment"
             >
 
                 <table className="ui-table">
@@ -159,7 +184,7 @@ function Investigations() {
 
                                             <Link to={`/analyst/investigations/${c.id}`}>
 
-                                                <Badge variant="primary">
+                                                <Badge variant="info">
 
                                                     View #{c.id}
 
@@ -193,7 +218,7 @@ function Investigations() {
 
                                         <td>
 
-                                            {c.assigned_to}
+                                            {c.assigned_to || "-"}
 
                                         </td>
 

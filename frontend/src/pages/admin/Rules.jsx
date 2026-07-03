@@ -1,48 +1,39 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import API from "../../api/api"
+import API from "../../api/api";
 
-import Navbar from "../../components/common/Navbar"
+import Navbar from "../../components/common/Navbar";
+
 import {
     PageHeader,
     Button,
     Badge,
     EmptyState,
     ErrorState,
-    Card
+    Card,
+    CardSkeleton,
+    Input,
+    Select
 } from "../../components/ui";
-
 
 function Rules() {
 
+    const [rules, setRules] = useState([]);
 
-    const [rules, setRules] = useState([])
-
-    const [error,setError]=useState("")
+    const [error, setError] = useState("");
 
     const [loading, setLoading] = useState(true);
 
     const [form, setForm] = useState({
-
         name: "",
-
         rule_type: "",
-
         rule_value: "",
-
         risk_score: ""
-
-    })
-
-
+    });
 
     useEffect(() => {
-
-        fetchRules()
-
-    }, [])
-
-
+        fetchRules();
+    }, []);
 
     const fetchRules = () => {
         setError("");
@@ -64,13 +55,22 @@ function Rules() {
         return (
             <div className="container">
                 <Navbar />
+
                 <PageHeader
                     title="Fraud Rules Engine"
                     subtitle="Configure fraud detection behaviour and risk scoring"
                 />
-                <div>Loading rules...</div>
+
+                <div className="analyst-cards-grid">
+                    <CardSkeleton />
+                    <CardSkeleton />
+                </div>
+
+                <br />
+
+                <CardSkeleton />
             </div>
-        )
+        );
     }
 
     const toggleRule = (id) => {
@@ -136,23 +136,26 @@ function Rules() {
     };
 
     return (
-
         <div className="container">
-
             <Navbar />
 
             <PageHeader
                 title="Fraud Rules Engine"
                 subtitle="Configure fraud detection behaviour and risk scoring"
+                actions={
+                    <Button variant="secondary" onClick={fetchRules}>
+                        Refresh
+                    </Button>
+                }
             />
 
-            {
-                error && (
-                    <ErrorState
-                        message={error}
-                    />
-                )
-            }
+            {error && (
+                <ErrorState
+                    title="Rules unavailable"
+                    description={error}
+                    onRetry={fetchRules}
+                />
+            )}
 
             <Card
                 title="Create Fraud Rule"
@@ -160,9 +163,8 @@ function Rules() {
             >
                 <div className="rule-form">
 
-                    <input
-                        className="ui-input"
-                        placeholder="Rule Name"
+                    <Input
+                        label="Rule Name"
                         value={form.name}
                         onChange={e =>
                             setForm({
@@ -172,8 +174,8 @@ function Rules() {
                         }
                     />
 
-
-                    <select className="ui-select"
+                    <Select
+                        label="Rule Type"
                         value={form.rule_type}
                         onChange={(e) =>
                             setForm({
@@ -183,92 +185,60 @@ function Rules() {
                             })
                         }
                     >
-                        <option value="">
-                            Select Rule Type
-                        </option>
+                        <option value="">Select Rule Type</option>
+                        <option value="COUNTRY">COUNTRY</option>
+                        <option value="MERCHANT">MERCHANT</option>
+                        <option value="AMOUNT">AMOUNT</option>
+                    </Select>
 
-                        <option value="COUNTRY">
-                            COUNTRY
-                        </option>
+                    {form.rule_type === "COUNTRY" ? (
+                        <Select
+                            label="Country"
+                            value={form.rule_value}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    rule_value: e.target.value,
+                                })
+                            }
+                        >
+                            <option value="">Select Country</option>
+                            <option value="Russia">Russia</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="North Korea">North Korea</option>
+                        </Select>
+                    ) : form.rule_type === "MERCHANT" ? (
+                        <Select
+                            label="Merchant"
+                            value={form.rule_value}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    rule_value: e.target.value,
+                                })
+                            }
+                        >
+                            <option value="">Select Merchant</option>
+                            <option value="CryptoExchange">CryptoExchange</option>
+                            <option value="DarkWebMarket">DarkWebMarket</option>
+                            <option value="UnknownVendor">UnknownVendor</option>
+                        </Select>
+                    ) : (
+                        <Input
+                            label="Amount Threshold"
+                            value={form.rule_value}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    rule_value: e.target.value,
+                                })
+                            }
+                        />
+                    )}
 
-                        <option value="MERCHANT">
-                            MERCHANT
-                        </option>
-
-                        <option value="AMOUNT">
-                            AMOUNT
-                        </option>
-                    </select>
-
-                    {
-                        form.rule_type === "COUNTRY" ? (
-                            <select className="ui-select"
-                                value={form.rule_value}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        rule_value: e.target.value,
-                                    })
-                                }
-                            >
-                                <option value="">
-                                    Select Country
-                                </option>
-
-                                <option value="Russia">
-                                    Russia
-                                </option>
-
-                                <option value="Nigeria">
-                                    Nigeria
-                                </option>
-
-                                <option value="North Korea">
-                                    North Korea
-                                </option>
-                            </select>
-                        ) : form.rule_type === "MERCHANT" ? (
-                            <select className="ui-select"
-                                value={form.rule_value}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        rule_value: e.target.value,
-                                    })
-                                }
-                            >
-                                <option value="">
-                                    Select Merchant
-                                </option>
-
-                                <option value="CryptoExchange">
-                                    CryptoExchange
-                                </option>
-
-                                <option value="DarkWebMarket">
-                                    DarkWebMarket
-                                </option>
-
-                                <option value="UnknownVendor">
-                                    UnknownVendor
-                                </option>
-                            </select>
-                        ) : (
-                            <input className="ui-input"
-                                placeholder="Amount Threshold"
-                                value={form.rule_value}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        rule_value: e.target.value,
-                                    })
-                                }
-                            />
-                        )
-                    }
-
-                    <input className="ui-input"
-                        placeholder="Risk Score"
+                    <Input
+                        label="Risk Score"
+                        type="number"
                         value={form.risk_score}
                         onChange={e =>
                             setForm({
@@ -283,41 +253,24 @@ function Rules() {
                     </Button>
 
                 </div>
-
             </Card>
-
-
 
             <Card
                 title="Fraud Rules"
                 subtitle="Manage fraud detection rules and their status"
             >
-
                 <table className="ui-table">
-
                     <thead>
-
                         <tr>
-
                             <th>ID</th>
-
                             <th>Name</th>
-
                             <th>Type</th>
-
                             <th>Value</th>
-
                             <th>Risk</th>
-
                             <th>Status</th>
-
                             <th>Actions</th>
-
                         </tr>
-
                     </thead>
-
-
 
                     <tbody>
                         {rules.length === 0 ? (
@@ -332,40 +285,23 @@ function Rules() {
                         ) : (
                             rules.map(rule => (
                                 <tr key={rule.id}>
+                                    <td>{rule.id}</td>
+                                    <td>{rule.name}</td>
+                                    <td>{rule.rule_type}</td>
+                                    <td>{rule.rule_value}</td>
                                     <td>
-                                        {rule.id}
+                                        <Badge
+                                            variant={
+                                                rule.risk_score >= 80
+                                                    ? "danger"
+                                                    : rule.risk_score >= 50
+                                                    ? "warning"
+                                                    : "success"
+                                            }
+                                        >
+                                            +{rule.risk_score}
+                                        </Badge>
                                     </td>
-
-                                    <td>
-                                        {rule.name}
-                                    </td>
-
-                                    <td>
-                                        {rule.rule_type}
-                                    </td>
-
-                                    <td>
-                                        {rule.rule_value}
-                                    </td>
-
-                                    <td>
-
-                                    <Badge
-                                        variant={
-                                            rule.risk_score >= 80
-                                                ? "danger"
-                                                : rule.risk_score >= 50
-                                                ? "warning"
-                                                : "success"
-                                        }
-                                    >
-
-                                    +{rule.risk_score}
-
-                                    </Badge>
-
-                                    </td>
-
                                     <td>
                                         <Badge
                                             variant={rule.is_active ? "success" : "danger"}
@@ -373,10 +309,8 @@ function Rules() {
                                             {rule.is_active ? "Active" : "Disabled"}
                                         </Badge>
                                     </td>
-
                                     <td>
                                         <div className="table-actions">
-
                                             <Button
                                                 size="sm"
                                                 variant="secondary"
@@ -392,23 +326,16 @@ function Rules() {
                                             >
                                                 Delete
                                             </Button>
-
                                         </div>
                                     </td>
                                 </tr>
                             ))
                         )}
                     </tbody>
-
                 </table>
-            
             </Card>
-
         </div>
-
-    )
-
+    );
 }
 
-
-export default Rules
+export default Rules;

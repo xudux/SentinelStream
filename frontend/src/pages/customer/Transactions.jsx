@@ -8,7 +8,9 @@ import {
     Card,
     Button,
     Badge,
-    ErrorState
+    ErrorState,
+    Input,
+    Progress
 } from "../../components/ui";
 
 function Transactions() {
@@ -18,9 +20,7 @@ function Transactions() {
     const [location, setLocation] = useState("");
 
     const [result, setResult] = useState(null);
-
     const [loading, setLoading] = useState(false);
-
     const [error, setError] = useState("");
 
     const submitTransaction = async (e) => {
@@ -68,66 +68,62 @@ function Transactions() {
             <PageHeader
                 title="Transaction Simulator"
                 subtitle="Test transactions through the fraud detection engine"
+                actions={
+                    <Button
+                        variant="secondary"
+                        onClick={() => {
+                            setAmount("");
+                            setMerchant("");
+                            setLocation("");
+                            setResult(null);
+                            setError("");
+                        }}
+                    >
+                        Clear
+                    </Button>
+                }
             />
 
             <Card
                 title="Create Transaction"
                 subtitle="Initiate a new transaction for processing"
             >
+
                 <form
                     className="customer-transaction-form"
                     onSubmit={submitTransaction}
                 >
 
-                    <div className="form-group">
+                    <Input
+                        label="Amount"
+                        type="number"
+                        placeholder="Enter amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        required
+                    />
 
-                        <label className="label-text">Amount</label>
+                    <Input
+                        label="Merchant"
+                        placeholder="Merchant name"
+                        value={merchant}
+                        onChange={(e) => setMerchant(e.target.value)}
+                        required
+                    />
 
-                        <input
-                            className="ui-input"
-                            type="number"
-                            placeholder="Enter amount"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                        />
-
-                    </div>
-
-                    <div className="form-group">
-
-                        <label className="label-text">Merchant</label>
-
-                        <input
-                            className="ui-input"
-                            placeholder="Merchant name"
-                            value={merchant}
-                            onChange={(e) => setMerchant(e.target.value)}
-                        />
-
-                    </div>
-
-                    <div className="form-group">
-
-                        <label className="label-text">Location</label>
-
-                        <input
-                            className="ui-input"
-                            placeholder="Transaction location"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                        />
-
-                    </div>
+                    <Input
+                        label="Location"
+                        placeholder="Transaction location"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        required
+                    />
 
                     <Button
                         type="submit"
-                        disabled={loading}
+                        loading={loading}
                     >
-
-                        {loading
-                            ? "Processing..."
-                            : "Send Transaction"}
-
+                        Send Transaction
                     </Button>
 
                 </form>
@@ -146,17 +142,12 @@ function Transactions() {
             {result && (
 
                 <Card
-                    title="Transaction Result"
-                    subtitle="Outcome of fraud analysis and processing"
+                    title="Fraud Analysis Result"
+                    subtitle="Evaluation returned by the fraud engine"
                 >
 
-                    <h3>
-                        Result
-                    </h3>
-
-                    <p>
-
-                        <strong>Status:</strong>{" "}
+                    <div className="preview-item">
+                        <span>Status</span>
 
                         <Badge
                             variant={
@@ -167,72 +158,77 @@ function Transactions() {
                                     : "success"
                             }
                         >
-
                             {result.status}
-
                         </Badge>
+                    </div>
 
-                    </p>
+                    {result.transaction_id && (
 
-                    {
-                        result.transaction_id &&
-                        <p>
+                        <div className="preview-item">
+                            <span>Transaction ID</span>
+                            <strong>{result.transaction_id}</strong>
+                        </div>
 
-                            <b>Transaction ID:</b>
+                    )}
 
-                            {result.transaction_id}
+                    {result.risk_score !== undefined && (
 
-                        </p>
-                    }
+                        <div className="preview-item">
+                            <span>Risk Score</span>
 
-                    {
-                        result.risk_score !== undefined &&
-                        <p>
+                            <div style={{ maxWidth: 240 }}>
 
-                            <strong>Risk Score:</strong>{" "}
+                                <Progress
+                                    value={result.risk_score}
+                                    color={
+                                        result.risk_score >= 80
+                                            ? "danger"
+                                            : result.risk_score >= 50
+                                            ? "warning"
+                                            : "success"
+                                    }
+                                />
+
+                                <small>
+                                    {result.risk_score}%
+                                </small>
+
+                            </div>
+                        </div>
+
+                    )}
+
+                    {result.ml_prediction !== undefined && (
+
+                        <div className="preview-item">
+                            <span>ML Prediction</span>
 
                             <Badge
                                 variant={
-                                    result.risk_score >= 80
+                                    result.ml_prediction === 1
                                         ? "danger"
-                                        : result.risk_score >= 50
-                                            ? "warning"
-                                            : "success"
+                                        : "success"
                                 }
                             >
-
-                                {result.risk_score}
-
-                            </Badge>
-
-                        </p>
-                    }
-
-                    {
-                        result.ml_prediction !== undefined &&
-                        <p>
-
-                            <b>ML Prediction:</b>
-
-                            {
-                                result.ml_prediction === 1
+                                {result.ml_prediction === 1
                                     ? "Fraud"
-                                    : "Safe"
-                            }
+                                    : "Safe"}
+                            </Badge>
+                        </div>
 
-                        </p>
-                    }
+                    )}
 
-                    {
-                        result.remaining_balance !== undefined &&
-                        <p>
+                    {result.remaining_balance !== undefined && (
 
-                            <b>Remaining Balance:</b>
+                        <div className="preview-item">
+                            <span>Remaining Balance</span>
 
-                            ₹ {Number(result.remaining_balance).toLocaleString()}
+                            <strong>
+                                ₹ {Number(result.remaining_balance).toLocaleString()}
+                            </strong>
+                        </div>
 
-                        </p>
-                    }
+                    )}
 
                 </Card>
 

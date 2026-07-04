@@ -8,6 +8,8 @@ from app.core.database import get_db
 
 from app.models.investigation import Investigation
 
+from app.services.audit_service import create_audit_log
+
 from app.schemas.investigation_schema import (
     InvestigationCreate,
     InvestigationUpdate,
@@ -191,6 +193,18 @@ def update_investigation(
 
     db.refresh(case)
 
-    return case
 
+    create_audit_log(
+        db,
+        current_user.id,
+        "INVESTIGATION_UPDATED",
+        (
+            f"Updated investigation {case.id} "
+            f"(status={case.status}, "
+            f"priority={case.priority}, "
+            f"assigned_to={case.assigned_to})"
+        )
+    )
+
+    return case
 

@@ -2,88 +2,51 @@ from app.models.fraud_rule import FraudRule
 
 
 def calculate_risk_score(
-
     db,
-
     amount,
-
     merchant,
-
     location
-
 ):
-
     risk_score = 0
 
+    merchant = merchant.strip().lower()
+    location = location.strip().lower()
 
     rules = (
-
         db.query(FraudRule)
-
         .filter(
-
             FraudRule.is_active == True
-
         )
-
         .all()
-
     )
-
 
     for rule in rules:
 
+        value = rule.rule_value.strip().lower()
 
         if (
-
             rule.rule_type == "COUNTRY"
-
-            and
-
-            location == rule.rule_value
-
+            and location == value
         ):
-
             risk_score += rule.risk_score
 
-
-
         elif (
-
             rule.rule_type == "MERCHANT"
-
-            and
-
-            merchant == rule.rule_value
-
+            and merchant == value
         ):
-
             risk_score += rule.risk_score
 
-
-
         elif (
-
             rule.rule_type == "AMOUNT"
-
         ):
-
             try:
-
-                threshold = float(
-
-                    rule.rule_value
-
-                )
+                threshold = float(rule.rule_value)
 
                 if amount > threshold:
-
                     risk_score += rule.risk_score
 
-            except:
-
+            except ValueError:
                 pass
-
 
     return risk_score
 

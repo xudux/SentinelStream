@@ -89,6 +89,12 @@ function Profile() {
         );
     }
 
+    const initials = user.name
+        ?.split(" ")
+        .map(word => word[0])
+        .join("")
+        .toUpperCase();
+
     return (
 
         <div className="container">
@@ -113,6 +119,39 @@ function Profile() {
                 subtitle="Your registered profile details"
             >
 
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "16px",
+                        marginBottom: "24px"
+                    }}
+                >
+
+                    <div
+                        style={{
+                            width: 64,
+                            height: 64,
+                            borderRadius: "50%",
+                            background: "#2563eb",
+                            color: "#fff",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: 700,
+                            fontSize: 22
+                        }}
+                    >
+                        {initials}
+                    </div>
+
+                    <div>
+                        <h3>{user.name}</h3>
+                        <p>{user.email}</p>
+                    </div>
+
+                </div>
+
                 <div className="preview-item">
                     <span>Name</span>
                     <strong>{user.name}</strong>
@@ -128,6 +167,44 @@ function Profile() {
                     <strong>
                         ₹ {Number(user.balance).toLocaleString()}
                     </strong>
+                </div>
+
+                <div className="preview-item">
+                    <span>Account Status</span>
+                    <strong>
+                        {user.is_active ? "Active" : "Inactive"}
+                    </strong>
+                </div>
+
+                <div className="preview-item">
+                    <span>Role</span>
+                    <strong>{user.role}</strong>
+                </div>
+
+                {user.created_at && (
+                    <div className="preview-item">
+                        <span>Member Since</span>
+                        <strong>
+                            {new Date(user.created_at).toLocaleDateString("en-IN", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric"
+                            })}
+                        </strong>
+                    </div>
+                )}
+
+                <div
+                    style={{
+                        marginTop: 24,
+                        padding: 12,
+                        background: "#f8fafc",
+                        borderRadius: 8,
+                        color: "#555"
+                    }}
+                >
+                    This information is read-only. Contact your bank if any
+                    profile details need to be updated.
                 </div>
 
             </Card>

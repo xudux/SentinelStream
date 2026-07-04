@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
-
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -47,30 +47,35 @@ def get_rules(
     response_model=RuleResponse
 )
 def create_rule(
-
     rule: RuleCreate,
-
     db: Session = Depends(get_db),
     current_user=Depends(require_admin)
-
 ):
 
+    existing = (
+        db.query(FraudRule)
+        .filter(
+            FraudRule.rule_type == rule.rule_type,
+            FraudRule.rule_value == rule.rule_value
+        )
+        .first()
+    )
+
+    if existing:
+        raise HTTPException(
+            status_code=400,
+            detail="A rule for this value already exists."
+        )
+
     new_rule = FraudRule(
-
         name=rule.name,
-
         rule_type=rule.rule_type,
-
         rule_value=rule.rule_value,
-
         risk_score=rule.risk_score
-
     )
 
     db.add(new_rule)
-
     db.commit()
-
     db.refresh(new_rule)
 
     return new_rule

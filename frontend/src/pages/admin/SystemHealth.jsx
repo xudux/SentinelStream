@@ -89,25 +89,57 @@ function SystemHealth() {
         );
     }
 
+    const formatActivity = (activity) => {
+        if (!activity) return "No recent activity available.";
+
+        const readableMap = {
+            TRANSACTION_BLOCKED: "A transaction was blocked by the system.",
+            USER_LOGIN: "A user logged into the system.",
+        };
+
+        return readableMap[activity] || activity;
+    };
+
+    const normalizeStatus = (status) => {
+        if (!status) return "UNKNOWN";
+
+        const map = {
+            ONLINE: "ONLINE",
+            OFFLINE: "OFFLINE",
+            UNKNOWN: "UNKNOWN",
+
+            // backend variants → normalized
+            CONNECTED: "ONLINE",
+            ACTIVE: "ONLINE",
+            UP: "ONLINE",
+
+            DISCONNECTED: "OFFLINE",
+            DOWN: "OFFLINE",
+            FAILED: "OFFLINE",
+        };
+
+        return map[status] || "UNKNOWN";
+    };
+
     const services = [
         {
             name: "API Gateway",
-            status: health.api_status,
+            status: normalizeStatus(health?.api_status),
             icon: Activity
         },
         {
             name: "Database",
-            status: health.database_status,
+            status: normalizeStatus(health?.database_status),
             icon: Database
         },
         {
             name: "Fraud Engine",
-            status: health.fraud_engine,
+            status: normalizeStatus(health?.fraud_engine),
             icon: ShieldCheck
         },
         {
             name: "Authentication",
-            status: health.auth_service,
+            status: normalizeStatus(health?.auth_service),
             icon: KeyRound
         }
     ];
@@ -134,22 +166,22 @@ function SystemHealth() {
 
                 <StatsCard
                     title="Users"
-                    value={health.total_users}
+                    value={health.total_users ?? 0}
                 />
 
                 <StatsCard
                     title="Transactions"
-                    value={health.total_transactions}
+                    value={health.total_transactions ?? 0}
                 />
 
                 <StatsCard
                     title="Fraud Events"
-                    value={health.fraud_events}
+                    value={health.fraud_events ?? 0}
                 />
 
                 <StatsCard
                     title="Active Rules"
-                    value={health.active_rules}
+                    value={health.active_rules ?? 0}
                 />
 
             </div>
@@ -180,11 +212,16 @@ function SystemHealth() {
                                         variant={
                                             service.status === "ONLINE"
                                                 ? "success"
-                                                : "danger"
+                                                : service.status === "UNKNOWN"
+                                                    ? "warning"
+                                                    : "danger"
                                         }
                                     >
                                         {service.status}
                                     </Badge>
+                                    <p className="health-meta">
+                                        Last checked: {health?.last_checked || "N/A"}
+                                    </p>
 
                                 </div>
 
@@ -193,7 +230,9 @@ function SystemHealth() {
                                 <p>
                                     {service.status === "ONLINE"
                                         ? "Service operating normally."
-                                        : "Service requires attention."}
+                                        : service.status === "UNKNOWN"
+                                            ? "Status currently unavailable."
+                                            : "Service requires attention."}
                                 </p>
 
                             </div>
@@ -211,7 +250,7 @@ function SystemHealth() {
             >
                 <div className="card-content">
                     <h3>Most Recent Audit Event</h3>
-                    <p>{health.latest_activity}</p>
+                    <p>{formatActivity(health?.latest_activity)}</p>
                 </div>
             </Card>
 

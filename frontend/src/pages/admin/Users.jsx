@@ -24,7 +24,9 @@ import {
 
     Select,
 
-    CardSkeleton
+    CardSkeleton,
+
+    Modal
 
 } from "../../components/ui";
 
@@ -45,6 +47,14 @@ function Users() {
     const [statusFilter, setStatusFilter] = useState("ALL");
 
     const [error, setError] = useState("");
+
+    const [confirmUser, setConfirmUser] = useState(null);
+
+    const [statusUpdating, setStatusUpdating] = useState(false);
+
+    const [roleConfirmUser, setRoleConfirmUser] = useState(null);
+    const [pendingRole, setPendingRole] = useState("");
+    const [roleUpdating, setRoleUpdating] = useState(false);
 
 
 
@@ -113,19 +123,20 @@ function Users() {
 
 
     const toggleStatus = (userId) => {
-
         setError("");
+        setStatusUpdating(true);
 
         API.put(`/users/${userId}/toggle-status`)
-
-            .then(() => fetchUsers())
-
+            .then(() => {
+                setConfirmUser(null);
+                fetchUsers();
+            })
             .catch(() => {
-
                 setError("Unable to update user status.");
-
+            })
+            .finally(() => {
+                setStatusUpdating(false);
             });
-
     };
 
 
@@ -296,6 +307,27 @@ function Users() {
 
             />
 
+            <div className="analyst-cards-grid">
+
+                <StatsCard title="Total Users" value={users.length} />
+
+                <StatsCard
+
+                    title="Active"
+
+                    value={users.filter(u => u.is_active).length}
+
+                />
+
+                <StatsCard
+
+                    title="Disabled"
+
+                    value={users.filter(u => !u.is_active).length}
+
+                />
+
+            </div>
 
 
             <Card
@@ -368,32 +400,7 @@ function Users() {
 
                 </div>
 
-            </Card>
-
-
-
-            <div className="analyst-cards-grid">
-
-                <StatsCard title="Total Users" value={users.length} />
-
-                <StatsCard
-
-                    title="Active"
-
-                    value={users.filter(u => u.is_active).length}
-
-                />
-
-                <StatsCard
-
-                    title="Disabled"
-
-                    value={users.filter(u => !u.is_active).length}
-
-                />
-
-            </div>
-
+            </Card>            
 
 
             <Card
@@ -456,9 +463,18 @@ function Users() {
 
                                         <Select
                                             value={user.role}
-                                            onChange={(e) =>
-                                                updateRole(user.id, e.target.value)
-                                            }
+                                            onChange={(e) => {
+                                                if (roleUpdating) return;
+
+                                                if (roleConfirmUser?.id === user.id) {
+                                                    setPendingRole(e.target.value);
+                                                    return;
+                                                }
+
+                                                setRoleConfirmUser(user);
+                                                setPendingRole(e.target.value);
+                                            }}
+                                            disabled={roleUpdating || roleConfirmUser?.id === user.id}
                                         >
                                             <option value="USER">USER</option>
                                             <option value="FRAUD_ANALYST">FRAUD_ANALYST</option>
@@ -488,17 +504,11 @@ function Users() {
                                         <div className="table-actions">
 
                                             <Button
-
                                                 variant={user.is_active ? "danger" : "primary"}
-
                                                 size="sm"
-
-                                                onClick={() => toggleStatus(user.id)}
-
+                                                onClick={() => setConfirmUser(user)}
                                             >
-
                                                 {user.is_active ? "Disable" : "Enable"}
-
                                             </Button>
 
                                         </div>
@@ -516,6 +526,105 @@ function Users() {
                 )}
 
             </Card>
+
+            <Modal
+                open={!!confirmUser}
+                onClose={() => {
+                    setConfirmUser(null);
+                    setStatusUpdating(false);
+                }}
+                title={confirmUser?.is_active ? "Disable account?" : "Enable account?"}
+                size="sm"
+                footer={
+                    <>
+                        <Button
+                            variant="secondary"
+                            onClick={() => setConfirmUser(null)}
+                            disabled={statusUpdating}
+                        >
+                            Cancel
+                        </Button>
+
+                        <Button
+                            variant={confirmUser?.is_active ? "danger" : "primary"}
+                            disabled={statusUpdating}
+                            onClick={() => toggleStatus(confirmUser.id)}
+                        >
+                            {statusUpdating
+                                ? "Updating..."
+                                : confirmUser?.is_active
+                                    ? "Disable"
+                                    : "Enable"}
+                        </Button>
+                    </>
+                }
+            >
+                <p>
+                    {confirmUser?.is_active
+                        ? "User will no longer be able to login."
+                        : "User will be able to login again."}
+                </p>
+            </Modal>
+
+            <Modal
+                open={!!roleConfirmUser}
+                onClose={() => {
+                    if (roleUpdating) return;
+
+                    setRoleConfirmUser(null);
+                    setPendingRole("");
+                }}
+                title="Change role?"
+                size="sm"
+                footer={
+                    <>
+                        <Button
+                            variant="secondary"
+                            onClick={() => {
+                                setRoleConfirmUser(null);
+                                setPendingRole("");
+                            }}
+                            disabled={roleUpdating}
+                        >
+                            Cancel
+                        </Button>
+
+                        <Button
+                            variant="primary"
+                            disabled={roleUpdating}
+                            onClick={() => {
+                                if (roleUpdating || !roleConfirmUser) return;
+                                setRoleUpdating(true);
+
+                                API.put(
+                                    `/users/${roleConfirmUser.id}/role`,
+                                    { role: pendingRole }
+                                )
+                                    .then(() => {
+                                        setRoleConfirmUser(null);
+                                        setPendingRole("");
+                                        fetchUsers();
+                                    })
+                                    .catch(() => {
+                                        setError("Unable to update user role.");
+                                    })
+                                    .finally(() => {
+                                        setRoleUpdating(false);
+                                    });
+                            }}
+                        >
+                            {roleUpdating ? "Updating..." : "Confirm"}
+                        </Button>
+                    </>
+                }
+            >
+                <p>
+                    Change role from{" "}
+                    <b>{roleConfirmUser?.role}</b>{" "}
+                    to{" "}
+                    <b>{pendingRole}</b>?
+                </p>
+            </Modal>
 
         </div>
 

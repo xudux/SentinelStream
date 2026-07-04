@@ -121,3 +121,84 @@ db.commit()
 db.close()
 
 print("Users seeded successfully")
+
+default_rules = [
+
+    {
+        "name": "Russia High Risk",
+        "rule_type": "COUNTRY",
+        "rule_value": "Russia",
+        "risk_score": 50
+    },
+
+    {
+        "name": "North Korea Block",
+        "rule_type": "COUNTRY",
+        "rule_value": "North Korea",
+        "risk_score": 80
+    },
+
+    {
+        "name": "Iran High Risk",
+        "rule_type": "COUNTRY",
+        "rule_value": "Iran",
+        "risk_score": 60
+    },
+
+    {
+        "name": "Unknown Merchant",
+        "rule_type": "MERCHANT",
+        "rule_value": "UnknownVendor",
+        "risk_score": 40
+    },
+
+    {
+        "name": "Crypto Exchange",
+        "rule_type": "MERCHANT",
+        "rule_value": "CryptoExchange",
+        "risk_score": 30
+    },
+
+    {
+        "name": "High Amount",
+        "rule_type": "AMOUNT",
+        "rule_value": "10000",
+        "risk_score": 30
+    },
+
+    {
+        "name": "Very High Amount",
+        "rule_type": "AMOUNT",
+        "rule_value": "50000",
+        "risk_score": 60
+    }
+
+]
+
+for rule in default_rules:
+
+    existing = (
+        db.query(FraudRule)
+        .filter(FraudRule.name == rule["name"])
+        .first()
+    )
+
+    if existing:
+        print(f"{rule['name']} already exists")
+        continue
+
+    db.add(
+        FraudRule(
+            name=rule["name"],
+            rule_type=rule["rule_type"],
+            rule_value=rule["rule_value"],
+            risk_score=rule["risk_score"],
+            is_active=True
+        )
+    )
+
+    print(f"Created rule {rule['name']}")
+
+db.commit()
+
+db.close()

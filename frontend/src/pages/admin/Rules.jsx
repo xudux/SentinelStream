@@ -13,7 +13,11 @@ import {
     Card,
     CardSkeleton,
     Input,
-    Select
+    Select,
+    Modal,
+    Toast,
+    Spinner,
+    Alert
 } from "../../components/ui";
 
 function Rules() {
@@ -23,6 +27,19 @@ function Rules() {
     const [error, setError] = useState("");
 
     const [loading, setLoading] = useState(true);
+
+    const [creating, setCreating] = useState(false);
+
+    const [formError, setFormError] = useState("");
+
+    const [toast, setToast] = useState(null);
+
+    const [deleting, setDeleting] = useState(false);
+
+    const [deleteModal, setDeleteModal] = useState({
+        open: false,
+        rule: null,
+    });
 
     const [form, setForm] = useState({
         name: "",
@@ -78,31 +95,61 @@ function Rules() {
 
         API.put(`/rules/${id}/toggle`)
             .then(() => {
+
+                setToast({
+                    type: "success",
+                    title: "Updated",
+                    message: "Rule status updated."
+                });
+
                 fetchRules();
+
             })
             .catch(() => {
                 setError("Unable to update fraud rule.");
             });
     };
 
-    const deleteRule = (id) => {
-        if (!window.confirm("Delete this rule?")) {
-            return;
-        }
+    const confirmDeleteRule = (rule) => {
+        setDeleteModal({
+            open: true,
+            rule,
+        });
+    };
 
-        setError("");
+    const deleteRule = () => {
 
-        API.delete(`/rules/${id}`)
+        if (!deleteModal.rule) return;
+
+        setDeleting(true);
+
+        API.delete(`/rules/${deleteModal.rule.id}`)
             .then(() => {
+
+                setToast({
+                    type: "success",
+                    title: "Rule Deleted",
+                    message: "Fraud rule deleted successfully.",
+                });
+
                 fetchRules();
             })
             .catch(() => {
                 setError("Unable to delete fraud rule.");
+            })
+            .finally(() => {
+                setDeleting(false);
+
+                setDeleteModal({
+                    open: false,
+                    rule: null,
+                });
             });
     };
 
     const createRule = () => {
         setError("");
+        setFormError("");
 
         if (
             !form.name.trim() ||
@@ -110,17 +157,41 @@ function Rules() {
             !form.rule_value ||
             !form.risk_score
         ) {
-            setError("Please fill in all fields.");
+            setFormError("Please fill in all fields.");
             return;
         }
+
+        const riskScore = Number(form.risk_score);
+
+        if (Number.isNaN(riskScore) || riskScore < 0 || riskScore > 100) {
+            setFormError("Risk Score must be between 0 and 100.");
+            return;
+        }
+
+        if (
+            form.rule_type === "AMOUNT" &&
+            (isNaN(Number(form.rule_value)) || Number(form.rule_value) <= 0)
+        ) {
+            setFormError("Amount Threshold must be a valid number.");
+            return;
+        }
+
+        setCreating(true);
 
         API.post("/rules/", {
             name: form.name,
             rule_type: form.rule_type,
             rule_value: form.rule_value,
-            risk_score: Number(form.risk_score),
+            risk_score: riskScore,
         })
             .then(() => {
+
+                setToast({
+                    type: "success",
+                    title: "Rule Created",
+                    message: "Fraud rule created successfully."
+                });
+
                 fetchRules();
 
                 setForm({
@@ -129,9 +200,13 @@ function Rules() {
                     rule_value: "",
                     risk_score: "",
                 });
+
             })
             .catch(() => {
                 setError("Unable to create fraud rule.");
+            })
+            .finally(() => {
+                setCreating(false);
             });
     };
 
@@ -149,6 +224,15 @@ function Rules() {
                 }
             />
 
+            {toast && (
+                <Toast
+                    type={toast.type}
+                    title={toast.title}
+                    message={toast.message}
+                    onClose={() => setToast(null)}
+                />
+            )}
+
             {error && (
                 <ErrorState
                     title="Rules unavailable"
@@ -161,6 +245,16 @@ function Rules() {
                 title="Create Fraud Rule"
                 subtitle="Configure a new rule to detect suspicious transactions"
             >
+
+                {formError && (
+                    <Alert
+                        variant="danger"
+                        title="Validation Error"
+                    >
+                        {formError}
+                    </Alert>
+                )}
+
                 <div className="rule-form">
 
                     <Input
@@ -248,8 +342,14 @@ function Rules() {
                         }
                     />
 
-                    <Button onClick={createRule}>
-                        Create Rule
+                    <Button onClick={createRule} disabled={creating}>
+                        {creating ? (
+                            <>
+                                <Spinner /> Creating...
+                            </>
+                        ) : (
+                            "Create Rule"
+                        )}
                     </Button>
 
                 </div>
@@ -322,7 +422,7 @@ function Rules() {
                                             <Button
                                                 size="sm"
                                                 variant="danger"
-                                                onClick={() => deleteRule(rule.id)}
+                                                onClick={() => confirmDeleteRule(rule)}
                                             >
                                                 Delete
                                             </Button>
@@ -334,6 +434,55 @@ function Rules() {
                     </tbody>
                 </table>
             </Card>
+
+            <Modal
+                open={deleteModal.open}
+                onClose={() =>
+                    setDeleteModal({
+                        open: false,
+                        rule: null
+                    })
+                }
+                title="Delete Fraud Rule"
+                footer={
+                    <>
+                        <Button
+                            variant="secondary"
+                            onClick={() =>
+                                setDeleteModal({
+                                    open: false,
+                                    rule: null
+                                })
+                            }
+                        >
+                            Cancel
+                        </Button>
+
+                        <Button
+                            variant="danger"
+                            onClick={deleteRule}
+                            disabled={deleting}
+                        >
+                            {deleting ? (
+                                <>
+                                    <Spinner /> Deleting...
+                                </>
+                            ) : (
+                                "Delete"
+                            )}
+                        </Button>
+                    </>
+                }
+            >
+
+                Are you sure you want to delete
+                <strong> {deleteModal.rule?.name}</strong>?
+
+                <br /><br />
+
+                This action cannot be undone.
+
+            </Modal>
         </div>
     );
 }

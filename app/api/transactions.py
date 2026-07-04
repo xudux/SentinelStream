@@ -78,41 +78,23 @@ def send_transaction(
     )
 
 
+    merchant = transaction.merchant.strip().lower()
+    location = transaction.location.strip().lower()
+
     for rule in rules:
 
+        value = rule.rule_value.strip().lower()
 
         if (
-
             rule.rule_type == "MERCHANT"
-
-            and
-
-            transaction.merchant
-
-            ==
-
-            rule.rule_value
-
+            and merchant == value
         ):
-
             merchant_risk = 1
 
-
-
         if (
-
             rule.rule_type == "COUNTRY"
-
-            and
-
-            transaction.location
-
-            ==
-
-            rule.rule_value
-
+            and location == value
         ):
-
             location_risk = 1
 
 

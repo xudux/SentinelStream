@@ -184,6 +184,27 @@ function TransactionDetails() {
                 </p>
 
                 <p>
+                    <strong>Risk Level:</strong>{" "}
+                    <Badge
+                        variant={
+                            transaction.risk_score >= 80
+                                ? "danger"
+                                : transaction.risk_score >= 50
+                                ? "warning"
+                                : "success"
+                        }
+                    >
+                        {
+                            transaction.risk_score >= 80
+                                ? "Critical"
+                                : transaction.risk_score >= 50
+                                ? "Medium"
+                                : "Low"
+                        }
+                    </Badge>
+                </p>
+
+                <p>
                     <strong>User ID:</strong>{" "}
                     {transaction.user_id || "-"}
                 </p>

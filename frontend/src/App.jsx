@@ -80,7 +80,6 @@ function App() {
                     }
                 />
 
-                {/* Future */}
                 {
                 <Route
                     path="/customer/profile"

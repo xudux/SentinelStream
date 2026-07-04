@@ -8,19 +8,22 @@ from app.models.user import User
 from app.core.roles import require_admin
 from app.schemas.user_schema import RoleUpdate
 
+
+
 router = APIRouter()
 
 
 @router.get("/profile")
 def profile(
-    current_user=Depends(
-        get_current_user
-    )
+    current_user=Depends(get_current_user)
 ):
     return {
         "name": current_user.name,
         "email": current_user.email,
-        "balance": current_user.balance
+        "balance": current_user.balance,
+        "role": current_user.role,
+        "is_active": current_user.is_active,
+        "created_at": current_user.created_at
     }
 
 
@@ -35,7 +38,17 @@ def all_users(
         .all()
     )
 
-    return users
+    return [
+        {
+            "id": u.id,
+            "name": u.name,
+            "email": u.email,
+            "balance": u.balance,
+            "role": u.role,
+            "is_active": u.is_active
+        }
+        for u in users
+    ]
 
 @router.put("/{user_id}/role")
 def update_role(

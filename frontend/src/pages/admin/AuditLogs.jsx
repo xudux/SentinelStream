@@ -68,28 +68,36 @@ function AuditLogs() {
                 ? true
                 : log.action === actionFilter;
 
+        const query = searchTerm.toLowerCase();
+
         const searchMatch =
             (log.details || "")
                 .toLowerCase()
-                .includes(searchTerm.toLowerCase());
+                .includes(query)
+            ||
+            (log.action || "")
+                .toLowerCase()
+                .includes(query)
+            ||
+            String(log.user_id || "")
+                .includes(query);
 
         return actionMatch && searchMatch;
-
     });
 
-    const loginCount = logs.filter(
-        l => l.action === "USER_LOGIN"
-    ).length;
+    const stats = {
+        login: 0,
+        processed: 0,
+        blocked: 0,
+        fraud: 0
+    };
 
-    const transactionCount = logs.filter(
-        l =>
-            l.action === "TRANSACTION_PROCESSED" ||
-            l.action === "TRANSACTION_BLOCKED"
-    ).length;
-
-    const fraudCount = logs.filter(
-        l => l.action === "FRAUD_EVENT_CREATED"
-    ).length;
+    logs.forEach(l => {
+        if (l.action === "USER_LOGIN") stats.login++;
+        if (l.action === "TRANSACTION_PROCESSED") stats.processed++;
+        if (l.action === "TRANSACTION_BLOCKED") stats.blocked++;
+        if (l.action === "FRAUD_EVENT_CREATED") stats.fraud++;
+    });
 
     if (loading) {
 
@@ -183,17 +191,22 @@ function AuditLogs() {
 
                 <StatsCard
                     title="Login Events"
-                    value={loginCount}
+                    value={stats.login}
                 />
 
                 <StatsCard
-                    title="Transaction Events"
-                    value={transactionCount}
+                    title="Processed Transactions"
+                    value={stats.processed}
+                />
+
+                <StatsCard
+                    title="Blocked Transactions"
+                    value={stats.blocked}
                 />
 
                 <StatsCard
                     title="Fraud Events"
-                    value={fraudCount}
+                    value={stats.fraud}
                 />
 
             </div>
